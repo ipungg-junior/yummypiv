@@ -1,0 +1,483 @@
+{% extends 'base/base_landing.html' %}
+
+{% load static %}
+
+
+{% block body %}
+<body id="top" class="light_theme">
+
+{% csrf_token %}
+  <main>
+
+    <style>
+
+    </style>
+
+    <article class="container" style="margin-top: 8em;">
+
+      <section class="about-container" id="about">
+
+        <div class="about-content section-content">
+
+          <h2 class="h3 about-title" style="margin: auto; text-align: center;">Mengenai {{ app_alias_name }} </h2>          
+          
+          <p class="section-text" style="text-align: center;">
+            Teman Hukum berdiri sejak 2022 oleh para praktisi muda hukum di Indonesia.
+            Spirit pertemanan menjadi nilai dasar Teman Hukum dalam memberikan pelayanan bagi anda.
+            Dalam melayani anda, kami mendengar, berdiskusi, memberikan saran dan solusi serta mendampingi penyelesaian hukum anda layaknya seorang teman. 
+          </p>
+
+          <h2 class="h3 about-title" style="margin: auto; text-align: center;">Tim Kami</h2>     
+          <style>
+          .person-container
+          {
+            width:100%;
+            display:flex;
+            justify-content:center;
+          }
+
+          .desc-person-list
+          {
+            gap:1em;
+            display:grid;
+            color:#f5f5f5
+          }
+
+          .person-cards
+          {
+            width:100%;
+            display:flex;
+            justify-content: center;
+            gap: 3em;
+            margin-top: 3em;
+          }
+
+          .person-card
+          {
+            width:17em;
+            height:14em;
+            background:linear-gradient(to right,#1b2f54,#0f1f39);
+            border-radius:1.5rem 6rem 1.5rem 1.5rem;
+            box-shadow:0 .2rem 1rem #000;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:space-evenly;
+            position:relative;
+            /* opacity:0; */
+            /* visibility:hidden; */
+            /* transform:translateX(-15rem); */
+            /* animation:fadeSlide .5s .5s linear forwards */
+          }
+
+          @keyframes fadeSlide {
+            0%
+            {
+              transform:translateX(-15rem);
+              opacity:0;
+              visibility:hidden
+            }
+            
+            100%
+            {
+              transform:translateX(0);
+              opacity:1;
+              visibility:visible
+            }
+          }
+
+          .card-type
+          {
+            width:6em;
+            height:1.3em;
+            transform:rotateZ(-90deg);
+            position:absolute;
+            top:7rem;
+            left:-4.4rem;
+            padding:.8em 3em;
+            border-radius:1rem 1rem 0 0;
+            font-size:1.2em;
+            font-weight:700;
+            letter-spacing:.1rem;
+            text-transform:uppercase;
+            color:#fff;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:#383838
+          }
+
+          .card-name
+          {
+            padding: 0 1.7em;
+            text-align: center;
+            position: relative;
+            font-size: 1em;
+            top: -3.2em;
+            font-weight: 700;
+            color: #dadada;
+          }
+
+          .subtitle-card
+          {
+            font-size: 1em;
+            font-weight: 300;
+            position: relative;
+            top: -2.5em;
+            color: #c6c6c6;
+            text-align: center;
+            padding: 0 1.5em;
+            line-height: 22px;
+          }
+
+          .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--tone-secondary);
+            position: relative;
+            top: -4em;
+            right: -2em;
+          }
+          </style>
+          
+          <div class="person-container">
+            <div class="person-cards">
+
+              <div class="person-card">
+                <img src="https://storage.googleapis.com/keraton-d44f3.appspot.com/mlawyer/company/profile.webp" alt="Profil" class="profile-image">
+                <h1 class="card-name">Drs. Soetta Djaja, S.H., M.H.</h1>
+                <h3 class="subtitle-card">"Hidup adalah teka-teki yang harus kita selesaikan."</h3>
+              </div>
+
+              <div class="person-card">
+                <img src="https://via.placeholder.com/150" alt="Profil" class="profile-image">
+                <h1 class="card-name">Drs. Soetta Djaja, S.H., M.H.</h1>
+                <h3 class="subtitle-card">"Hidup adalah teka-teki yang harus kita selesaikan."</h3>
+              </div>
+
+            </div>
+          </div>     
+
+        </div>
+
+      </section>
+
+
+      <section class="project" id="news">
+
+        <ul class="project-list">
+
+          <li>
+            <div class="project-content section-content">
+
+              <p class="section-subtitle">Update informasi</p>
+
+              <h2 class="h3 section-title">Berita Terkini.</h2>
+
+              <p class="section-text">
+                We develop the best quality website that serves for the long-term. Well-documented, clean, easy and
+                elegant interface
+                helps any non-technical clients.
+              </p>
+
+            </div>
+          </li>
+
+          {% for news in news_list %}
+
+          <li>
+            <a href="{% url 'news-detail' news.id %}" class="project-card">
+
+              <figure class="card-banner">
+                <img src="{{ news.img_link }}" class="w-100" alt="{{ news.title }}">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">{{ news.title }}</h3>
+
+                <time class="publish-date" datetime='{{ news.created_at|date:"j-M-Y" }}'>{{ news.created_at|date:"j M Y H:i" }} WIB</time>
+              </div>
+
+            </a>
+          </li>
+
+          {% endfor %}
+        </ul>
+
+      </section>
+
+
+
+
+
+      <!-- 
+          - #CONTACT
+        -->
+
+      <section class="contact" id="contact">
+
+
+        <h2 class="h3 section-title" id="contact-form-title">Punya Pertanyaan Terkait Hukum ?</h2>
+
+        <p class="section-text" id="contact-form-subtitle">
+          Get in touch and let me know how i can help. Fill out the form and i’ll be in touch as soon as possible.
+        </p>
+
+        <div class="contact-form" id="contact-form">
+
+          <div class="form-wrapper">
+
+            <label for="name" class="form-label">Name</label>
+
+            <div class="input-wrapper">
+
+              <input type="text" name="name" id="name" required="" placeholder="Masukan nama kamu" class="input-field">
+
+              <ion-icon name="person-circle" role="img" class="md hydrated" aria-label="person circle"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="phone" class="form-label">WhatsApp</label>
+
+            <div class="input-wrapper">
+
+              <input type="tel" name="phone" id="phone" required="" placeholder="Nomor WhatsApp kamu"
+                class="input-field">
+
+              <ion-icon name="call" role="img" class="md hydrated" aria-label="call"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="message" class="form-label">Deskripsi</label>
+
+            <div class="input-wrapper">
+
+              <textarea name="message" id="message" required="" placeholder="Pesan singkat tentang masalah kamu . . ."
+                class="input-field"></textarea>
+
+              <ion-icon name="chatbubbles" role="img" class="md hydrated" aria-label="chatbubbles"></ion-icon>
+
+            </div>
+
+          </div>
+          <button type="submit" class="btn btn-primary" id="send-submit">Tanya Gratis </button>
+          <script>
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;        
+            const submitBtn = document.getElementById('send-submit');
+            submitBtn.addEventListener('click', function (event) {
+              event.preventDefault();  // Mencegah reload halaman default saat submit              
+              
+              const name = document.getElementById('name').value;        
+              const phone = document.getElementById('phone').value;        
+              const message = document.getElementById('message').value;   
+              const contactDiv = document.getElementById('contact-form');   
+              const titleDiv = document.getElementById('contact-form-title');   
+              const subtitleDiv = document.getElementById('contact-form-subtitle');   
+              
+              const formData = new FormData();
+              formData.append('name', name);
+              formData.append('phone', phone);
+              formData.append('message', message);
+                            
+
+              fetch('{% url "api-client-inbox" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+                  },
+              }).then(response => {
+                  if (response.status === 200) {
+                      return response.json();  // Jika status 200, konversi ke JSON
+                  } else {
+                      throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                  }
+              })
+                .then(data => {
+                    if (data.status === true) {
+                        const respMsg = data.data.msg;
+                        alert(respMsg);
+                        contactDiv.style.display = 'none';
+                        titleDiv.style.display = 'none';
+                        subtitleDiv.style.display = 'none';
+                    } else {
+                        alert(data.data.msg);
+                    }
+                })
+                .catch((error) => {
+                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan                    
+                });
+            
+          });
+          </script>
+        </div>
+
+        <div class="contact-content section-content">
+
+          <ul class="contact-list">
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="location-outline" role="img" class="md hydrated"
+                  aria-label="location outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Address:</h3>
+
+                <address class="contact-info">
+                  {{address}}
+                </address>
+              </div>
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="call-outline" role="img" class="md hydrated" aria-label="call outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Phone:</h3>
+
+                <a href="tel:01234567789" class="contact-info">{{phone_number}}</a>
+              </div>
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="mail-outline" role="img" class="md hydrated" aria-label="mail outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Email:</h3>
+
+                <a href="mailto:{{email}}" class="contact-info">{{email}}</a>
+              </div>
+
+            </li>
+
+            <li>
+              <ul class="contac-social-list">
+
+                {% if facebook_state == 'true' %}
+                  <li>
+                    <a href="{{ facebook_link }}" class="contact-social-link">
+                      <ion-icon name="logo-facebook" role="img" class="md hydrated" aria-label="logo facebook"></ion-icon>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if twitter_state == 'true' %}
+                <li>
+                  <a href="{{ twitter_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-twitter" role="img" class="md hydrated" aria-label="logo twitter"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+                {% if linkedin_state == 'true' %}
+                <li>
+                  <a href="{{ linkedin_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-linkedin" role="img" class="md hydrated" aria-label="logo linkedin"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+                {% if youtube_state == 'true' %}
+                <li>
+                  <a href="{{ youtube_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-youtube" role="img" class="md hydrated" aria-label="logo youtube"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+              </ul>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+      - #FOOTER
+    -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <p class="h1 logo">
+        <a href="#" style="color: var(--black);">
+          {{app_alias_name}}<span>.</span>
+        </a>
+      </p>
+
+      <p class="copyright">
+        © 2024 All rights reserved
+      </p>
+
+    </div>
+  </footer>
+
+
+
+
+
+  <!-- 
+      - #GO TO TOP
+    -->
+
+  <a href="#top" class="go-top" data-go-top="" title="Go to Top">
+    <ion-icon name="arrow-up" role="img" class="md hydrated" aria-label="arrow up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+      - custom js link
+    -->
+  <script>
+    const r_uri = '{% url "api-reporter" %}';
+    const r_uri_path = '{% url "landing" %}';
+  </script>
+  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/reporter.js' %}"></script>
+
+  <!-- 
+      - ionicon link
+    -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
+</body>
+{% endblock body %}

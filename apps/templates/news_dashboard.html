@@ -1,0 +1,143 @@
+{% extends 'base/base_dashboard.html' %}
+
+
+{% block body %}
+{% load static %}
+<div class="page">
+    {% include 'base/header.html' %}
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Manage News
+                        </div>
+                        <h2 class="page-title">
+                            Dashboard
+                        </h2>
+                    </div>
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="{% url 'create-news-dashboard' %}" class="btn btn-primary d-none d-sm-inline-block">
+                                New Article
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-deck row-cards">
+
+                    {% csrf_token %}
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">News List</h3>
+                            </div>
+                            <div class="card-table">
+                                <table class="table table-vcenter" id="news-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Relsase Date</th>
+                                            <th>Author</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    {% for news in news_list %}
+                                        <tr data-id="{{news.id}}">
+                                            <td>
+                                                {{ news.title }}
+                                            </td>
+                                            <td>
+                                                {{ news.created_at|date:"j M Y H:i" }} WIB
+                                            </td>
+                                            <td>
+                                                {% if news.author == None %}
+                                                    PUBLIC_AUTHOR
+                                                {% else %}
+                                                    {{ news.author }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="">
+                                                    <a href="{% url 'edit-news-dashboard' news.id %}" class="btn btn-primary bg-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon m-0"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path><path d="M13.5 6.5l4 4"></path></svg></a>
+                                                </span>
+                                                <span class="delete-btn">
+                                                    <a class="btn btn-primary bg-danger delete-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon m-0 delete-btn"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7l16 0"></path><path d="M10 11l0 6"></path><path d="M14 11l0 6"></path><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path></svg></a>
+                                                </span>
+                                            </td>
+                                        </tr>                          
+                                    {% endfor %}          
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    const table = document.getElementById('news-table');
+
+    // Event delegation untuk menangani klik pada tombol hapus
+    table.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-btn')) {
+            // Mendapatkan baris artikel (tr) terkait
+            const row = event.target.closest('tr');
+            const articleId = row.getAttribute('data-id');
+
+            // Konfirmasi sebelum hapus
+            const confirmed = confirm('Apakah Anda yakin ingin menghapus artikel ini? ' + articleId);
+            const formData = new FormData();
+            formData.append('data-id', articleId)
+            if (confirmed) {
+                // Lakukan POST ke /delete/ dengan ID artikel
+                fetch('{% url "api-news-delete" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,                        
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();  // Jika status 200, konversi ke JSON
+                    } else {
+                        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                    }
+                })
+                    .then(data => {
+                        const message = data.data.msg;  // Ambil message dari response                        
+                        if (data.status === true) {
+                            alert(message);  // Menampilkan pesan ke user    
+                            row.remove();            
+                        } else {
+                            alert(message);  // Menampilkan pesan ke user                            
+                        }
+                    })
+                    .catch((error) => {
+                        alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan                
+                    });
+            }
+        }
+    });
+
+</script>
+
+{% include 'modal/upload_partner.html' %}
+
+
+{% endblock body %}

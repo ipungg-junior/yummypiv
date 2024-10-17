@@ -1,0 +1,113 @@
+<div class="modal modal-blur fade" id="modal-report" aria-hidden="true">
+    {% csrf_token %}
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Partner</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Partner Name</label>
+                    <input type="text" class="form-control" name="partner-name" id="partner-name"
+                        placeholder="Input your partner name" value="">
+                </div>
+                <div class="">
+                    <label class="form-label">Image</label>
+                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image" hidden>
+                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input" id="image-input" placeholder="Input your partner name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal" id="close-btn">
+                    Cancel
+                </a>
+                <a class="btn btn-primary ms-auto" id="submit-btn">
+                    Save
+                </a>
+            </div>
+        </div>
+        <div class="progress progress-md" id="loading" hidden>
+            <div class="progress-bar progress-bar-indeterminate"></div>
+        </div>
+    </div>
+
+    <script>
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        const imageInput = document.getElementById('image-input');
+        const closeBtn = document.getElementById('close-btn');
+        const image = document.getElementById('preview-image');
+        const submitBtn = document.getElementById('submit-btn');
+        const loading = document.getElementById('loading');
+        
+        imageInput.addEventListener('change', function (event) {
+            loading.hidden = false;
+            const reader = new FileReader();
+            const file = event.target.files[0];
+            
+            reader.onload = function (e) {
+                image.src = e.target.result;
+                image.hidden = false;
+            };
+            
+            if (file) {
+                reader.readAsDataURL(file);
+                imageInput.hidden = true;
+                loading.hidden = true;
+            }
+        });
+        
+        closeBtn.addEventListener('click', function (event) {
+            image.src = '';
+            image.hidden = true;
+            imageInput.value = '';
+            imageInput.hidden = false;
+            loading.hidden = true;
+        });
+        
+        submitBtn.addEventListener('click', function (event) {
+            loading.hidden = false;
+            event.preventDefault();  // Mencegah reload halaman default saat submit
+            
+            const inputFile = document.getElementById('image-input').files[0];
+            
+            if (inputFile) {
+                const partnerName = document.getElementById('partner-name').value;
+                const formData = new FormData();
+                formData.append('partner-name', partnerName);
+                formData.append('image', inputFile);
+                
+                fetch('{% url "new-partner" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+                    },
+                }).then(response => {
+                    if (response.status === 200) {
+                        return response.json();  // Jika status 200, konversi ke JSON
+                    } else {
+                        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                    }
+                })
+                .then(data => {
+                    if (data.status === 'true') {
+                        loading.hidden = true;
+                        const message = data.data.msg;  // Ambil message dari response                        
+                        alert(message);  // Menampilkan pesan ke user
+                        window.location.replace("{% url 'partner-dashboard' %}");
+                    } else {
+                        console.error('Error: ', data);  // Menangani response error
+                        window.location.replace("{% url 'partner-dashboard' %}");
+                    }
+                })
+                .catch((error) => {
+                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
+                    window.location.replace("{% url 'partner-dashboard' %}");
+                });
+            }
+        });
+
+    </script>
+
+</div>

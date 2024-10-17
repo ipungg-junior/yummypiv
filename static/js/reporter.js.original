@@ -1,0 +1,65 @@
+const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;        
+// Variable to track if user has scrolled at least 30% of the page
+let hasScrolledEnough = false;
+// Set countdown in seconds (for example, 7 seconds)
+let countdown = 4;
+let countdownTimer;
+
+// Function to handle countdown
+function startCountdown() {
+    countdownTimer = setInterval(() => {
+        countdown--;
+
+        if (countdown <= 0) {
+            if (hasScrolledEnough) {
+                clearInterval(countdownTimer);
+                reportUserActivity();
+            } else {
+                console.log('User did not scroll at least 30%, activity not reported.');
+                countdown = 4;
+            }
+        }
+    }, 2000);
+}
+
+// Function to handle scroll detection
+function handleScroll() {
+    const totalPageHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const scrolledDistance = window.scrollY;
+
+    // Calculate how much the user has scrolled in percentage
+    const scrollPercentage = (scrolledDistance + viewportHeight) / totalPageHeight * 100;
+
+    if (scrollPercentage >= 45 && !hasScrolledEnough) {
+        hasScrolledEnough = true;
+        console.log("User has scrolled at least 45% of the page.");
+    }
+}
+
+// Function to report that user actively visited the page
+function reportUserActivity() {
+    var r_uri_tail = r_uri_path;
+    const formData = new FormData();
+    formData.append('path', r_uri_tail);
+    console.log("User has visited the page actively : " + r_uri_path);
+    // Simulate reporting user activity to server using Fetch API
+    fetch(r_uri, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken  // Assuming CSRF protection is enabled
+        },
+        body: formData
+    }).then(response => response.json())
+        .then(data => console.log('Visit reported successfully:', data))
+        .catch(error => console.error('Error reporting visit:', error));
+}
+
+// Start countdown when the page loads
+window.onload = () => {
+    startCountdown();
+};
+
+// Detect scroll event
+window.addEventListener('scroll', handleScroll);

@@ -1,0 +1,148 @@
+{% extends 'base/base_dashboard.html' %}
+
+
+{% block body %}
+{% load static %}
+<div class="page">
+    {% include 'base/header.html' %}
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Manage Partner Icon
+                        </div>
+                        <h2 class="page-title">
+                            Dashboard
+                        </h2>
+                    </div>
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                                data-bs-target="#modal-report">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="icon">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 5l0 14"></path>
+                                    <path d="M5 12l14 0"></path>
+                                </svg>
+                                New Partner
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-deck row-cards">
+
+
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Setup Partner</h3>
+                            </div>
+                            <div class="card-table">
+                                <table class="table table-vcenter">
+                                    <thead>
+                                        <tr>
+                                            <th>Partner Name</th>
+                                            <th>Icon</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="partner-collection">
+                                        {% for partner in partner_list %}
+                                        <tr>
+                                            <td>
+                                                {{ partner.name }}
+                                            </td>
+                                            <td class="text-secondary"><span class="avatar"
+                                                    style="background-image: url({{ partner.img_link }})"></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="dropdown">
+                                                    <a class="btn btn-primary bg-danger remove-btn"
+                                                        data-id="{{ partner.id }}">Remove</a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% include 'base/footer.html' %}
+    </div>
+</div>
+
+
+{% include 'modal/upload_partner.html' %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        // Pilih elemen tbody sebagai target event delegation
+        const tableBody = document.getElementById('partner-collection');
+
+        // Tambahkan event listener pada tbody
+        tableBody.addEventListener('click', function (event) {
+
+            if (event.target.classList.contains('remove-btn')) {
+
+                const partnerId = event.target.getAttribute('data-id');
+
+                if (confirm('Yakin ingin menghapus partner ID ' + partnerId + '?')) {
+                    const formData = new FormData();
+                    formData.append('partner-id', partnerId);
+                    fetch('{% url "delete-partner" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+                        },
+                    }).then(response => {
+                        if (response.status === 200) {
+                            return response.json();  // Jika status 200, konversi ke JSON
+                        } else {
+                            throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                        }
+                    })
+                    .then(data => {
+                        const message = data.data.msg;  // Ambil message dari response                        
+                        if (data.status === true) {
+                            loading.hidden = true;
+                            alert(message);  // Menampilkan pesan ke user  
+                            window.location.href = '{% url "partner-dashboard" %}';              
+                        } else {
+                            alert(message);
+                        }
+                    })
+                    .catch((error) => {
+                        alert('Internal server error: ', error);  // Menampilkan alert jika ada kesalahan                
+                    });
+                }
+            }
+        });
+
+    });
+</script>
+
+
+{% endblock body %}

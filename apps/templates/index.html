@@ -1,0 +1,528 @@
+{% load static %}
+
+<html lang="en" class="hydrated">
+
+<head>
+  <meta charset="UTF-8">
+  <style data-styles="">
+    ion-icon {
+      visibility: hidden
+    }
+
+    .hydrated {
+      visibility: inherit
+    }
+  </style>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{app_alias_name}}</title>
+
+  <!-- 
+      - favicon
+    -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+      - custom css link
+    -->
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+
+  <!-- 
+      - google font link
+    -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;family=Roboto:wght@400;700&amp;family=Saira+Stencil+One&amp;display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<a href="https://wa.me/{{phone_number}}" class="whatsapp-button" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<body id="top" class="light_theme">
+  {% csrf_token %}
+  <!-- 
+      - #HEADER
+    -->
+
+  <nav class="navbar" id="navbar">
+    <h1 class="h1 logo">
+      <a href="">{{app_alias_name}}<span style="color: black;">.</span></a>
+    </h1>
+    <div class="nav-toggle-btn" id="mobile-menu">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#news">Berita</a></li>
+      <li><a href="#contact">Kontak</a></li>
+    </ul>
+  </nav>
+
+
+
+
+  <main>
+
+    <div class="background-image" style="background-image: url({{ background_image }});">
+      <div class="overlay"></div>
+      <div class="content">
+        <h2 class="overlay-title">{{ description }}</h2>
+        <a href="#contact" class="btn btn-primary"
+          style="margin-top: 3em;align-items: center;justify-content: center;display: flex;"> <i class="fab fa-whatsapp"
+            style="font-size: 30px;"></i> &nbsp;Konsultasi Gratis</a>
+      </div>
+    </div>
+    <article class="container">
+
+
+      <section class="stats" id="stats">
+        <ul class="stats-list">
+
+          <li>
+            <a class="stats-card">
+
+              <div class="card-icon">
+                <img src="{% static 'image/stats-card_icon-1.png' %}" alt="Badge icon">
+              </div>
+
+              <h2 class="h2 card-title">
+                4+ <strong>Tahun Pengalaman</strong>
+              </h2>
+
+              <ion-icon name="chevron-forward-outline" role="img" class="md hydrated"
+                aria-label="chevron forward outline"></ion-icon>
+
+            </a>
+          </li>
+
+          <li>
+            <a class="stats-card">
+
+              <div class="card-icon">
+                <img src="{% static 'image/stats-card_icon-2.png' %}" alt="Checkmark icon">
+              </div>
+
+              <h2 class="h2 card-title">
+                30+ <strong>Kasus Terselesaikan</strong>
+              </h2>
+
+              <ion-icon name="chevron-forward-outline" role="img" class="md hydrated"
+                aria-label="chevron forward outline"></ion-icon>
+
+            </a>
+          </li>
+
+          <li>
+            <a class="stats-card">
+
+              <div class="card-icon">
+                <img src="{% static 'image/stats-card_icon-3.png' %}" alt="Peoples rating icon">
+              </div>
+
+              <h2 class="h2 card-title">
+                40+ <strong>Klien Tuntas</strong>
+              </h2>
+
+              <ion-icon name="chevron-forward-outline" role="img" class="md hydrated"
+                aria-label="chevron forward outline"></ion-icon>
+
+            </a>
+          </li>
+
+        </ul>
+      </section>
+
+
+      {% include 'services_partial/base_service.html' %}
+
+
+      <section class="carousel-client" id="carousel-client">
+        <h2 class="h3" style="margin: auto; text-align: center;">Kami dipercaya oleh </h2>
+        <div class="client-logo-carousel">
+          <div class="logo-track">
+            {% for partner in partner_list %}
+            <div class="logo"><img src="{{ partner.img_link }}" alt="{{ partner.name }}"></div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+
+
+
+
+      <!-- <section>
+          {% include 'modal/pricing_component.html' %}
+      </section> -->
+
+      <section class="overview" id="overview">
+
+				<div class="overview-card">
+
+					<figure class="overview-banner">
+						<img src="{% static 'image/3d-law.png' %}" alt="overview banner">
+					</figure>
+
+					<div class="overview-content">
+
+						<h3 class="h3 overview-title">Dapatkan Konsultasi Gratis tentang Hukum sekarang juga!</h3>
+
+						<p class="overview-text">
+							Konsultasi hukum kami memberikan solusi strategis dan perlindungan kepentingan. 
+              Tim ahli siap membantu Anda menghadapi isu hukum dengan pendekatan yang transparan dan profesional.
+						</p>
+
+						<ul class="overview-list">
+
+							<li class="overview-item">
+								<i class="fa-solid fa-check"></i>
+								<span>Berpengalaman menangani kasus hukum perdata dan pidana</strong></span>
+							</li>
+
+							<li class="overview-item">
+								<i class="fa-solid fa-check"></i>
+								<span>Kualitas pelayanan hukum</span>
+							</li>
+
+							<li class="overview-item">
+								<i class="fa-solid fa-check"></i>
+								<span>Keahlian dalam penyelesaian kasus</span>
+							</li>
+
+						</ul>
+
+					</div>
+
+				</div>
+
+			</section>
+
+
+      <!-- 
+          - #PROJECTS
+        -->
+
+      <section class="project" id="news">
+
+        <ul class="project-list">
+
+          <li>
+            <div class="project-content section-content">
+
+              <p class="section-subtitle">Update informasi</p>
+
+              <h2 class="h3 section-title">Berita Terkini.</h2>
+
+              <p class="section-text">
+                We develop the best quality website that serves for the long-term. Well-documented, clean, easy and
+                elegant interface
+                helps any non-technical clients.
+              </p>
+
+            </div>
+          </li>
+
+          {% for news in news_list %}
+
+          <li>
+            <a href="{% url 'news-detail' news.id %}" class="project-card">
+
+              <figure class="card-banner">
+                <img src="{{ news.img_link }}" class="w-100" alt="{{ news.title }}">
+              </figure>
+
+              <div class="card-content">
+                <h3 class="h4 card-title">{{ news.title }}</h3>
+
+                <time class="publish-date" datetime='{{ news.created_at|date:"j-M-Y" }}'>{{ news.created_at|date:"j M Y H:i" }} WIB</time>
+              </div>
+
+            </a>
+          </li>
+
+          {% endfor %}
+        </ul>
+
+      </section>
+
+
+
+
+
+      <!-- 
+          - #CONTACT
+        -->
+
+      <section class="contact" id="contact">
+
+
+        <h2 class="h3 section-title" id="contact-form-title">Punya Pertanyaan Terkait Hukum ? Biarkan Kami menghubungi Anda</h2>
+
+        <p class="section-text" id="contact-form-subtitle">
+          Get in touch and let me know how i can help. Fill out the form and i’ll be in touch as soon as possible.
+        </p>
+
+        <div class="contact-form" id="contact-form">
+
+          <div class="form-wrapper">
+
+            <label for="name" class="form-label">Name</label>
+
+            <div class="input-wrapper">
+
+              <input type="text" name="name" id="name" required="" placeholder="Masukan nama kamu" class="input-field">
+
+              <ion-icon name="person-circle" role="img" class="md hydrated" aria-label="person circle"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="phone" class="form-label">WhatsApp</label>
+
+            <div class="input-wrapper">
+
+              <input type="tel" name="phone" id="phone" required="" placeholder="Nomor WhatsApp kamu"
+                class="input-field">
+
+              <ion-icon name="call" role="img" class="md hydrated" aria-label="call"></ion-icon>
+
+            </div>
+
+          </div>
+
+          <div class="form-wrapper">
+
+            <label for="message" class="form-label">Deskripsi</label>
+
+            <div class="input-wrapper">
+
+              <textarea name="message" id="message" required="" placeholder="Pesan singkat tentang masalah kamu . . ."
+                class="input-field"></textarea>
+
+              <ion-icon name="chatbubbles" role="img" class="md hydrated" aria-label="chatbubbles"></ion-icon>
+
+            </div>
+
+          </div>
+          <button type="submit" class="btn btn-primary" id="send-submit">Tanya Gratis </button>
+          <script>
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;        
+            const submitBtn = document.getElementById('send-submit');
+            submitBtn.addEventListener('click', function (event) {
+              event.preventDefault();  // Mencegah reload halaman default saat submit              
+              
+              const name = document.getElementById('name').value;        
+              const phone = document.getElementById('phone').value;        
+              const message = document.getElementById('message').value;   
+              const contactDiv = document.getElementById('contact-form');   
+              const titleDiv = document.getElementById('contact-form-title');   
+              const subtitleDiv = document.getElementById('contact-form-subtitle');   
+              
+              const formData = new FormData();
+              formData.append('name', name);
+              formData.append('phone', phone);
+              formData.append('message', message);
+                            
+
+              fetch('{% url "api-client-inbox" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+                  method: 'POST',
+                  body: formData,
+                  headers: {
+                      'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+                  },
+              }).then(response => {
+                  if (response.status === 200) {
+                      return response.json();  // Jika status 200, konversi ke JSON
+                  } else {
+                      throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                  }
+              })
+                .then(data => {
+                    if (data.status === true) {
+                        const respMsg = data.data.msg;
+                        alert(respMsg);
+                        contactDiv.style.display = 'none';
+                        titleDiv.style.display = 'none';
+                        subtitleDiv.style.display = 'none';
+                    } else {
+                        alert(data.data.msg);
+                    }
+                })
+                .catch((error) => {
+                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan                    
+                });
+            
+          });
+          </script>
+        </div>
+
+        <div class="contact-content section-content">
+
+          <ul class="contact-list">
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="location-outline" role="img" class="md hydrated"
+                  aria-label="location outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Address:</h3>
+
+                <address class="contact-info">
+                  {{address}}
+                </address>
+              </div>
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="call-outline" role="img" class="md hydrated" aria-label="call outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Phone:</h3>
+
+                <a href="tel:01234567789" class="contact-info">{{phone_number}}</a>
+              </div>
+
+            </li>
+
+            <li class="contact-list-item">
+
+              <div class="contact-item-icon">
+                <ion-icon name="mail-outline" role="img" class="md hydrated" aria-label="mail outline"></ion-icon>
+              </div>
+
+              <div class="wrapper">
+                <h3 class="h4 contact-item-title">Email:</h3>
+
+                <a href="mailto:{{email}}" class="contact-info">{{email}}</a>
+              </div>
+
+            </li>
+
+            <li>
+              <ul class="contac-social-list">
+
+                {% if facebook_state == 'true' %}
+                  <li>
+                    <a href="{{ facebook_link }}" class="contact-social-link">
+                      <ion-icon name="logo-facebook" role="img" class="md hydrated" aria-label="logo facebook"></ion-icon>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if twitter_state == 'true' %}
+                <li>
+                  <a href="{{ twitter_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-twitter" role="img" class="md hydrated" aria-label="logo twitter"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+                {% if linkedin_state == 'true' %}
+                <li>
+                  <a href="{{ linkedin_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-linkedin" role="img" class="md hydrated" aria-label="logo linkedin"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+                {% if youtube_state == 'true' %}
+                <li>
+                  <a href="{{ youtube_link }}" class="contact-social-link">
+
+                    <ion-icon name="logo-youtube" role="img" class="md hydrated" aria-label="logo youtube"></ion-icon>
+                  </a>
+                </li>
+                {% endif %}
+
+              </ul>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </section>
+
+    </article>
+  </main>
+
+
+
+
+
+  <!-- 
+      - #FOOTER
+    -->
+
+  <footer class="footer">
+    <div class="container">
+
+      <p class="h1 logo">
+        <a href="#" style="color: var(--black);">
+          {{app_alias_name}}<span>.</span>
+        </a>
+      </p>
+
+      <p class="copyright">
+        © 2024 All rights reserved
+      </p>
+
+    </div>
+  </footer>
+
+
+
+
+
+  <!-- 
+      - #GO TO TOP
+    -->
+
+  <a href="#top" class="go-top" data-go-top="" title="Go to Top">
+    <ion-icon name="arrow-up" role="img" class="md hydrated" aria-label="arrow up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+      - custom js link
+    -->
+  <script>
+    const r_uri = '{% url "api-reporter" %}';
+    const r_uri_path = '{% url "landing" %}';
+  </script>
+  <script src="{% static 'js/script.js' %}"></script>
+  <script src="{% static 'js/reporter.js' %}"></script>
+
+  <!-- 
+      - ionicon link
+    -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
+</body>
+
+</html>

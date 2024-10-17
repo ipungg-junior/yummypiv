@@ -1,0 +1,154 @@
+<div class="row">
+
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">Web Name</label>
+            <input type="text" class="form-control" id="app-name" value="{{ app_name }}" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">App Alias Name</label>
+            <input type="text" class="form-control" id="app-alias-name" value="{{ app_alias_name }}" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">Landing Description</label>
+            <input type="text" class="form-control" id="description" value="{{ description }}" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" value="{{address}}" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- <div class="col-lg-4">
+        <div class="mb-3">
+            <label class="form-label">Visibility</label>
+            <select class="form-select">
+                <option value="1" selected="">Private</option>
+                <option value="2">Public</option>
+                <option value="3">Hidden</option>
+            </select>
+        </div>
+    </div> -->
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" value="{{ email }}" />
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mb-3">
+            <label class="form-label">Whatsapp</label>
+            <input type="text" class="form-control" id="phone-number" inputmode="numeric" value="{{phone_number}}" />
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="mb-3">
+            <label class="form-label">Main Background</label>
+            <img src="{{ background_image }}" class="object-cover card-img-end mb-2" id="preview-image">
+            <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control"
+                id="background_image" />
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer py-2">
+    <a class="btn btn-primary me-2" id="save-btn">
+        Save
+    </a>
+</div>
+
+<script>
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    const appName = document.getElementById('app-name');
+    const appAliasName = document.getElementById('app-alias-name');
+    const description = document.getElementById('description');
+    const address = document.getElementById('address');
+    const email = document.getElementById('email');
+    const phoneNumber = document.getElementById('phone-number');
+    const loading = document.getElementById('loading');
+    const previewImage = document.getElementById('preview-image');
+    const saveBtn = document.getElementById('save-btn');
+    const imageInput = document.getElementById('background_image');
+
+    imageInput.addEventListener('change', function (event) {
+        const reader = new FileReader();
+        loading.hidden = false;
+        const file = event.target.files[0];
+
+        reader.onload = function (e) {
+            previewImage.src = e.target.result;
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+            loading.hidden = true;
+        }
+    });
+
+    saveBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        loading.hidden = false;
+
+        const formData = new FormData();
+        formData.append('app-name', appName.value);
+        formData.append('app-alias-name', appAliasName.value);
+        formData.append('description', description.value);
+        formData.append('address', address.value);
+        formData.append('email', email.value);
+        formData.append('phone-number', phoneNumber.value);
+
+        const inputFile = imageInput.files[0];    
+
+        if (inputFile) {
+            formData.append('background-image', inputFile);
+            update_profile(formData);
+        }else{
+            update_profile(formData);
+        }
+
+
+    });
+
+    function update_profile(form) {
+        fetch('{% url "main-profile" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+            },
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();  // Jika status 200, konversi ke JSON
+            } else {
+                throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+            }
+        })
+            .then(data => {
+                const message = data.data.msg;  // Ambil message dari response                        
+                if (data.status === true) {
+                    loading.hidden = true;
+                    alert(message);  // Menampilkan pesan ke user
+                    window.location.replace("{% url 'owner-configuration' %}");
+                } else {
+                    alert(message);
+                }
+            })
+            .catch((error) => {
+                alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
+            });
+    }
+</script>

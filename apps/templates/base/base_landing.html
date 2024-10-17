@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <style data-styles="">
+        ion-icon {
+            visibility: hidden
+        }
+
+        .hydrated {
+            visibility: inherit
+        }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{app_alias_name}}</title>
+
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;family=Roboto:wght@400;700&amp;family=Saira+Stencil+One&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body id="top" class="light_theme">
+    <a href="https://wa.me/{{phone_number}}" class="whatsapp-button" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <nav class="navbar" id="navbar">
+        <h1 class="h1 logo">
+          <a href="">{{app_alias_name}}<span style="color: black;">.</span></a>
+        </h1>
+        <div class="nav-toggle-btn" id="mobile-menu">
+          <span class="one"></span>
+          <span class="two"></span>
+          <span class="three"></span>
+        </div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="{% url 'landing' %}">Home</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'landing' %}#services">Services</a></li>
+          <li><a href="{% url 'landing' %}#news">Berita</a></li>
+          <li><a href="{% url 'landing' %}#contact">Kontak</a></li>
+        </ul>
+    </nav>
+    {% block body %}
+    {% endblock body %}
+</body>
+
+</html>

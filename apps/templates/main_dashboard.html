@@ -1,0 +1,299 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block body %}
+<div class="page">
+  {% include 'base/header.html' %}
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            {% csrf_token %}
+            <div class="page-pretitle">
+              Overview
+            </div>
+            <h2 class="page-title">
+              Dashboard
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="subheader">Visitor Today</div>
+                </div>
+                <div class="h1">{{daily_visit}}</div>
+                <div class="d-flex mb-4">
+                  <div>Pengunjung yang datang hari ini</div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="subheader">Total Visitor</div>
+                </div>
+                <div class="h1">{{monthly_visit}}</div>
+                <div class="d-flex">
+                  <div>Akumulasi pengunjung website anda</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Weekly Traffic</h3>
+                <div id="chart-mentions" class="chart-lg"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-6">
+            <div class="row row-cards">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <p class="mb-3">Penyimpanan <strong>340 MB </strong>of {{total}} GB</p>
+                    <div class="progress progress-separated mb-3">
+                      <div class="progress-bar bg-primary" role="progressbar" style="width: {{system_percent}}%" aria-label="Regular">
+                      </div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 2%" aria-label="Shared">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-auto d-flex align-items-center px-2">
+                        <span class="legend me-2 bg-info"></span>
+                        <span>System</span>
+                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{system}} MB</span>
+                      </div>
+                      <div class="col-auto d-flex align-items-center px-2">
+                        <span class="legend me-2 bg-success"></span>
+                        <span>User</span>
+                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">201 MB</span>
+                      </div>
+                      <div class="col-auto d-flex align-items-center ps-2">
+                        <span class="legend me-2"></span>
+                        <span>Free</span>
+                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{free}} GB</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-md-12 col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Most Visited Pages</h3>
+              </div>
+              <div class="card-table table-responsive">
+                <table class="table table-vcenter">
+                  <thead>
+                    <tr>
+                      <th>Page name</th>
+                      <th>Visitors</th>
+                    </tr>
+                  </thead>
+                  {% for article, count in articles %}
+                      <tr>
+                          <td>{{ article.title }}</td>
+                          <td>{{ count }}</td>
+                      </tr>
+                  {% empty %}
+                      <li>Tidak ada berita tersedia.</li>
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% include 'base/footer.html' %}
+  </div>
+</div>
+
+
+<div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
+        </div>
+        <label class="form-label">Report type</label>
+        <div class="form-selectgroup-boxes row mb-3">
+          <div class="col-lg-6">
+            <label class="form-selectgroup-item">
+              <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check"></span>
+                </span>
+                <span class="form-selectgroup-label-content">
+                  <span class="form-selectgroup-title strong mb-1">Simple</span>
+                  <span class="d-block text-secondary">Provide only basic data needed for the report</span>
+                </span>
+              </span>
+            </label>
+          </div>
+          <div class="col-lg-6">
+            <label class="form-selectgroup-item">
+              <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check"></span>
+                </span>
+                <span class="form-selectgroup-label-content">
+                  <span class="form-selectgroup-title strong mb-1">Advanced</span>
+                  <span class="d-block text-secondary">Insert charts and additional advanced analyses to be inserted in
+                    the report</span>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="mb-3">
+              <label class="form-label">Report url</label>
+              <div class="input-group input-group-flat">
+                <span class="input-group-text">
+                  https://tabler.io/reports/
+                </span>
+                <input type="text" class="form-control ps-0" value="report-01" autocomplete="off">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mb-3">
+              <label class="form-label">Visibility</label>
+              <select class="form-select">
+                <option value="1" selected>Private</option>
+                <option value="2">Public</option>
+                <option value="3">Hidden</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Client name</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="mb-3">
+              <label class="form-label">Reporting period</label>
+              <input type="date" class="form-control">
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div>
+              <label class="form-label">Additional information</label>
+              <textarea class="form-control" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+          Cancel
+        </a>
+        <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+          <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M12 5l0 14" />
+            <path d="M5 12l14 0" />
+          </svg>
+          Create new report
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/libs/apexcharts/dist/apexcharts.min.js" defer></script>
+
+<script>
+  // @formatter:off
+  const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const formData = new FormData();
+    formData.append('data-range', 'weekly');
+
+    fetch('/api/visitor/', {  // Ganti '/upload/' dengan URL path Django Anda
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+      },
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status) {
+          const data = result.data;
+
+          // Pisahkan data menjadi array tanggal dan array jumlah pengunjung
+          const dates = data.map(item => item.date);
+          const visitorCounts = data.map(item => item.count);
+
+          // Konfigurasikan dan render ApexChart
+          var options = {
+            chart: {
+              type: 'line',
+              height: 350,
+              toolbar: {
+                show: false  // Menyembunyikan toolbar (zoom, pan, dll)
+              }
+            },
+            series: [{
+              name: 'Visitors',
+              data: visitorCounts
+            }],
+            xaxis: {
+              categories: dates
+            },
+            stroke: {
+              curve: 'smooth'
+            },
+            markers: {
+              size: 4
+            },
+
+          };
+
+          var chart = new ApexCharts(document.getElementById("chart-mentions"), options);
+          chart.render();
+        } else {
+          console.error('Data status is false');
+        }
+      })
+      .catch(error => console.error('Error fetching data:', error));
+
+  });
+  // @formatter:on
+</script>
+
+
+{% endblock body %}

@@ -1,0 +1,72 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block body %}
+<div class="page">
+  {% include 'base/header.html' %}
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            {% csrf_token %}
+            <div class="page-pretitle">
+              Project Configuration
+            </div>
+            <h2 class="page-title">
+              Dashboard
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-cards">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <div class="card">
+                  <div class="progress progress-md" id="loading" hidden>
+                    <div class="progress-bar progress-bar-indeterminate"></div>
+                  </div>
+                    <!-- Tab header -->
+                  <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-main" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path></svg>
+                          Main</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-social-link" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/user -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M12 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M19 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M5 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M12 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path><path d="M5 8l0 8"></path><path d="M12 8l0 8"></path><path d="M19 8v2a2 2 0 0 1 -2 2h-12"></path></svg>
+                          Social Link</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- tab body -->
+                  <div class="card-body">
+                    <div class="tab-content">
+                      <div class="tab-pane active show" id="tab-main" role="tabpanel">
+                        {% include 'modal/tab_main.html' %}                        
+                      </div>
+                      <div class="tab-pane" id="tab-social-link" role="tabpanel">
+                        {% include 'modal/tab_social.html' %}       
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+      </div>
+    </div>
+    {% include 'base/footer.html' %}
+  </div>
+</div>
+
+
+
+{% endblock body %}

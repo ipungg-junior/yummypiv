@@ -1,0 +1,24 @@
+{% load static %}
+
+<style>
+  .container-card{width:100%;height:100vh;display:flex;justify-content:center;align-items:center}.list{gap:1em;display:grid;color:#f5f5f5}.pricing-cards{width:100%;display:flex;justify-content:space-evenly}.pricing-card{width:17em;height:25em;background:linear-gradient(to right,#1b2f54,#0f1f39);border-radius:1.5rem 6rem 1.5rem 1.5rem;box-shadow:0 1rem 6rem #000;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;cursor:pointer;position:relative;transform:translateX(-15rem);opacity:0;visibility:hidden;animation:fadeSlide .5s .5s linear forwards}@keyframes fadeSlide{0%{transform:translateX(-15rem);opacity:0;visibility:hidden}100%{transform:translateX(0);opacity:1;visibility:visible}}.card-type{width:6em;height:1.3em;transform:rotateZ(-90deg);position:absolute;top:7rem;left:-4.4rem;padding:.8em 3em;border-radius:1rem 1rem 0 0;font-size:1.2em;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:#fff;display:flex;justify-content:center;align-items:center;background:#383838}.card-bottom{width:22rem;height:4rem;position:absolute;bottom:-4rem;border-radius:0 0 2.5rem 2.5rem;font-size:2.2rem;font-weight:700;letter-spacing:.1rem;text-transform:uppercase;color:#fff;display:flex;justify-content:center;align-items:center;box-shadow:0 1rem 6rem #000}.card-price{margin-top:1.5em;font-size:1.8em;font-weight:700;color:#f5f5f5}.month{font-size:1em;font-weight:300;position:relative;top:-1.4em;color:#f5f5f5}.list-item{display:flex;justify-content:center;align-items:center}.list-item i{width:2rem;text-align:center;font-size:1.8rem;margin-right:1rem}.list-item span{font-size:.8em;text-transform:uppercase}.pricing-card:nth-child(1) .card-price,.pricing-card:nth-child(1) .month,.pricing-card:nth-child(1) .list i,.pricing-card:nth-child(1) .list span{background:#fff;-webkit-background-clip:text;-webkit-text-fill-color:#fff0}.card-btn{width:12rem;height:3rem;text-transform:uppercase;border-radius:.8em;border:none;color:#fff;cursor:pointer;letter-spacing:.1rem}.pricing-card .card-btn{background:var(--tone-secondary)}
+</style>
+
+<div class="container-card">
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="card-type">Basic</div>
+      <h1 class="card-price">Rp. 250.000</h1>
+      <h3 class="month">/bln</h3>
+      <div class="list">
+        <div class="list-item">
+          <span>Unit 1</span>
+        </div>
+        <div class="list-item">
+          <span>Unit 2</span>
+        </div>
+      </div>
+      <button class="card-btn">Button</button>
+    </div>
+  </div>
+</div>

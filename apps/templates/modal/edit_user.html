@@ -1,0 +1,118 @@
+<div class="modal modal-blur fade" id="modal-edit-user" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editing User</h5>
+                <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close" id="close-edit"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="username-edit" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username-edit" name="username-edit" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password-edit" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="password-edit" name="password-edit" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password-confirm-edit" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="password-confirm-edit" name="password-confirm-edit" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role-edit" class="form-label">Role</label>
+                    <select class="form-select" id="role-edit" name="role-edit" required>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="email-edit" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email-edit" name="email-edit" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary ms-auto" id="submit-btn-edit">
+                    Save user
+                </a>
+            </div>
+        </div>
+        <div class="progress progress-md" id="loading-edit" hidden>
+            <div class="progress-bar progress-bar-indeterminate"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const url_edit = "{% url 'api-edit-user' %}";  
+    </script>
+
+    <script>
+        const csrfTokenEdit = document.querySelector('input[name="csrfmiddlewaretoken"]').value;         
+        const submitBtnEdit = document.getElementById('submit-btn-edit');
+        const loadingEdit = document.getElementById('loading-edit');        
+        const closeEdit = document.getElementById('close-edit');    
+        var tmpRole = document.getElementById('role-edit');    
+        
+        var usernameLock = '';
+
+        closeEdit.addEventListener('click', function (){
+            while (tmpRole.options.length > 0) {
+                tmpRole.innerHTML = '';
+            }
+            usernameLock = '';
+        })
+        
+        submitBtnEdit.addEventListener('click', function (event) {
+            event.preventDefault();  // Mencegah reload halaman default saat submit
+            loadingEdit.hidden = false;
+            
+            const usernameEdit = document.getElementById('username-edit').value;        
+            const passwEdit = document.getElementById('password-edit').value;        
+            const confPasswEdit = document.getElementById('password-confirm-edit').value;        
+            const emailEdit = document.getElementById('email-edit').value;        
+            const roleEdit = document.getElementById('role-edit').value;        
+            
+            const formDataEdit = new FormData();
+            formDataEdit.append('username-lock', usernameLock);
+            formDataEdit.append('username', usernameEdit);
+            formDataEdit.append('password', passwEdit);
+            formDataEdit.append('password-confirm', confPasswEdit);
+            formDataEdit.append('role', roleEdit);
+            formDataEdit.append('email', emailEdit);
+            
+            
+            if (passwEdit !== confPasswEdit) {
+                alert('Passwords do not match.');
+                loadingEdit.hidden = true;                
+                return;
+            }
+
+            fetch(url_edit, {  // Ganti '/upload/' dengan URL path Django Anda
+                method: 'POST',
+                body: formDataEdit,
+                headers: {
+                    'X-CSRFToken': csrfTokenEdit,  // Untuk menambahkan CSRF token
+                },
+            }).then(response => {
+                if (response.status === 200) {
+                    return response.json();  // Jika status 200, konversi ke JSON
+                } else {
+                    throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                }
+            })
+                .then(data => {
+                    if (data.status === true) {
+                        const message = data.data.msg;  // Ambil message dari response     
+                        alert(data.data.msg);                   
+                        window.location.replace("{% url 'user-list' %}")                                                
+                    } else {
+                        alert(data.data.msg);
+                    }
+                })
+                .catch((error) => {
+                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
+                });
+                loadingEdit.hidden = true;
+            
+        });
+
+    </script>
+
+</div>

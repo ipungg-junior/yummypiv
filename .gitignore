@@ -1,0 +1,14 @@
+apps/__pycache__
+apps/migrations
+yummypiv/migrations
+yummypiv/__pycache__
+viewer/__pycache__
+services/__pycache__
+penv
+root_conf.json
+staticfiles
+static/.DS_Store
+updater.sh
+*.sqlite3
+*.json
+.DS_Store

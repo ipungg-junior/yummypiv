@@ -1,0 +1,245 @@
+{% load static %}
+
+<html lang="en" class="hydrated">
+
+<head>
+  <meta charset="UTF-8">
+  <style data-styles="">
+    ion-icon {
+      visibility: hidden
+    }
+
+    .hydrated {
+      visibility: inherit
+    }
+  </style>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{app_alias_name}} - {{app_index_subtitle}}</title>
+
+  <!-- 
+      - favicon
+    -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+      - custom css link
+    -->
+  <link rel="stylesheet" href="{% static 'css/news.css' %}">
+
+  <!-- 
+      - google font link
+    -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;family=Roboto:wght@400;700&amp;family=Saira+Stencil+One&amp;display=swap"
+    rel="stylesheet">
+
+
+  <style>
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: .5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: .5rem;
+      box-sizing: border-box;
+    }
+
+    .form-group button {
+      padding: .5rem 1rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: .25rem;
+      cursor: pointer;
+    }
+
+    .form-group button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  </style>
+
+<body id="top" class="light_theme">
+  {% csrf_token %}
+  <!-- 
+      - #HEADER
+    -->
+
+  <nav class="navbar" id="navbar">
+    <h1 class="h1 logo">
+      <a href="#">{{app_alias_name}}<span style="color: black;">.</span></a>
+    </h1>
+    <div class="nav-toggle-btn" id="mobile-menu">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="{% url 'landing' %}">Home</a></li>
+      <li><a href="{% url 'landing' %}">Berita</a></li>
+      <li><a href="{% url 'landing' %}">Kontak</a></li>
+    </ul>
+  </nav>
+
+
+  <main>
+    <article class="container" style="padding-top: 7em;">
+
+      <section class="about" id="about" style="margin: .5em;">
+
+        <h2 class="h3 section-title" style="font-family: 'Space Grotesk', sans-serif; letter-spacing: 1.3px;">{{ news.title }}</h2>
+
+        {% if news.author == None %}
+        <p class="author">Public | {{ news.created_at|date:"j M Y H:i" }} WIB</p>
+        {% else %}
+        <p class="author">{{ news.author }} | {{ news.created_at|date:"j M Y H:i" }} WIB</p>
+        {% endif %}
+
+        <figure class="about-banner" style="width: 100%; border-radius: 1em;">
+          <img src="{{ news.img_link }}" alt="{{ news.title }}">
+        </figure>
+
+        <div class="about-content section-content">
+          <style>
+            .section-text p {
+              margin: 1em 0;
+              /* Menambahkan spasi vertikal antar paragraf */
+              padding: 0;
+              font-family: sans-serif;
+            }
+          </style>
+          <div class="section-text">
+            {{ news.content|safe }}
+          </div>
+
+
+        </div>
+
+      </section>
+
+      <section>
+        <style>
+
+          .article-list {
+            height: 23em;
+            width: 100%;
+            display: flex;
+            overflow-x: scroll;
+          }
+          .article-item {
+            height: 20em;
+            display: inline-block;
+            width: 17em;
+            margin-right: 20px;
+            vertical-align: top;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            padding: 18px 12px;
+            box-sizing: border-box;
+          }
+
+          .article-title {
+              font-size: 1.1em; /* Ukuran font judul */
+              margin-bottom: 1em; /* Spasi di bawah judul */
+              overflow: hidden; /* Menyembunyikan teks yang melampaui */
+              text-overflow: ellipsis; /* Menambahkan ellipsis jika teks terpotong */
+              white-space: nowrap; /* Mencegah pembungkusan kata */
+              max-width: 100%; /* Memastikan judul tidak melampaui lebar item */
+          }
+
+
+          .article-image {
+            width: 15em;
+            margin-bottom: 1em;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+          }
+
+          .article-item p {
+            color: #626262;   
+            font-size: .8em;       
+          }
+          
+          .article-content {
+            max-width: 100%;
+            /* Memastikan konten tidak melampaui lebar item */
+            overflow: hidden;
+            /* Menyembunyikan teks yang melampaui */
+            text-overflow: ellipsis;
+            /* Menambahkan ellipsis jika teks terpotong */
+            white-space: nowrap;
+            /* Mencegah pembungkusan kata */
+          }
+
+          .article-link{
+            color: var(--black);
+            text-decoration: none;
+            font-size: 15px;
+            letter-spacing: 1.3px;
+            font-weight: bolder;
+            font-family: "Space Grotesk", sans-serif;            
+          }
+        </style>
+
+        <h2>Rekomendasi Berita</h2>
+        <div class="article-container" style="margin-top: 1.8em;">
+          <ul class="article-list">
+            {% for article in recommend_news %}
+            <li class="article-item">
+              <h3 class="article-title">{{ article.title|truncatewords:6 }}</h3>
+              <img src="{{ article.img_link }}" alt="{{ article.title }}" class="article-image">
+              {{ article.content|truncatewords:10 | safe }}
+              <a class="article-link" href="{% url 'news-detail' article.id %}" style="position: relative; top: 10;">Baca Selengkapnya >> </a>
+            </li>
+            {% empty %}
+            <li>Tidak ada artikel tersedia.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+
+      <p class="h1 logo">
+        <a href="#" style="color: var(--black);">
+          {{app_alias_name}}<span>.</span>
+        </a>
+      </p>
+
+      <p class="copyright">
+        © 2024 All rights reserved
+      </p>
+
+    </div>
+  </footer>
+
+  <script defer>
+    const r_uri = '{% url "api-reporter" %}';
+    const r_uri_path = window.location.pathname;
+  </script>
+  <script src="{% static 'js/reporter.js' %}" defer></script>
+  <script src="{% static 'js/script.js' %}"></script>
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule="" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

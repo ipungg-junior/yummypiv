@@ -1,0 +1,132 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systema Dashboard</title>
+
+    <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://storage.googleapis.com/keraton-d44f3.appspot.com/css/dashboard.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/keraton-d44f3.appspot.com/css/vendor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&amp;family=Roboto:wght@400;700&amp;family=Saira+Stencil+One&amp;display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    {% if request.user.is_authenticated %}
+    
+    <style>
+        /* CSS untuk posisi notifikasi */
+        .custom-notification-container {
+            position: fixed;
+            top: 5em;
+            right: 20px;
+            z-index: 1000;
+            width: 27em;
+            display: none;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-notification-header {
+            font-size: 1.2em;
+            background: #f0f0f0;
+            padding: 10px;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+        }
+
+        .custom-notification-list {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+
+        .custom-notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .custom-notification-item p {
+            margin: .5em 0;
+        }
+
+        .custom-notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-notification-toggle {
+            position: fixed;
+            top: 20px;
+            right: 2em;
+            /* Posisi di sebelah kotak notifikasi */
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 1px 2px 15px 0px gray;
+        }
+
+        .custom-notification-toggle:hover {
+            background-color: #0056b3;
+            /* Efek hover */
+        }
+    </style>
+    <div class="custom-notification-toggle" onclick="toggleNotifications()">
+        <span class="d-md-none d-lg-inline-block">
+            <i class="fa-solid fa-bell"></i>
+        </span>
+    </div>
+
+
+    <div class="custom-notification-container" id="notificationContainer">
+        <div class="custom-notification-header">Notifikasi</div>
+        <div class="custom-notification-list">
+            {% if notifications %}
+                {% for notification in notifications %}
+                <div class="custom-notification-item">
+                    <p><strong>{{ notification.title }}</strong></p>
+                    <p style="color: gray;">{{ notification.created_at }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p></p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function toggleNotifications() {
+            const container = document.getElementById('notificationContainer');
+            container.style.display = container.style.display === 'none' || container.style.display === '' ? 'block' : 'none';
+        }
+    </script>
+
+    {% endif %}
+
+
+    {% block body %}
+
+    {% endblock body %}
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <script src="{% static 'js/dashboard-a.js' %}"></script>
+</body>
+
+</html>

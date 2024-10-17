@@ -1,0 +1,127 @@
+<!-- Navbar -->
+<header class="navbar navbar-expand-md d-print-none" id="navbar-top">
+    <div class="container-xl">
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
+            aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    
+</header>
+<header class="navbar-expand-md">
+    <div class="collapse navbar-collapse" id="navbar-menu">
+        <div class="navbar" id="navbar-inner">
+            <div class="container-xl">
+                <div class="row flex-fill align-items-center">
+                    <div class="col">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'main-dashboard' %}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'client-support-dashboard' %}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M4 13h3l3 3h4l3 -3h3"></path></svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Client Inbox
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'partner-dashboard' %}">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8"></path><path d="M13 7l0 .01"></path><path d="M17 7l0 .01"></path><path d="M17 11l0 .01"></path><path d="M17 15l0 .01"></path></svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Manage Partner
+                                    </span>
+                                </a>
+                            </li>
+                            <!-- news -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path><path d="M8 8l4 0"></path><path d="M8 12l4 0"></path><path d="M8 16l4 0"></path></svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        News
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <!-- Menu sub item -->
+                                        <a class="dropdown-item" href="{% url 'news-dashboard' %}">
+                                            List Item
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu-columns">
+                                        <a class="dropdown-item" href="{% url 'create-news-dashboard' %}">
+                                            Create New  
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- settings -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span
+                                        class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M13 20.693c-.905 .628 -2.36 .292 -2.675 -1.01a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.492 .362 1.716 2.219 .674 3.03"></path><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path><path d="M17 22l5 -3l-5 -3z"></path></svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Settings
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <!-- Menu sub item -->
+                                        <a class="dropdown-item" href="{% url 'owner-configuration' %}">
+                                            Owner Settings
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu-columns">
+                                        <a class="dropdown-item" href="{% url 'user-list' %}">
+                                            User Configuration
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'logout' %}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-danger"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M13 12v.01"></path><path d="M3 21h18"></path><path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path><path d="M14 7h7m-3 -3l3 3l-3 3"></path></svg>
+                                    </span>
+                                    <span class="nav-link-title text-danger">
+                                        Logout
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,40 @@
+{
+    "app_name": "Yummypiv",
+    "app_alias_name": "Yummypiv",
+    "app_index_subtitle": "Healthy Life",
+    "storage_allocation": 20000,
+    "contact_info": {
+        "company_address": "Jl. Kemerdekaan Raya no. 23, Blok D, Kebon Sirih, Jakarta Pusat.",
+        "instagram_link": "https://instagram.com/",
+        "whatsapp_number": "https://whatsapp.com/",
+        "phone_number": "08111111111",
+        "email": "support@yummypiv.com"
+    },
+    "firebase_conf": {
+        "firebase_credentials": {
+          },
+        "firebase_bucket_name": "bucket-name.appspot.com"
+    },
+    "telebot": {
+        "api_key": "",
+        "bot_id": ""
+    },
+    "web_settings": {
+        "debug": true,
+        "allowed_host" : ["yummypiv.com", "127.0.0.1"],
+        "csrf_trusted_origins": ["https://yummypiv.com", "http://yummypiv.com"],
+        "auth_user" : "apps.Users",
+        "root_urlconf": "projects.urls",
+        "wsgi_application" : "project.wsgi.application",
+        "asgi_application" : "project.asgi.application"
+    },
+    "mail_settings": {
+        "mail_domain": "yummypiv.com",        
+        "mail_host": "mail.yummypiv.com",
+        "smtp_port": 9999,      
+        "default_mail_username": "linuxuser",
+        "default_mail_password": ""
+    }
+    
+    
+}

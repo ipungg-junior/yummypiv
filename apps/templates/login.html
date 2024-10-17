@@ -1,0 +1,121 @@
+{% extends 'base/base_dashboard.html' %}
+
+
+{% block body %}
+{% load static %}
+
+<div class="page page-center">
+  <div class="container container-tight">
+    <div class="card card-md">
+      <div class="progress progress-md" id="loading" hidden>
+        <div class="progress-bar progress-bar-indeterminate"></div>
+      </div>
+      <div class="card-body">
+        <h2 class="h2 text-center mb-4">Login Dashboard</h2>
+        <div>
+          {% csrf_token %}
+          <p class="text-danger" id="msg" hidden></p>
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" placeholder="_myusername" autocomplete="off" id="username">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">
+              Password
+            </label>
+            <div class="input-group input-group-flat">
+              <input type="password" class="form-control" placeholder="Input Password" autocomplete="off" id="password">
+              <span class="input-group-text">
+                <a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Show password"
+                  data-bs-original-title="Show password"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                    <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"></path>
+                  </svg>
+                </a>
+              </span>
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-check">
+              <input type="checkbox" class="form-check-input">
+              <span class="form-check-label">Remember me on this device</span>
+            </label>
+          </div>
+          <div class="form-footer">
+            <button class="btn btn-primary w-100" id="login-btn">Sign in</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  const loginBtn = document.getElementById('login-btn');
+  const loading = document.getElementById('loading');
+  const mmsg = document.getElementById('msg');
+  const username = document.getElementById('username');
+  const passw = document.getElementById('password');
+
+  username.focus();
+
+  function loginUser(){
+    loading.hidden = false;
+    const formData = new FormData();
+    formData.append('username', username.value);
+    formData.append('password', passw.value);
+
+    fetch('{% url "login" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+      },
+      
+    }).then(response => {
+      if (response.status === 200) {
+        return response.json();  // Jika status 200, konversi ke JSON
+      } else {
+        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+      }
+    })
+      .then(data => {
+        if (data.status === true) {
+          window.location.replace("{% url 'main-dashboard' %}");
+        } else {
+          mmsg.textContent = data.data.msg;
+          mmsg.hidden = false;
+          username.value = '';
+          passw.value = '';
+          username.focus();
+        }
+      })
+      .catch((error) => {
+        alert('Internal server error: ', error);  // Mena
+        username.value = '';
+        passw.value = '';
+        username.focus();
+      });
+      loading.hidden = true;
+  }
+
+  document.getElementById('password').addEventListener('keydown', function(event) {
+    // Jika tombol yang ditekan adalah Enter
+    if (event.key === "Enter") {
+        event.preventDefault();  // Mencegah form submit default
+        loginUser();  // Memanggil fungsi login untuk fetch
+    }
+  });
+  
+  loginBtn.addEventListener('click', function () {
+    event.preventDefault();  // Mencegah form submit default
+    loginUser();  // Memanggil fungsi login untuk fetch    
+  })
+</script>
+
+
+{% endblock body %}

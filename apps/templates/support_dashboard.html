@@ -1,0 +1,79 @@
+{% extends 'base/base_dashboard.html' %}
+
+
+{% block body %}
+{% load static %}
+<div class="page">
+    {% include 'base/header.html' %}
+    <div class="page-wrapper">
+        <!-- Page header -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Client Support
+                        </div>
+                        <h2 class="page-title">
+                            Dashboard
+                        </h2>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <!-- Page body -->
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-deck row-cards">
+
+
+                    <div class="col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Inbox List</h3>
+                            </div>
+                            <div class="card-table">
+                                <table class="table table-vcenter">
+                                    <thead>
+                                        <tr>
+                                            <th>Subject</th>
+                                            <th>Topic</th>
+                                            <th>Phone Number</th>
+                                            <th>Date In</th>                                            
+                                        </tr>
+                                    </thead>
+                                    
+                                    {% for inbox in inbox_list %}
+                                        <tr>
+                                            <td>
+                                                {{ inbox.subject }}
+                                            </td>
+                                            <td style="max-width: 13em;">
+                                                {{ inbox.message }}
+                                            </td>
+                                            <td>
+                                                {{ inbox.phone_number }}
+                                            </td>
+                                            <td>
+                                                {{ inbox.created_at|date:"j M Y H:i" }} WIB
+                                            </td>                                            
+                                        </tr>                          
+                                    {% endfor %}          
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+{% endblock body %}

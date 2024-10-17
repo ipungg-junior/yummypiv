@@ -1,0 +1,273 @@
+{% extends 'base/base_dashboard.html' %}
+
+
+{% block body %}
+{% load static %}
+<div class="page">
+  {% include 'base/header.html' %}
+  {% csrf_token %}
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              User Configuration
+            </div>
+            <h2 class="page-title">
+              Dashboard
+            </h2>
+          </div>
+          <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                data-bs-target="#modal-report">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 5l0 14"></path>
+                  <path d="M5 12l14 0"></path>
+                </svg>
+                Create New User
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-deck row-cards justify-content-center">
+
+          <div class="col-md-12">
+            <div class="row row-cards">
+              <div class="space-y" id="user-list-wrapper">
+
+                <!-- loop user -->
+                {% for user in user_list %}
+                <div class="card" data-id="{{ user.id }}" data-name="{{ user.username }}">
+                  <div class="row g-0">
+                    <div class="col-auto">
+                      <div class="card-body">
+                        <div class="avatar avatar-md" style="background-image: url({% static 'image/avatar.png' %})">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="card-body ps-0">
+                        <div class="row">
+                          <div class="col">
+                            <h3 class="mb-0"><a>{{user.username}}</a></h3>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md">
+                            <div class="mt-3 list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none">
+                              <div class="list-inline-item">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/building-community -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" class="icon icon-inline">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                  <path
+                                    d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8">
+                                  </path>
+                                  <path d="M13 7l0 .01"></path>
+                                  <path d="M17 7l0 .01"></path>
+                                  <path d="M17 11l0 .01"></path>
+                                  <path d="M17 15l0 .01"></path>
+                                </svg>
+                                {{user.get_role_display}}
+                              </div>
+                            </div>
+                            <div class="mt-3 list mb-0 text-secondary d-block d-sm-none">
+                              <div class="list-item">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/building-community -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" class="icon icon-inline">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                  <path
+                                    d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8">
+                                  </path>
+                                  <path d="M13 7l0 .01"></path>
+                                  <path d="M17 7l0 .01"></path>
+                                  <path d="M17 11l0 .01"></path>
+                                  <path d="M17 15l0 .01"></path>
+                                </svg>
+                                {{user.get_role_display}}
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-auto"
+                      style="padding: 2em; display: flex; justify-content: center; align-items: center;">
+                      <div class="text-center">
+                        <span class="edit-user">
+                          <a class="btn btn-primary bg-primary edit-user"><svg xmlns="http://www.w3.org/2000/svg"
+                              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                              class="icon m-0 edit-user">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                              <path d="M13.5 6.5l4 4"></path>
+                            </svg></a>
+                        </span>
+                        <span class="delete-btn">
+                          <a class="btn btn-primary bg-danger delete-btn"><svg xmlns="http://www.w3.org/2000/svg"
+                              width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                              class="icon m-0 delete-btn">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M4 7l16 0"></path>
+                              <path d="M10 11l0 6"></path>
+                              <path d="M14 11l0 6"></path>
+                              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                            </svg></a>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <!-- endloop -->
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% include 'base/footer.html' %}
+  </div>
+</div>
+
+
+
+
+{% include 'modal/register_user.html' %}
+{% include 'modal/edit_user.html' %}
+
+<script>
+  const userWrapper = document.getElementById('user-list-wrapper');
+  const modalEdit = document.getElementById('modal-edit-user');
+  const usernameEdit = document.getElementById('username-edit');
+  const emailEdit = document.getElementById('email-edit');
+  const roleEdit = document.getElementById('role-edit');
+
+
+  // Event delegation untuk menangani klik pada tombol hapus
+  userWrapper.addEventListener('click', function (event) {
+
+    if (event.target.classList.contains('edit-user')) {
+      const row = event.target.closest('.card');
+      const userName = row.getAttribute('data-name');
+      const userId = row.getAttribute('data-id');
+      const formRequire = new FormData();
+      formRequire.append('action', 'edit');
+      formRequire.append('user-id', userId);
+      fetch('', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+        },
+        body: formRequire
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Terjadi kesalahan: ' + response.status);
+          }
+          return response.json();  // Konversi ke JSON jika respons berhasil
+        })
+        .then(data => {
+          if (data.status) {
+            modalEdit.classList.add('show');
+            modalEdit.style.display = 'block';
+            usernameLock = userName;
+            usernameEdit.value = userName;            
+            emailEdit.value = data.data.email;    
+            const roles = data.data.base_role; // Daftar semua role yang mungkin
+            roles.forEach(([value, text]) => {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+
+                // Jika role saat ini sesuai dengan role dari user, set sebagai terpilih
+                if (value === data.data.selected_role) {
+                    option.selected = true;
+                }
+
+                roleEdit.appendChild(option);
+            });
+            return data;  // Kembalikan data jika status true
+          }
+          throw new Error('Response status false');  // Lempar error jika status false
+        })
+        .catch(error => {
+          alert(error);                  
+        });
+    }
+
+
+    if (event.target.classList.contains('delete-btn')) {
+      // Mendapatkan baris artikel (tr) terkait
+      const row = event.target.closest('.card');
+      const userName = row.getAttribute('data-name');
+      const userId = row.getAttribute('data-id');
+
+
+      // Konfirmasi sebelum hapus
+      const confirmed = confirm('Apakah Anda yakin ingin menghapus user : ' + userName + ' ?');
+      const formData = new FormData();
+      formData.append('action', 'delete');
+      formData.append('user-id', userId);
+      if (confirmed) {
+        // Lakukan POST ke /delete/ dengan ID artikel
+        fetch('', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+          },
+          body: formData
+        })
+          .then(response => {
+            if (response.status === 200) {
+              return response.json();  // Jika status 200, konversi ke JSON
+            } else {
+              throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+            }
+          })
+          .then(data => {
+            const message = data.data.msg;  // Ambil message dari response                        
+            if (data.status === true) {
+              alert(message);  // Menampilkan pesan ke user    
+              row.remove();
+            } else {
+              alert(message);  // Menampilkan pesan ke user                            
+            }
+          })
+          .catch((error) => {
+            alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan                
+          });
+      }
+    }
+  });
+
+  document.querySelector('.modal-close').addEventListener('click', function () {
+    modalEdit.classList.remove('show'); // Menghapus kelas 'show' untuk menutup modal
+    modalEdit.style.display = 'none'; // Menyembunyikan modal
+  });
+
+
+</script>
+
+{% endblock body %}
