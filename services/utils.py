@@ -2,7 +2,32 @@ from functools import wraps
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.conf import settings
-import os, json, re
+import os, json, re, time, threading
+from datetime import datetime
+
+def get_current_date_time_string():
+    current_datetime = datetime.now()
+    date_string = current_datetime.strftime("%d/%m/%Y")
+    time_string = current_datetime.strftime("%H:%M:%S")
+    result_string = f"{date_string} {time_string}"
+    return result_string
+
+def ERROR_TAG(txt):
+    print(f'\033[91m({get_current_date_time_string()}) ERROR: {txt}\033[0m')    
+    
+def INFO_TAG(txt):
+    print(f'({get_current_date_time_string()}) INFO: {txt}')
+
+def WARNING_TAG(txt):
+    print(f'\033[93m({get_current_date_time_string()}) Warning: {txt}\033[0m')
+
+def PRETTIER_TAG(flag, txt):
+    print(f'\n({get_current_date_time_string()}) {flag}:\n{txt}')
+
+def INSPECTOR(txt, delay=10):
+    print(f'\033[92m({get_current_date_time_string()}) PROCESS HAS STOP FOR INSPECT -> {txt}\033[0m')
+    time.sleep(delay)
+
 
 def role_required(allowed_roles):
     def decorator(view_func):
