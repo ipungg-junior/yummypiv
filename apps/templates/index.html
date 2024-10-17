@@ -22,11 +22,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Monoton&family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
 
 <body>
-
+  <a href="https://wa.me/{{phone_number}}" class="whatsapp-button" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>
   <!--
     - main container
   -->
@@ -44,7 +47,7 @@
         <div class="navbar-wrapper">
 
           <a href="#">
-            <img src="{% static 'image/logo.svg' %}" alt="logo" width="130">
+            <img src="{% static 'image/logo.png' %}" alt="logo" width="130">
           </a>
 
           <ul class="navbar-nav">
@@ -99,7 +102,7 @@
 
           <p class="home-subtext">Hi, Buddy!</p>
 
-          <h1 class="main-heading">Make healthy habbit with Us!</h1>
+          <h1 class="main-heading">{{ description }}</h1>
 
           <p class="home-text">
             Berikan makanan sehat dan bergizi untuk kebutuhan tubuhmu
@@ -108,11 +111,19 @@
           <div class="btn-group">
 
             <button class="btn btn-primary btn-icon">
-              <img src="{% static 'image/menu.svg' %}" alt="menu icon">
+              <i class="fas fa-hamburger"></i>
               Lihat Menu
             </button>
 
           </div>
+
+        </div>
+
+        <div class="home-right">
+
+          <img src="{% static 'image/banner-1.png' %}" alt="food image" class="food-img food-3" width="200"
+            loading="lazy">
+          <img src="{% static 'image/dialog.svg' %}" alt="dialog" class="dialog dialog-1" width="200" loading="lazy">
 
         </div>
 
@@ -162,34 +173,10 @@
 
         </div>
 
-        <div class="service-card">
-
-          <p class="card-number">04</p>
-
-          <h3 class="card-heading">Professional, experienced chefs</h3>
-
-          <p class="card-text">
-            Porro nemo veniam necessitatibus praesentium eligendi rem temporibus adipisci quo modi numquam.
-          </p>
-
-        </div>
-
-        <div class="service-card">
-
-          <p class="card-number">05</p>
-
-          <h3 class="card-heading">The highest standards of service</h3>
-
-          <p class="card-text">
-            Porro nemo veniam necessitatibus praesentium eligendi rem temporibus adipisci quo modi numquam.
-          </p>
-
-        </div>
-
       </section>
 
 
-      
+
 
       <!--
         - #ABOUT SECTION
@@ -264,16 +251,53 @@
             <div class="product-card">
 
               <div class="img-box">
-                <img src="{% static 'image/product/p1.jpg' %}" alt="product image" class="product-img" width="200" loading="lazy">
+                <img src="{% static 'image/product/p1.jpg' %}" alt="product image" class="product-img" width="200"
+                  loading="lazy">
               </div>
 
               <div class="product-content">
 
                 <div class="wrapper">
-                  <h3 class="product-name">Stracciatella</h3>
+                  <h3 class="product-name">Dimsum</h3>
 
                   <p class="product-price">
-                    <span class="small">$</span>11
+                    <span class="small"></span>12k
+                  </p>
+                </div>
+
+                <p class="product-text">
+                  tomatoes, nori, feta cheese, mushrooms, rice noodles, corn, shrimp.
+                </p>
+
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                </div>
+
+              </div>
+
+            </div>
+
+          </a>
+
+          <a href="#">
+
+            <div class="product-card">
+
+              <div class="img-box">
+                <img src="{% static 'image/product/p2.jpg' %}" alt="product image" class="product-img" width="200"
+                  loading="lazy">
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">Ricebowl</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>15k
                   </p>
                 </div>
 
@@ -300,43 +324,8 @@
             <div class="product-card">
 
               <div class="img-box">
-                <img src="{% static 'image/product/p2.jpg' %}" alt="product image" class="product-img" width="200" loading="lazy">
-              </div>
-
-              <div class="product-content">
-
-                <div class="wrapper">
-                  <h3 class="product-name">Chevrefrit au miel</h3>
-
-                  <p class="product-price">
-                    <span class="small">$</span>14
-                  </p>
-                </div>
-
-                <p class="product-text">
-                  tomatoes, nori, feta cheese, mushrooms, rice noodles, corn, shrimp.
-                </p>
-
-                <div class="product-rating">
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                  <ion-icon name="star"></ion-icon>
-                </div>
-
-              </div>
-
-            </div>
-
-          </a>
-
-          <a href="#">
-
-            <div class="product-card">
-
-              <div class="img-box">
-                <img src="{% static 'image/product/p4.jpg' %}" alt="product image" class="product-img" width="200" loading="lazy">
+                <img src="{% static 'image/product/p4.jpg' %}" alt="product image" class="product-img" width="200"
+                  loading="lazy">
 
                 <div class="card-badge green">
                   <ion-icon name="leaf"></ion-icon>
@@ -347,10 +336,10 @@
               <div class="product-content">
 
                 <div class="wrapper">
-                  <h3 class="product-name">Saumon Gravlax</h3>
+                  <h3 class="product-name">Salad Buah</h3>
 
                   <p class="product-price">
-                    <span class="small">$</span>9
+                    <span class="small"></span>10k
                   </p>
                 </div>
 
@@ -374,11 +363,6 @@
 
 
         </div>
-
-        <button class="btn btn-primary btn-icon">
-          <img src="{% static 'image/menu.svg' %}" alt="menu icon">
-          Full menu
-        </button>
 
       </section>
 
@@ -402,62 +386,23 @@
 
           <div class="testimonials-card">
 
-            <h4 class="card-title">Very tasty</h4>
-
             <div class="customer-info">
               <div class="customer-img-box">
-                <img src="./assets/images/testimonials1.jpg" alt="customer image" class="customer-img" width="100" loading="lazy">
+                <img src="{% static 'image/bri.jpg' %}" alt="customer image" class="customer-img" width="100"
+                  loading="lazy">
               </div>
-
-              <h5 class="customer-name">Emma Newman</h5>
-            </div>
-
-            <div class="testimonials-rating">
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
+              <h5 class="customer-name">BRI Cabang Tegal</h5>
             </div>
 
             <p class="testimonials-text">
-              Saya sangat terkesan dengan salad segar yang saya coba di Yummypiv. 
-              Campuran sayuran yang crispy dan dressing yang lezat membuat setiap suapan terasa menyegarkan. 
-              Apalagi, tambahan alpukat dan biji bunga matahari memberikan tekstur yang sempurna.
+              `Saya sangat terkesan dengan salad segar yang saya coba di Yummypiv.
+              Campuran sayuran yang crispy dan dressing yang lezat membuat setiap suapan terasa menyegarkan.
+              Apalagi, tambahan alpukat dan biji bunga matahari memberikan tekstur yang sempurna.`
+
             </p>
 
-            
-          </div>
+            <h5 class="customer-name">- Megan Domani</h5>
 
-          <div class="testimonials-card">
-          
-            <h4 class="card-title">I have lunch here every day</h4>
-          
-            <div class="testimonials-rating">
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-              <ion-icon name="star"></ion-icon>
-            </div>
-          
-            <p class="testimonials-text">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis fugiat totam nobis quas unde excepturi
-              inventore possimus
-              laudantium provident, rem eligendi velit. Aut molestias, ipsa itaque laborum, natus
-              tempora, ut soluta animi ducimus dignissimos deserunt doloribus in reprehenderit rem accusamus! Quibusdam
-              labore,
-              aliquam dolor harum!
-            </p>
-          
-            <div class="customer-info">
-              <div class="customer-img-box">
-                <img src="./assets/images/testimonials2.jpg" alt="customer image" class="customer-img" width="100" loading="lazy">
-              </div>
-          
-              <h5 class="customer-name">Paul Trueman</h5>
-            </div>
-          
           </div>
 
         </div>
@@ -479,22 +424,35 @@
       <div class="footer-wrapper">
 
         <a href="#">
-          <img src="./assets/images/logo-footer.svg" alt="logo" class="footer-brand" width="130">
+          <img src="{% static 'image/logo.png' %}" alt="logo" class="footer-brand" width="130">
         </a>
 
         <div class="social-link">
 
-          <a href="#">
-            <ion-icon name="logo-instagram"></ion-icon>
-          </a>
-
+          {% if facebook_state == 'true' %}
           <a href="#">
             <ion-icon name="logo-facebook"></ion-icon>
           </a>
+          {% endif %}
 
+          {% if twitter_state == 'true' %}
+          <a href="#">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+          {% endif %}
+
+          {% if linkedin_state == 'true' %}
+          <a href="#">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a>
+          {% endif %}
+
+          {% if youtube_state == 'true' %}
           <a href="#">
             <ion-icon name="logo-youtube"></ion-icon>
           </a>
+          {% endif %}
+          
 
         </div>
 

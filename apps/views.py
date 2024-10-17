@@ -13,6 +13,7 @@ def landing(request):
     ctx = {}            
     for profile_item in all_profile:
         ctx[profile_item.info] = profile_item.content     
+        print(profile_item.info, profile_item.content)
     
     ctx['partner_list'] = partner_list
     ctx['news_list'] = news_list

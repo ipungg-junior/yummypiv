@@ -24,7 +24,7 @@
   --space-cadet: hsl(249, 37%, 19%);
   --pistachio: hsl(88, 50%, 60%);
   --cultured: hsl(220, 13%, 95%);
-  --saffron: hsl(318, 65%, 54%);
+  --saffron: hsl(349.54deg 55.33% 61.37%);
   --rhythm: hsl(240, 9%, 51%);
   --white: hsl(0, 0%, 100%);
 
@@ -119,7 +119,7 @@ html {
 
 .btn:hover { filter: saturate(1.05) brightness(1.05); }
 
-.btn-primary { background: var(--saffron); }
+.btn-primary { background: var(--saffron); color: white;}
 
 .btn-secondary { background: var(--cultured); }
 
@@ -432,7 +432,7 @@ html {
 
 .food-img {
   position: absolute;
-  width: 60%;
+  width: 68%;
 }
 
 .food-1 {
@@ -460,7 +460,7 @@ html {
 
 .dialog-1 {
   top:   10%;
-  right: 15%;
+  right: 24%;
 }
 
 .dialog-2 {
@@ -736,7 +736,7 @@ html {
   display:         flex;
   justify-content: center;
   align-items:     center;
-  color: var(--space-cadet);
+  color: white;
   font-size: 24px;
   font-weight: 500;
 }
@@ -752,14 +752,14 @@ html {
   color: var(--rhythm);
   line-height: 1.6;
   letter-spacing: 0.4px;
-  margin-bottom: 15px;
+  margin-bottom: 2px;
 }
 
 .product-card .product-rating {
   display:     flex;
   align-items: center;
   gap: 5px;
-  color: var(--saffron);
+  color: hsl(57.63deg 85.54% 46.27%);
 }
 
 .product .btn-primary { margin-inline: auto; }
@@ -811,6 +811,7 @@ html {
   display:     flex;
   align-items: center;
   gap: 15px;
+  margin-bottom: 14px;
 }
 
 .customer-img-box {
@@ -823,7 +824,7 @@ html {
 .customer-img {
   width:  100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .customer-name {
@@ -870,4 +871,30 @@ footer {
   color: var(--rhythm);
   text-align: center;
   letter-spacing: 0.5px;
+}
+
+
+.whatsapp-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #25D366;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  text-decoration: none;
+  z-index: 99;
+  font-size: 1.8em;
+  cursor: pointer;
+  animation: bounce 3s ease-in-out infinite;    
+}
+
+.whatsapp-button:hover {
+  transform: scale(1.1);
 }
