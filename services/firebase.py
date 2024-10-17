@@ -1,22 +1,27 @@
 from firebase_admin import credentials, storage
 from django.utils import timezone
 from django.conf import settings
-from services.utils import read_json
-import firebase_admin
+from services.utils import INFO_TAG, INSPECTOR, ERROR_TAG
+import firebase_admin, time
 
-
-cred = credentials.Certificate(settings.FIREBASE_CREDENTIALS)
-firebase_admin.initialize_app(cred, {'storageBucket': settings.FIREBASE_BUCKET_NAME})
-bucket = storage.bucket()
+try:
+    cred = credentials.Certificate(settings.FIREBASE_CREDENTIALS)
+    firebase_admin.initialize_app(cred, {'storageBucket': settings.FIREBASE_BUCKET_NAME})
+    bucket = storage.bucket()
+except Exception as firebase_error:
+    ERROR_TAG('Firebase init, please check your credentials on your env')
+    INSPECTOR(firebase_error)
+    time.sleep(10)
 
 def init_firebase():
     dir_firebase = ['css', 'js', 'web-ico', 'image-assets', 'image-assets/banner']
-    print('initializing Firebase Storage. . .')
+    INFO_TAG(f'Firebase initialized.')
     for dir in dir_firebase:
       blob_list = bucket.list_blobs(prefix=f'{dir}')
       for blob in blob_list:
           blob.make_public()
-    print('firebase ready.')
+    INFO_TAG(f'Firebase Ready.')
+    
         
 
 def get_image(path):
