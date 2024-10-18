@@ -1,0 +1,96 @@
+{% load static %}
+<div class="container-xl" style="margin-bottom: 3em;">
+    <div class="row row-deck row-cards">
+
+        <div class="col-md-12 col-lg-12">
+            <form class="card">
+                <div class="progress progress-md" id="loading-about" hidden>
+                    <div class="progress-bar progress-bar-indeterminate"></div>
+                </div>
+                <div class="card-header">
+                    <h3 class="card-title">About</h3>
+                </div>
+                <div class="card-body">                    
+                    <div class="mb-3">
+                        <label class="form-label required">Title</label>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Masukan Judul" id="about-title" value="{{ about_title }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label required">Content</label>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Masukan Konten" id="about-content" value="{{ about_content }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary" id="btn-save-about">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+            
+<script>
+    const submitBtnAbout = document.getElementById('btn-save-about');
+    const loadingAbout = document.getElementById('loading-about');
+
+    submitBtnAbout.addEventListener('click', function (event) {
+        loadingAbout.hidden = false;
+        event.preventDefault();  // Mencegah reload halaman default saat submit
+        const aboutTitle = document.getElementById('about-title').value;
+        const aboutContent = document.getElementById('about-content').value;
+        
+        if (!aboutTitle) {
+            alert('Judul tidak boleh kosong!');
+            loadingAbout.hidden = true;
+            return;
+        }
+
+        if (!aboutContent) {
+            alert('Konten About tidak boleh kosong!');
+            loadingAbout.hidden = true;
+            return;
+        }
+
+        // Buat FormData
+        const formData = new FormData();
+        formData.append('about-title', aboutTitle);
+        formData.append('about-content', aboutContent);
+
+        // Kirim data ke fungsi untuk update artikel
+        update_upper(formData);
+    });
+
+    function update_upper(form) {
+        fetch("", {  
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+            },
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();  // Jika status 200, konversi ke JSON
+            } else {
+                throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+            }
+        })
+            .then(data => {
+                if (data.status === true) {
+                    loadingAbout.hidden = true;
+                    const message = data.data.msg;  // Ambil message dari response                        
+                    alert(message);  // Menampilkan pesan ke user                
+                } else {
+                    console.error('Error: ', data);  // Menangani response error                    
+                }
+            })
+            .catch((error) => {
+                alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan  
+                loadingAbout.hidden = true;              
+            });
+    }
+
+</script>

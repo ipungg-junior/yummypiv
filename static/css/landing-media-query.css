@@ -1,14 +1,3 @@
-/*-----------------------------------*\ 
-  #media_query.css
-\*-----------------------------------*/
-
-/**
- * copyright 2022 @codewithsadee 
- */
-
-
-
-
 
 /*-----------------------------------*\ 
   #for large mobile
@@ -56,7 +45,10 @@
       top:  10%;
       left: 15%;
     }
-  
+
+    .food-3 {
+      right: 8%;      
+    }
   }
   
   
@@ -133,7 +125,6 @@
       --mw: 720px;
   
     }
-  
   
   
     /**
@@ -392,4 +383,10 @@
   
     .services { grid-template-columns: repeat(3, 1fr); }
   
+  }
+
+  @media screen and (max-width: 520px) {
+    .food-3 {
+      right: 8%;
+    }
   }
