@@ -1,0 +1,79 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block body %}
+<div class="page">
+  {% include 'base/header.html' %}
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Content Management
+            </div>
+            <h2 class="page-title">
+              Dashboard
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-cards">
+            {% csrf_token %}
+            <div class="col-md-12">
+                <div class="card">
+                  <div class="progress progress-md" id="loading" hidden>
+                    <div class="progress-bar progress-bar-indeterminate"></div>
+                  </div>
+                    <!-- Tab header -->
+                  <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-main" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->                          
+                          Copywriting</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-social-link" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/user -->                            
+                          Product</a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-testimonial" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/user -->                            
+                          Testimonial</a>
+                      </li>
+                    </ul>
+                  </div>
+
+
+                  <!-- tab body -->
+                  <div class="card-body">
+                    <div class="tab-content">
+                      <div class="tab-pane active show" id="tab-main" role="tabpanel">
+                        {% include 'modal/tab_content_upper.html' %}                        
+                        {% include 'modal/tab_content_about.html' %}                        
+                      </div>
+                      <div class="tab-pane" id="tab-social-link" role="tabpanel">
+                        {% include 'modal/tab_content_product.html' %}       
+                      </div>   
+                      <div class="tab-pane" id="tab-testimonial" role="tabpanel">
+                        {% include 'modal/tab_content_product.html' %}       
+                      </div>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+      </div>
+    </div>
+    {% include 'base/footer.html' %}
+  </div>
+</div>
+
+
+
+{% endblock body %}

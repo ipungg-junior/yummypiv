@@ -1,0 +1,96 @@
+{% load static %}
+<div class="container-xl" style="margin-bottom: 3em;">
+    <div class="row row-deck row-cards">
+
+        <div class="col-md-12 col-lg-12">
+            <form class="card">
+                <div class="progress progress-md" id="loading-upper" hidden>
+                    <div class="progress-bar progress-bar-indeterminate"></div>
+                </div>
+                <div class="card-header">
+                    <h3 class="card-title">Homepage Upper</h3>
+                </div>
+                <div class="card-body">                    
+                    <div class="mb-3">
+                        <label class="form-label required">Landing Description</label>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Masukan Deskripsi" id="description" value="{{description}}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label required">Sub Description</label>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Masukan Sub Deskripsi" id="sub-description" value="{{sub_description}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary" id="btn-save-upper">Save</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+            
+<script>
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    const submitBtnUpper = document.getElementById('btn-save-upper');
+    const loadingUpper = document.getElementById('loading-upper');
+
+    submitBtnUpper.addEventListener('click', function (event) {
+        loadingUpper.hidden = false;
+        event.preventDefault();  // Mencegah reload halaman default saat submit
+        const description = document.getElementById('description').value;
+        const subDescription = document.getElementById('sub-description').value;
+        
+        if (!description) {
+            alert('Deskripsi tidak boleh kosong!');
+            loadingUpper.hidden = true;
+            return;
+        }
+
+        if (!subDescription) {
+            alert('Sub Deskripsi tidak boleh kosong!');
+            loadingUpper.hidden = true;
+            return;
+        }
+
+        // Buat FormData
+        const formData = new FormData();
+        formData.append('description', description);
+        formData.append('sub-description', subDescription);
+
+        // Kirim data ke fungsi untuk update artikel
+        update_upper(formData);
+    });
+
+    function update_upper(form) {
+        fetch("", {  
+            method: 'POST',
+            body: form,
+            headers: {
+                'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+            },
+        }).then(response => {
+            if (response.status === 200) {
+                return response.json();  // Jika status 200, konversi ke JSON
+            } else {
+                throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+            }
+        })
+            .then(data => {
+                if (data.status === true) {
+                    loadingUpper.hidden = true;
+                    const message = data.data.msg;  // Ambil message dari response                        
+                    alert(message);  // Menampilkan pesan ke user                
+                } else {
+                    console.error('Error: ', data);  // Menangani response error                    
+                }
+            })
+            .catch((error) => {
+                alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan                
+            });
+    }
+
+</script>
