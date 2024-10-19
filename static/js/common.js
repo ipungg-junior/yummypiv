@@ -27,16 +27,6 @@ navToggleBtn.addEventListener('click', function () {
 
 });
 
-// add event on cart-toggle-btn
-cartToggleBtn.addEventListener('click', function () {
-
-  // If the navbar-nav has an `active` class, it will be removed.
-  if (nav.classList.contains('active')) navToggleFunc();
-
-  cartToggleFunc();
-
-});
-
 // add event on all nav-link
 for (let i = 0; i < navLinks.length; i++) {
 
