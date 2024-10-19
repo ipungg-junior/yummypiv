@@ -7,11 +7,11 @@
         <div class="col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header justify-content-between">
-                    <h3 class="card-title">Etalase Toko</h3>
+                    <h3 class="card-title">Data Testimoni</h3>
 
                     <div class="btn-list">
                         <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="#modal-product">
+                            data-bs-target="#modal-testimonial">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -20,7 +20,7 @@
                                 <path d="M12 5l0 14"></path>
                                 <path d="M5 12l14 0"></path>
                             </svg>
-                            Product
+                            Testimonial
                         </a>
                     </div>
 
@@ -29,10 +29,9 @@
                     <table class="table table-vcenter">
                         <thead>
                             <tr>
-                                <th>Gambar</th>
-                                <th>Nama Produk</th>
-                                <th>Harga Product</th>
-                                <th>Deskripsi</th>
+                                <th>Customer</th>
+                                <th>Profile</th>
+                                <th>Content</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -64,9 +63,9 @@
         </div>
 
     </div>
+    {% include 'modal/upload_testimonial.html' %}
 </div>
 
-{% include 'modal/upload_product.html' %}
 
 
 <script>

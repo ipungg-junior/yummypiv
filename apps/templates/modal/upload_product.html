@@ -1,0 +1,119 @@
+<div class="modal modal-blur fade" id="modal-product" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control" name="product-name" id="product-name"
+                        placeholder="Input your product name" value="">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image</label>
+                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image" hidden>
+                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input" id="image-input" placeholder="Upload Foto Profil">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input type="text" class="form-control" name="product-image" id="product-image"
+                        placeholder="Harga" value="">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Content</label>
+                    <input type="text" class="form-control" name="product-description" id="product-description"
+                        placeholder="Isi komentar" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal" id="close-btn">
+                    Cancel
+                </a>
+                <a class="btn btn-primary ms-auto" id="submit-btn">
+                    Save
+                </a>
+            </div>
+        </div>
+        <div class="progress progress-md" id="loading" hidden>
+            <div class="progress-bar progress-bar-indeterminate"></div>
+        </div>
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('image-input');
+        const closeBtn = document.getElementById('close-btn');
+        const image = document.getElementById('preview-image');
+        const submitBtn = document.getElementById('submit-btn');
+        const loading = document.getElementById('loading');
+        
+        imageInput.addEventListener('change', function (event) {
+            loading.hidden = false;
+            const reader = new FileReader();
+            const file = event.target.files[0];
+            
+            reader.onload = function (e) {
+                image.src = e.target.result;
+                image.hidden = false;
+            };
+            
+            if (file) {
+                reader.readAsDataURL(file);
+                imageInput.hidden = true;
+                loading.hidden = true;
+            }
+        });
+        
+        closeBtn.addEventListener('click', function (event) {
+            image.src = '';
+            image.hidden = true;
+            imageInput.value = '';
+            imageInput.hidden = false;
+            loading.hidden = true;
+        });
+        
+        submitBtn.addEventListener('click', function (event) {
+            loading.hidden = false;
+            event.preventDefault();  // Mencegah reload halaman default saat submit
+            
+            const inputFile = document.getElementById('image-input').files[0];
+            
+            if (inputFile) {
+                const partnerName = document.getElementById('partner-name').value;
+                const formData = new FormData();
+                formData.append('partner-name', partnerName);
+                formData.append('image', inputFile);
+                
+                fetch('', {  // Ganti '/upload/' dengan URL path Django Anda
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
+                    },
+                }).then(response => {
+                    if (response.status === 200) {
+                        return response.json();  // Jika status 200, konversi ke JSON
+                    } else {
+                        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                    }
+                })
+                .then(data => {
+                    if (data.status === 'true') {
+                        loading.hidden = true;
+                        const message = data.data.msg;  // Ambil message dari response                        
+                        alert(message);  // Menampilkan pesan ke user
+                    } else {
+                        console.error('Error: ', data);  // Menangani response er
+                    }
+                })
+                .catch((error) => {
+                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
+                    loading.hidden = true;
+                });
+            }
+        });
+
+    </script>
+
+</div>
