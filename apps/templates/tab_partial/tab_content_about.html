@@ -61,10 +61,10 @@
         formData.append('about-content', aboutContent);
 
         // Kirim data ke fungsi untuk update artikel
-        update_upper(formData);
+        update_about(formData);
     });
 
-    function update_upper(form) {
+    function update_about(form) {
         fetch("", {  
             method: 'POST',
             body: form,

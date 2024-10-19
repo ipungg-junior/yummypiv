@@ -180,5 +180,22 @@ class API(View):
                 return JsonResponse({'status': False, 'data':{'msg': f'{error_field}'}})
                 
                     
+        if (self.context == 'api-update-homepage-upper'):
+            try:
+                for key, value in request.POST.items():
+                    key_correction = str(key).replace('-', '_')
+                    try: 
+                        exist_data = OwnerProfile.objects.get(info=key_correction)
+                        exist_data.content = value
+                        exist_data.save()
+                    except Exception as no_data:
+                        new_data = OwnerProfile(info=key_correction, content=value)
+                        new_data.save()
+            
+                logger.info(f'Data upper homepage has been updated.')
+                return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
+            except Exception as error:
+                logger.error(f'Error when update data homepage upper! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
             
             
