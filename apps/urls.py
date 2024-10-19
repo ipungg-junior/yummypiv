@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/news/delete/', API.as_view(context='api-news-delete'), name='api-news-delete'),
     path('api/social-link/', API.as_view(context='api-social-link'), name='api-social-link'),
     path('api/edit-user/', API.as_view(context='api-edit-user'), name='api-edit-user'),
+    path('api/content-management/homepage-upper/', API.as_view(context='api-update-homepage-upper'), name='api-update-homepage-upper'),
 ]

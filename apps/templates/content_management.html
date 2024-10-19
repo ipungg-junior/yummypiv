@@ -51,6 +51,11 @@
 
                   <!-- tab body -->
                   <div class="card-body">
+                    <script>
+                      var mLink = {
+                        homepageUpper: "{% url 'api-update-homepage-upper' %}"
+                      }                      
+                    </script>
                     <div class="tab-content">
                       <div class="tab-pane active show" id="tab-main" role="tabpanel">
                         {% include 'tab_partial/tab_content_upper.html' %}                        
@@ -73,6 +78,7 @@
     {% include 'base/footer.html' %}
   </div>
 </div>
+
 
 
 
