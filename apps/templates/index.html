@@ -46,15 +46,11 @@
 
         <div class="navbar-wrapper">
 
-          <a href="#">
+          <a href="">
             <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/logo.png" alt="logo" width="130">
           </a>
 
           <ul class="navbar-nav">
-
-            <li>
-              <a href="#home" class="nav-link">Home</a>
-            </li>
 
             <li>
               <a href="#services" class="nav-link">Services</a>
@@ -121,7 +117,7 @@
 
         <div class="home-right">
 
-          <img src="{% static 'image/banner-1.png' %}" alt="food image" class="food-img food-3" width="200"
+          <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/main-banner.webp" alt="food image" class="food-img food-3" width="200"
             loading="lazy">
           <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/dialog.svg" alt="dialog" class="dialog dialog-1" width="200" loading="lazy">
 
@@ -371,26 +367,22 @@
 
         <div class="testimonials-grid">
 
-          <div class="testimonials-card">
+          {% for testimonial in testimonials %}
+            <div class="testimonials-card">
 
-            <div class="customer-info">
-              <div class="customer-img-box">
-                <img src="{% static 'image/bri.jpg' %}" alt="customer image" class="customer-img" width="100"
-                  loading="lazy">
+              <div class="customer-info">
+                <div class="customer-img-box">
+                  <img src="{{ testimonial.img_link }}" alt="customer image" class="customer-img" width="100" loading="lazy">
+                </div>
+                <h5 class="customer-name">{{ testimonial.customer_name }}</h5>
               </div>
-              <h5 class="customer-name">BRI Cabang Tegal</h5>
+
+              <p class="testimonials-text">
+                "{{ testimonial.content }}"
+              </p>
+
             </div>
-
-            <p class="testimonials-text">
-              `Saya sangat terkesan dengan salad segar yang saya coba di Yummypiv.
-              Campuran sayuran yang crispy dan dressing yang lezat membuat setiap suapan terasa menyegarkan.
-              Apalagi, tambahan alpukat dan biji bunga matahari memberikan tekstur yang sempurna.`
-
-            </p>
-
-            <h5 class="customer-name">- Megan Domani</h5>
-
-          </div>
+          {% endfor %}
 
         </div>
 

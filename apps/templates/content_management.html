@@ -53,8 +53,10 @@
                   <div class="card-body">
                     <script>
                       var mLink = {
+                        menuContentManagement: "{% url 'content-management' %}",
                         homepageUpper: "{% url 'api-update-homepage-upper' %}",
-                        about: "{% url 'api-update-about' %}"
+                        about: "{% url 'api-update-about' %}",
+                        addTestimonial: "{% url 'api-add-testimonial' %}"
                       }                      
                     </script>
                     <div class="tab-content">
