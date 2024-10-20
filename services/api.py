@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.views import View
 from django.http import JsonResponse
-from apps.models import Visitor, ClientInbox, Article, OwnerProfile
+from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials
 from django.utils import timezone
 from datetime import timedelta
 from services.utils import is_valid_name, is_valid_phone_number
-from services.firebase import firebase_delete
+from services.firebase import firebase_delete, firebase_upload
 from django.contrib.auth import get_user_model
 import datetime
 
@@ -214,6 +214,45 @@ class API(View):
                 return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
             except Exception as error:
                 logger.error(f'Error when update data about! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+            
+        if (self.context == 'api-add-testimonial'):
+            try:
+                for key, value in request.POST.items():
+                    key_correction = str(key).replace('-', '_')
+                    exist_data = Testimonials()
+                    exist_data.customer_name = request.POST.get('testimonial-customer')
+                    exist_data.content = request.POST.get('testimonial-content')
+                        
+                image = request.FILES.get('testimonial-image')
+                if (image):
+                    sts = False
+                    msg = ''
+                    if (image.name).endswith('.png'):
+                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='png')
+                    if (image.name).endswith('.jpg'):
+                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='jpg')
+                    if (image.name).endswith('.webp'):
+                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='webp')
+                    else:
+                        exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                        logger.info(f'Image not supported, force to default avatar.')
+                        exist_data.save()
+                        logger.info(f'Success uploaded testimonial')
+                        return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah. (default avatar)'}})
+                        
+                    if (sts):
+                        exist_data.img_link = msg
+                        logger.info(f'Testimonial image save to firebase -> {msg}')
+                else:
+                    exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                    logger.info(f'Image does not exist, force to default avatar.')
+                    
+                exist_data.save()
+                logger.info(f'Success uploaded testimonial')
+                return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah.'}})
+            except Exception as error:
+                logger.error(f'Error when data testimonial! - {error}')]
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
             
             

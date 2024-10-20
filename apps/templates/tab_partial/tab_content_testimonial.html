@@ -36,20 +36,21 @@
                             </tr>
                         </thead>
 
-                        <tbody id="partner-collection">
+                        <tbody id="testimonial-collection">
                             
-                            {% for partner in partner_list %}
+                            {% for testimonial in testimonials %}
                             <tr>
-                                <td>
-                                    {{ partner.name }}
+                                <td data-name="{{ testimonial.customer_name }}">
+                                    {{ testimonial.customer_name }}
                                 </td>
-                                <td class="text-secondary"><span class="avatar"
-                                        style="background-image: url({{ partner.img_link }})"></span>
+                                <td class="text-secondary"><span class="avatar" style="background-image: url({{ testimonial.img_link }})"></span>
+                                </td>
+                                <td class="text-secondary" style="max-width: 20em;">
+                                    {{ testimonial.content }}
                                 </td>
                                 <td class="text-center">
                                     <span class="dropdown">
-                                        <a class="btn btn-primary bg-danger remove-btn"
-                                            data-id="{{ partner.id }}">Remove</a>
+                                        <a class="btn btn-primary bg-danger remove-btn" data-id="{{ testimonial.id }}">Remove</a>
                                     </span>
                                 </td>
                             </tr>
@@ -70,22 +71,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-        // Pilih elemen tbody sebagai target event delegation
-        const tableBody = document.getElementById('partner-collection');
-
-        // Tambahkan event listener pada tbody
-        tableBody.addEventListener('click', function (event) {
-
+        const testimonialCollection = document.getElementById('testimonial-collection');
+        testimonialCollection.addEventListener('click', function (event) {
+            
             if (event.target.classList.contains('remove-btn')) {
+                
+                const testimonialId = event.target.getAttribute('data-id');
+                const testimonialCustomerName = event.target.closest('tr').querySelector('td[data-name]').getAttribute('data-name');
+                
 
-                const partnerId = event.target.getAttribute('data-id');
-
-                if (confirm('Yakin ingin menghapus partner ID ' + partnerId + '?')) {
+                if (confirm('Yakin ingin menghapus testimonial ' + testimonialCustomerName + '?')) {
                     const formData = new FormData();
-                    formData.append('partner-id', partnerId);
-                    fetch('{% url "delete-partner" %}', {  // Ganti '/upload/' dengan URL path Django Anda
+                    formData.append('testimonial-id', testimonialId);
+
+                    fetch('', {  // Ganti '/upload/' dengan URL path Django Anda
                         method: 'POST',
                         body: formData,
                         headers: {

@@ -389,4 +389,33 @@
     .food-3 {
       right: 8%;
     }
+
+    .testimonials-grid {
+      padding: 1em;
+      gap: 20px
+    }
+
+    .testimonials-card {
+      padding: 1em;
+    }
+
+    .testimonials-text{
+      font-size: var(--fs-6);
+    }
+
+    .customer-info {
+      width: unset;
+    }
+
+    .testimonials .section-text {
+      margin-bottom: 5px;
+    }
+
+    .whatsapp-button {
+      width: 50px;
+      height: 50px;
+      bottom: 37px;
+      right: 23px;
+    }
+
   }

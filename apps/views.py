@@ -1,21 +1,19 @@
 from django.shortcuts import render
 from django.conf import settings
-from apps.models import Partner, Article, OwnerProfile
+from apps.models import Partner, Article, OwnerProfile, Testimonials
 
 # Logger information object
 import logging
 logger = logging.getLogger('yummypiv')
 
 def landing(request):
-    partner_list = Partner.objects.all()
-    news_list = Article.objects.order_by('-created_at')[:7]
+    testimonials = Testimonials.objects.all()
     all_profile = OwnerProfile.objects.all()
     ctx = {}            
     for profile_item in all_profile:
         ctx[profile_item.info] = profile_item.content     
     
-    ctx['partner_list'] = partner_list
-    ctx['news_list'] = news_list
+    ctx['testimonials'] = testimonials
     
     resp = render(template_name='index.html', request=request, context=ctx)
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"

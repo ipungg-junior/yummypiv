@@ -14,7 +14,7 @@ except Exception as firebase_error:
     time.sleep(10)
 
 def init_firebase():
-    dir_firebase = ['css', 'js', 'web-ico', 'image-assets', 'image-assets/banner']
+    dir_firebase = ['static', 'media', 'media/product', 'media/testimonial', 'media/partner']
     INFO_TAG(f'Firebase initialized.')
     for dir in dir_firebase:
       blob_list = bucket.list_blobs(prefix=f'{dir}')
@@ -33,7 +33,7 @@ def firebase_upload(path, ref_file, filename, ct):
     now = timezone.now()
     try:
       formatted_name = filename.replace(' ', '-').lower()
-      folder_path = f"yummypiv/{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
+      folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
       bucket = storage.bucket()
       blob = bucket.blob(folder_path)
       blob.upload_from_file(ref_file, content_type=f'image/{ct}')
