@@ -252,7 +252,7 @@ class API(View):
                 logger.info(f'Success uploaded testimonial')
                 return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah.'}})
             except Exception as error:
-                logger.error(f'Error when data testimonial! - {error}')
+                logger.error(f'Error when data testimonial! - {error}')]
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
             
             
