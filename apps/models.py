@@ -128,4 +128,4 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.customer_name
+        return self.product_name
