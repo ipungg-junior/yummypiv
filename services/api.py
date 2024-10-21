@@ -256,3 +256,11 @@ class API(View):
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
             
             
+        if (self.context == 'api-delete-testimonial'):
+            try:                
+                print('Berhasil kok',request.POST.get('testimonial-id'))
+                logger.info(f'Data about has been updated.')
+                return JsonResponse({'status': True, 'data':{'msg': 'Okay'}})
+            except Exception as error:
+                logger.error(f'Error when update data about! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
