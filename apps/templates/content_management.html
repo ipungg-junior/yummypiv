@@ -1,5 +1,5 @@
 {% extends 'base/base_dashboard.html' %}
-
+{% load static %}
 {% block body %}
 <div class="page">
   {% include 'base/header.html' %}
@@ -51,13 +51,17 @@
 
                   <!-- tab body -->
                   <div class="card-body">
+                    <script src="{% static 'js/fetch-manager.js' %}"></script>
                     <script>
                       var mLink = {
                         menuContentManagement: "{% url 'content-management' %}",
                         homepageUpper: "{% url 'api-update-homepage-upper' %}",
                         about: "{% url 'api-update-about' %}",
+                        deleteTestimonial: "{% url 'api-delete-testimonial' %}",
                         addTestimonial: "{% url 'api-add-testimonial' %}"
                       }                      
+                      const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+                      var fetchManager = new FetchManager(csrfToken, true);
                     </script>
                     <div class="tab-content">
                       <div class="tab-pane active show" id="tab-main" role="tabpanel">
@@ -81,6 +85,9 @@
     {% include 'base/footer.html' %}
   </div>
 </div>
+
+
+
 
 
 
