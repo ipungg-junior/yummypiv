@@ -77,40 +77,24 @@
             if (event.target.classList.contains('remove-btn')) {
                 
                 const testimonialId = event.target.getAttribute('data-id');
-                const testimonialCustomerName = event.target.closest('tr').querySelector('td[data-name]').getAttribute('data-name');
-                
+                const testimonialCustomerName = event.target.closest('tr').querySelector('td[data-name]').getAttribute('data-name');                
 
                 if (confirm('Yakin ingin menghapus testimonial ' + testimonialCustomerName + '?')) {
                     const formData = new FormData();
                     formData.append('testimonial-id', testimonialId);
 
-                    fetch('', {  // Ganti '/upload/' dengan URL path Django Anda
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
-                        },
-                    }).then(response => {
-                        if (response.status === 200) {
-                            return response.json();  // Jika status 200, konversi ke JSON
-                        } else {
-                            throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
-                        }
-                    })
-                        .then(data => {
-                            const message = data.data.msg;  // Ambil message dari response                        
-                            if (data.status === true) {
+                    fetchManager.post(mLink.deleteTestimonial, formData)
+                        .then(response => {
+                            const message = response.data.msg;
+                            if (response.status === true) {
                                 loading.hidden = true;
-                                alert(message);  // Menampilkan pesan ke user  
-                                window.location.href = '{% url "partner-dashboard" %}';
+                                window.location.href = mLink.menuContentManagement;
                             } else {
                                 alert(message);
                             }
-                        })
-                        .catch((error) => {
-                            alert('Internal server error: ', error);  // Menampilkan alert jika ada kesalahan                
                         });
                 }
+
             }
         });
 
