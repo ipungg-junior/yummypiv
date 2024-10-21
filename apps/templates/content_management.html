@@ -57,8 +57,9 @@
                         menuContentManagement: "{% url 'content-management' %}",
                         homepageUpper: "{% url 'api-update-homepage-upper' %}",
                         about: "{% url 'api-update-about' %}",
+                        addTestimonial: "{% url 'api-add-testimonial' %}",
                         deleteTestimonial: "{% url 'api-delete-testimonial' %}",
-                        addTestimonial: "{% url 'api-add-testimonial' %}"
+                        addProduct: "{% url 'api-add-product' %}"
                       }                      
                       const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
                       var fetchManager = new FetchManager(csrfToken, true);

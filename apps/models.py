@@ -117,4 +117,15 @@ class Testimonials(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.customer_name
+    
+class Product(models.Model):
+    product_name = models.CharField(max_length=255)
+    img_link = models.CharField(max_length=255)
+    price = models.SmallIntegerField()
+    description = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.customer_name

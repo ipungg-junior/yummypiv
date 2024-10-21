@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.views import View
 from django.http import JsonResponse
-from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials
+from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials, Product
 from django.utils import timezone
 from datetime import timedelta
 from services.utils import is_valid_name, is_valid_phone_number
@@ -217,12 +217,10 @@ class API(View):
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
             
         if (self.context == 'api-add-testimonial'):
-            try:
-                for key, value in request.POST.items():
-                    key_correction = str(key).replace('-', '_')
-                    exist_data = Testimonials()
-                    exist_data.customer_name = request.POST.get('testimonial-customer')
-                    exist_data.content = request.POST.get('testimonial-content')
+            try:                    
+                exist_data = Testimonials()
+                exist_data.customer_name = request.POST.get('testimonial-customer')
+                exist_data.content = request.POST.get('testimonial-content')
                         
                 image = request.FILES.get('testimonial-image')
                 if (image):
@@ -254,8 +252,7 @@ class API(View):
             except Exception as error:
                 logger.error(f'Error when data testimonial! - {error}')
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
-            
-            
+                
         if (self.context == 'api-delete-testimonial'):
             try:                
                 print('Berhasil kok',request.POST.get('testimonial-id'))
@@ -264,3 +261,43 @@ class API(View):
             except Exception as error:
                 logger.error(f'Error when update data about! - {error}')
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+
+        if (self.context == 'api-add-product'):
+            try:                    
+                
+                new_product = Product()
+                new_product.product_name = request.POST.get('product-name')
+                new_product.price = request.POST.get('product-price')
+                new_product.description = request.POST.get('product-description')
+                        
+                image = request.FILES.get('product-image')
+                if (image):
+                    sts = False
+                    msg = ''
+                    if (image.name).endswith('.png'):
+                        sts, msg = firebase_upload('media/product', image, image.name, ct='png')
+                    if (image.name).endswith('.jpg'):
+                        sts, msg = firebase_upload('media/product', image, image.name, ct='jpg')
+                    if (image.name).endswith('.webp'):
+                        sts, msg = firebase_upload('media/product', image, image.name, ct='webp')
+                        
+                    if (sts):
+                        new_product.img_link = msg
+                        new_product.save()
+                        logger.info(f'Product image save to firebase -> {msg}')
+                        return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
+                    else:
+                        new_product.save()                      
+                        logger.info(f'Success uploaded product with no image!')
+                        return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah. (default avatar)'}})
+                        
+                else:
+                    new_product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                    logger.info(f'Image does not exist, force to default avatar.')
+                    
+                new_product.save()
+                logger.info(f'Success uploaded Product')
+                return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
+            except Exception as error:
+                logger.error(f'Error when data Product! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})   
