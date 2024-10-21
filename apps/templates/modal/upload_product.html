@@ -13,105 +13,89 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Image</label>
-                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image" hidden>
-                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input" id="image-input" placeholder="Upload Foto Profil">
+                    <img src="" class="w-100 h-100 object-cover card-img-end" id="product-preview-image" hidden>
+                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="product-image-input" id="product-image-input" placeholder="Upload Foto Profil">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Price</label>
-                    <input type="text" class="form-control" name="product-image" id="product-image"
+                    <input type="text" class="form-control" name="product-price" id="product-price"
                         placeholder="Harga" value="">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Content</label>
+                    <label class="form-label">Description</label>
                     <input type="text" class="form-control" name="product-description" id="product-description"
                         placeholder="Isi komentar" value="">
                 </div>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-link link-secondary" data-bs-dismiss="modal" id="close-btn">
+                <a class="btn btn-link link-secondary" data-bs-dismiss="modal" id="close-btn-product">
                     Cancel
                 </a>
-                <a class="btn btn-primary ms-auto" id="submit-btn">
+                <a class="btn btn-primary ms-auto" id="product-submit-btn">
                     Save
                 </a>
             </div>
         </div>
-        <div class="progress progress-md" id="loading" hidden>
+        <div class="progress progress-md" id="loading-product" hidden>
             <div class="progress-bar progress-bar-indeterminate"></div>
         </div>
     </div>
 
     <script>
-        const imageInput = document.getElementById('image-input');
-        const closeBtn = document.getElementById('close-btn');
-        const image = document.getElementById('preview-image');
-        const submitBtn = document.getElementById('submit-btn');
-        const loading = document.getElementById('loading');
+        const imageInputProduct = document.getElementById('product-image-input');
+        const closeBtnProduct = document.getElementById('close-btn-product');
+        const imagePreviewProduct = document.getElementById('product-preview-image');
+        const submitBtnProduct = document.getElementById('product-submit-btn');
+        const loadingProduct = document.getElementById('loading-product');
         
-        imageInput.addEventListener('change', function (event) {
-            loading.hidden = false;
+        imageInputProduct.addEventListener('change', function (event) {
+            loadingProduct.hidden = false;
             const reader = new FileReader();
             const file = event.target.files[0];
             
             reader.onload = function (e) {
-                image.src = e.target.result;
-                image.hidden = false;
+                imagePreviewProduct.src = e.target.result;
+                imagePreviewProduct.hidden = false;
             };
             
             if (file) {
                 reader.readAsDataURL(file);
-                imageInput.hidden = true;
-                loading.hidden = true;
+                imageInputProduct.hidden = true;
+                loadingProduct.hidden = true;
             }
         });
         
-        closeBtn.addEventListener('click', function (event) {
-            image.src = '';
-            image.hidden = true;
-            imageInput.value = '';
-            imageInput.hidden = false;
-            loading.hidden = true;
+        closeBtnProduct.addEventListener('click', function (event) {
+            imagePreviewProduct.src = '';
+            imagePreviewProduct.hidden = true;
+            imageInputProduct.value = '';
+            imageInputProduct.hidden = false;
+            loadingProduct.hidden = true;
         });
         
-        submitBtn.addEventListener('click', function (event) {
-            loading.hidden = false;
-            event.preventDefault();  // Mencegah reload halaman default saat submit
-            
-            const inputFile = document.getElementById('image-input').files[0];
-            
+        submitBtnProduct.addEventListener('click', function (event) {
+            event.preventDefault();  
+            loadingProduct.hidden = false;
+            const formData = new FormData();
+            formData.append('product-name', document.getElementById('product-name').value);
+            formData.append('product-price', document.getElementById('product-price').value);
+            formData.append('product-description', document.getElementById('product-description').value);
+                        
+            const inputFile = document.getElementById('product-image-input').files[0];
             if (inputFile) {
-                const partnerName = document.getElementById('partner-name').value;
-                const formData = new FormData();
-                formData.append('partner-name', partnerName);
-                formData.append('image', inputFile);
-                
-                fetch('', {  // Ganti '/upload/' dengan URL path Django Anda
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
-                    },
-                }).then(response => {
-                    if (response.status === 200) {
-                        return response.json();  // Jika status 200, konversi ke JSON
+                formData.append('product-image', inputFile);    
+            }
+            fetchManager.post(mLink.addProduct, formData)
+                .then(response => {
+                    const message = response.data.msg;
+                    if (response.status === true) {
+                        alert(message);
+                        window.location.href = mLink.menuContentManagement;
                     } else {
-                        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
+                        alert(message);
                     }
-                })
-                .then(data => {
-                    if (data.status === 'true') {
-                        loading.hidden = true;
-                        const message = data.data.msg;  // Ambil message dari response                        
-                        alert(message);  // Menampilkan pesan ke user
-                    } else {
-                        console.error('Error: ', data);  // Menangani response er
-                    }
-                })
-                .catch((error) => {
-                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
                     loading.hidden = true;
                 });
-            }
         });
 
     </script>
