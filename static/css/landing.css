@@ -43,8 +43,8 @@
    * spacing 
    */
 
-  --px: 30px;
-  --py: 60px;
+  --px: 25px;
+  --py: 50px;
 
   /**
    * others 
@@ -669,18 +669,24 @@ html {
 
 .product .section-title { margin-bottom: 30px; }
 
-.product .section-text { margin-bottom: 60px; }
+.product .section-text { margin-bottom: 5px; }
 
 .products-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
   margin-bottom: 50px;
+  display: flex;
+  gap: 30px;
+  padding: 1em 2em 1em 0em;
+  overflow-x: scroll;
+}
+
+.product-card {
+  width: 17em;
 }
 
 .product-card .img-box {
   position: relative;
   overflow: hidden;
+  height: 20em;
 }
 
 .product-img {
