@@ -400,13 +400,12 @@
     }
 
     .testimonials-text{
-      font-size: var(--fs-6);
-      height: 10em;
+      font-size: 11px;
     }
 
     .img-box-testimonial {
-      height: 20em;
-      width: 17em;
+      height: 14em;
+      width: 13em;
       margin-bottom: .5em;  
     }
 
