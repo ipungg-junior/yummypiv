@@ -17,6 +17,11 @@
                     <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input-testimonial" id="image-input-testimonial" placeholder="Upload Foto Profil">
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Image Banner</label>
+                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image-banner" hidden>
+                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input-banner" id="image-input-banner" placeholder="Upload Foto banner">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Content</label>
                     <input type="text" class="form-control" name="testimonial-content" id="testimonial-content"
                         placeholder="Isi komentar" value="">
@@ -37,9 +42,11 @@
     </div>
 
     <script>
-        const imageInputTestimonial = document.getElementById('image-input-testimonial');
         const closeBtnTestimonial = document.getElementById('close-btn-testimonial');
+        const imageInputTestimonial = document.getElementById('image-input-testimonial');
         const previewImageTestimonial = document.getElementById('preview-image-testimonial');
+        const imageInputBanner = document.getElementById('image-input-banner');
+        const previewImageBanner = document.getElementById('preview-image-banner');
         const submitBtnTestimonial = document.getElementById('submit-testimonial-btn');
         const loadingTestimonial = document.getElementById('loading-testimonial');
         
@@ -56,6 +63,23 @@
             if (file) {
                 reader.readAsDataURL(file);
                 imageInputTestimonial.hidden = true;
+                loadingTestimonial.hidden = true;
+            }
+        });
+
+        imageInputBanner.addEventListener('change', function (event) {
+            loadingTestimonial.hidden = false;
+            const reader = new FileReader();
+            const file = event.target.files[0];
+            
+            reader.onload = function (e) {
+                previewImageBanner.src = e.target.result;
+                previewImageBanner.hidden = false;
+            };
+            
+            if (file) {
+                reader.readAsDataURL(file);
+                imageInputBanner.hidden = true;
                 loadingTestimonial.hidden = true;
             }
         });
@@ -82,35 +106,24 @@
             
             const inputFileTestimonial = document.getElementById('image-input-testimonial').files[0];
             if (inputFileTestimonial) {
-                formData.append('testimonial-image', inputFileTestimonial);                
+                formData.append('testimonial-image', inputFile);    
             }
-                fetch(mLink.addTestimonial, {  // Ganti '/upload/' dengan URL path Django Anda
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRFToken': csrfToken,  // Untuk menambahkan CSRF token
-                    },
-                }).then(response => {
-                    if (response.status === 200) {
-                        return response.json();  // Jika status 200, konversi ke JSON
-                    } else {
-                        throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
-                    }
-                })
-                .then(data => {
-                    if (data.status) {
+            const inputFileBanner = document.getElementById('image-input-banner').files[0];
+            if (inputFileTestimonial) {
+                formData.append('testimonial-banner-image', inputFile);    
+            }
+
+            fetchManager.post(mLink.addTestimonial, formData)
+                .then(response => {
+                    const message = response.data.msg;
+                    if (response.status === true) {                     
                         loadingTestimonial.hidden = true;
-                        const message = data.data.msg;  // Ambil message dari response                        
-                        alert(message);  // Menampilkan pesan ke user
+                        alert(message);
                         window.location.href = mLink.menuContentManagement;
                     } else {
-                        alert('Error: ', data);  // Menangani response er
-                        loadingTestimonial.hidden = true;
+                        alert(message);
                     }
-                })
-                .catch((error) => {
-                    alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan
-                    loadingTestimonial.hidden = true;
+                    loading.hidden = true;
                 });
         });
 
