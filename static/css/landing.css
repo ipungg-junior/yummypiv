@@ -27,6 +27,7 @@
   --saffron: #DA91A0;
   --rhythm: hsl(240, 9%, 51%);
   --white: hsl(0, 0%, 100%);
+  --dark-pink: hsl(347.67deg 24.17% 54.01%);
 
   /**
    * typography 
@@ -871,7 +872,7 @@ html {
 \*-----------------------------------*/
 
 footer {
-  background: var(--space-cadet);
+  background: var(--dark-pink);
   padding: 50px var(--px);
 }
 
@@ -885,10 +886,11 @@ footer {
 .social-link {
   display: flex;
   gap: 15px;
+  color: var(--white);
 }
 
 .social-link ion-icon {
-  color: var(--cultured);
+  color: var(--white);
   font-size: 15px;
   transition: 0.25s ease;
 }
@@ -897,7 +899,7 @@ footer {
 
 .copyright {
   font-size: 12px;
-  color: var(--rhythm);
+  color: var(--white);
   text-align: center;
   letter-spacing: 0.5px;
 }
