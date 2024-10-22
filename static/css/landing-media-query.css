@@ -403,6 +403,11 @@
       font-size: var(--fs-6);
     }
 
+    .img-box-testimonial {
+      height: 20em;
+      width: 17em;  
+    }
+
     .customer-info {
       width: unset;
     }
