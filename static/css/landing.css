@@ -852,8 +852,9 @@ html {
 }
 
 .img-box-testimonial {
-  height: 45em;
+  height: 33em;
   width: 25em;
+  margin-bottom: 1em;
 }
 
 

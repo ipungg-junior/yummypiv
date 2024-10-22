@@ -401,11 +401,13 @@
 
     .testimonials-text{
       font-size: var(--fs-6);
+      height: 10em;
     }
 
     .img-box-testimonial {
       height: 20em;
-      width: 17em;  
+      width: 17em;
+      margin-bottom: .5em;  
     }
 
     .customer-info {
