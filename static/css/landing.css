@@ -796,7 +796,7 @@ html {
   padding: 2em;
   border-radius: .5em;
   border: 1.4px solid #e1e1e1;
-  width: 100%;
+  width: min-content;
 }
 
 .testimonials-card .card-title {
