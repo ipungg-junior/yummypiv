@@ -798,6 +798,7 @@ html {
   padding: 2em;
   border-radius: .5em;
   border: 1.4px solid #e1e1e1;
+  width: 100%;
 }
 
 .testimonials-card .card-title {
@@ -821,7 +822,6 @@ html {
   line-height: 1.4;
   letter-spacing: 0.5px;
   margin-bottom: 15px;
-  width: 27em;
 }
 
 .customer-info {
@@ -851,6 +851,11 @@ html {
   font-weight: 600;
 }
 
+.img-box-testimonial {
+  height: 33em;
+  width: 25em;
+  margin-bottom: 1em;
+}
 
 
 
