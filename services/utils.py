@@ -75,3 +75,7 @@ def is_valid_name(name):
     return False, None
 
 
+def idr_to_k(value):
+    if value >= 1000:
+        return f"{value // 1000}k"
+    return str(value)

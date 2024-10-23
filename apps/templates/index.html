@@ -299,6 +299,46 @@
 
           </a>
 
+          {% for product in products %}
+
+            <a href="#">
+
+              <div class="product-card">
+
+                <div class="img-box">
+                  <img src="{{ product.img_link }}" alt="product image" class="product-img" width="200" loading="lazy">                  
+                </div>
+
+                <div class="product-content">
+
+                  <div class="wrapper">
+                    <h3 class="product-name">{{ product.product_name }}</h3>
+
+                    <p class="product-price">
+                      <span class="small"></span>{{ product.price }}
+                    </p>
+                  </div>
+
+                  <p class="product-text">
+                    {{ product.description }}
+                  </p>
+
+                  <div class="product-rating">
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                    <ion-icon name="star"></ion-icon>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </a>
+
+          {% endfor %}
+
 
         </div>
 
