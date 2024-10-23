@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
-from apps.models import Partner, Article, OwnerProfile, Testimonials
+from apps.models import Partner, Article, OwnerProfile, Testimonials, Product
+from services import utils
 
 # Logger information object
 import logging
@@ -8,13 +9,25 @@ logger = logging.getLogger('yummypiv')
 
 def landing(request):
     testimonials = Testimonials.objects.all()
+    products_ = Product.objects.all()
     all_profile = OwnerProfile.objects.all()
     ctx = {}            
     for profile_item in all_profile:
-        ctx[profile_item.info] = profile_item.content     
+        ctx[profile_item.info] = profile_item.content   
     
+    products = []
+    n = {}
+    for product in products_:
+        n['product_name'] = product.product_name
+        n['img_link'] = product.img_link
+        n['price'] = utils.idr_to_k(product.price)
+        n['description'] = product.description
+        products.append(n) 
+        n = {}
+        
+           
     ctx['testimonials'] = testimonials
-    
+    ctx['products'] = products
     resp = render(template_name='index.html', request=request, context=ctx)
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
     resp.headers['Pragma'] = "no-cache"
