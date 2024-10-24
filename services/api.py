@@ -254,12 +254,14 @@ class API(View):
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
                 
         if (self.context == 'api-delete-testimonial'):
-            try:                
-                print('Berhasil kok',request.POST.get('testimonial-id'))
-                logger.info(f'Data about has been updated.')
-                return JsonResponse({'status': True, 'data':{'msg': 'Okay'}})
+            try:                                
+                selected_product_id = request.POST.get('testimonial-id')
+                selected_product = Testimonials.objects.get(id=selected_product_id)
+                selected_product.delete()
+                logger.info(f'Testimonial has been deleted.')
+                return JsonResponse({'status': True, 'data':{'msg': 'Testimonial deleted!'}})
             except Exception as error:
-                logger.error(f'Error when update data about! - {error}')
+                logger.error(f'Error when delete testimonial! - {error}')
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
 
         if (self.context == 'api-add-product'):
@@ -301,3 +303,14 @@ class API(View):
             except Exception as error:
                 logger.error(f'Error when data Product! - {error}')
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})   
+            
+        if (self.context == 'api-delete-product'):
+            try:                
+                logger.info(f'Start deleting product')
+                selected_product_id = request.POST.get('product-id')
+                selected_product = Product.objects.get(id=selected_product_id)
+                selected_product.delete()
+                return JsonResponse({'status': True, 'data':{'msg': 'Product deleted!'}})
+            except Exception as error:
+                logger.error(f'Error when delete data product! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
