@@ -10,7 +10,7 @@
                     <h3 class="card-title">Etalase Toko</h3>
 
                     <div class="btn-list">
-                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                        <a href="" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
                             data-bs-target="#modal-product">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -55,8 +55,7 @@
                                 </td>
                                 <td class="text-center">
                                     <span class="dropdown">
-                                        <a class="btn btn-primary bg-danger remove-btn"
-                                            data-id="{{ product.id }}">Remove</a>
+                                        <a class="btn btn-primary bg-danger remove-btn" data-id="{{ product.id }}">Remove</a>
                                     </span>
                                 </td>
                             </tr>
@@ -93,6 +92,7 @@
                         .then(response => {
                             const message = response.data.msg;
                             if (response.status === true) {
+                                alert(message);
                                 window.location.href = mLink.menuContentManagement;
                             } else {
                                 alert(message);

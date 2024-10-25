@@ -87,11 +87,12 @@
                         .then(response => {
                             const message = response.data.msg;
                             if (response.status === true) {
-                                loading.hidden = true;
+                                alert(message);
                                 window.location.href = mLink.menuContentManagement;
                             } else {
                                 alert(message);
                             }
+                            loading.hidden = true;
                         });
                 }
 
