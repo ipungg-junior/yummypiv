@@ -49,8 +49,6 @@
         const loadingProduct = document.getElementById('loading-product');
         
         imageInputProduct.addEventListener('change', function (event) {
-            loadingProduct.hidden = false;
-            const reader = new FileReader();
             const file = event.target.files[0];
             const maxSize = 8 * 1024 * 1024; // 8MB.
             
@@ -58,7 +56,11 @@
                 if (file.size > maxSize) {
                     alert('Ukuran file tidak boleh lebih dari 8MB.');
                     file.value = '';
+                    imageInputProduct.value = '';
+                    loadingProduct.hidden = true;
                 } else {
+                    loadingProduct.hidden = false;
+                    const reader = new FileReader();
                     reader.onload = function (e) {
                         imagePreviewProduct.src = e.target.result;
                         imagePreviewProduct.hidden = false;
