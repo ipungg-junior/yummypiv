@@ -41,19 +41,26 @@
         const loading = document.getElementById('loading');
         
         imageInput.addEventListener('change', function (event) {
-            loading.hidden = false;
-            const reader = new FileReader();
             const file = event.target.files[0];
-            
-            reader.onload = function (e) {
-                image.src = e.target.result;
-                image.hidden = false;
-            };
+            const maxSize = 8 * 1024 * 1024; // 8MB.
             
             if (file) {
-                reader.readAsDataURL(file);
-                imageInput.hidden = true;
-                loading.hidden = true;
+                if (file.size > maxSize) {
+                    alert('Ukuran gambar tidak boleh lebih dari 8MB.');
+                    file.value = '';
+                    imageInput.value = '';
+                    loading.hidden = true;
+                } else {
+                    loading.hidden = false;
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        image.src = e.target.result;
+                        image.hidden = false;
+                    };
+                    reader.readAsDataURL(file);
+                    imageInput.hidden = true;
+                    loading.hidden = true;
+                }
             }
         });
         
