@@ -52,16 +52,21 @@
             loadingProduct.hidden = false;
             const reader = new FileReader();
             const file = event.target.files[0];
-            
-            reader.onload = function (e) {
-                imagePreviewProduct.src = e.target.result;
-                imagePreviewProduct.hidden = false;
-            };
+            const maxSize = 8 * 1024 * 1024; // 8MB.
             
             if (file) {
-                reader.readAsDataURL(file);
-                imageInputProduct.hidden = true;
-                loadingProduct.hidden = true;
+                if (file.size > maxSize) {
+                    alert('Ukuran file tidak boleh lebih dari 8MB.');
+                    file.value = '';
+                } else {
+                    reader.onload = function (e) {
+                        imagePreviewProduct.src = e.target.result;
+                        imagePreviewProduct.hidden = false;
+                    };
+                    reader.readAsDataURL(file);
+                    imageInputProduct.hidden = true;
+                    loadingProduct.hidden = true;
+                }
             }
         });
         
@@ -82,7 +87,7 @@
             formData.append('product-description', document.getElementById('product-description').value);
                         
             const inputFile = document.getElementById('product-image-input').files[0];
-            if (inputFile) {
+            if (inputFile) {                
                 formData.append('product-image', inputFile);    
             }
             fetchManager.post(mLink.addProduct, formData)
