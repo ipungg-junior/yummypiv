@@ -51,19 +51,26 @@
         const loadingTestimonial = document.getElementById('loading-testimonial');
         
         imageInputTestimonial.addEventListener('change', function (event) {
-            loadingTestimonial.hidden = false;
-            const reader = new FileReader();
             const file = event.target.files[0];
-            
-            reader.onload = function (e) {
-                previewImageTestimonial.src = e.target.result;
-                previewImageTestimonial.hidden = false;
-            };
+            const maxSize = 8 * 1024 * 1024; // 8MB.
             
             if (file) {
-                reader.readAsDataURL(file);
-                imageInputTestimonial.hidden = true;
-                loadingTestimonial.hidden = true;
+                if (file.size > maxSize) {
+                    alert('Ukuran gambar tidak boleh lebih dari 8MB.');
+                    file.value = '';
+                    imageInputTestimonial.value = '';
+                    loadingTestimonial.hidden = true;
+                } else {
+                    loadingTestimonial.hidden = false;
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreviewTestimonial.src = e.target.result;
+                        imagePreviewTestimonial.hidden = false;
+                    };
+                    reader.readAsDataURL(file);
+                    imageInputTestimonial.hidden = true;
+                    loadingTestimonial.hidden = true;
+                }
             }
         });
 
