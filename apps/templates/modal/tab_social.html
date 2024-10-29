@@ -50,18 +50,18 @@
 
     <div class="col-lg-6">
         <div class="mb-3">
-            <label class="form-label">LinkedIn</label>
-            <input type="text" class="form-control" id="linkedin-link" value="{{ linkedin_link }}" />
+            <label class="form-label">Tiktok</label>
+            <input type="text" class="form-control" id="tiktok-link" value="{{ tiktok_link }}" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-3">
             
             <label class="form-check" style="padding-top: 2.5em;">
-                {% if linkedin_state == 'true' %}
-                    <input class="form-check-input" type="checkbox" id="linkedin-state" checked>
+                {% if tiktok_state == 'true' %}
+                    <input class="form-check-input" type="checkbox" id="tiktok-state" checked>
                 {% else %}
-                    <input class="form-check-input" type="checkbox" id="linkedin-state">
+                    <input class="form-check-input" type="checkbox" id="tiktok-state">
                 {% endif %}
                 <span class="form-check-label">
                     Active
@@ -74,18 +74,18 @@
 
     <div class="col-lg-6">
         <div class="mb-3">
-            <label class="form-label">Youtube</label>
-            <input type="text" class="form-control" id="youtube-link" value="{{ youtube_link }}" />
+            <label class="form-label">Instagram</label>
+            <input type="text" class="form-control" id="instagram-link" value="{{ instagram_link }}" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-3">
             
             <label class="form-check" style="padding-top: 2.5em;">
-                {% if youtube_state == 'true' %}
-                    <input class="form-check-input" type="checkbox" id="youtube-state" checked>
+                {% if instagram_state == 'true' %}
+                    <input class="form-check-input" type="checkbox" id="instagram-state" checked>
                 {% else %}
-                    <input class="form-check-input" type="checkbox" id="youtube-state">
+                    <input class="form-check-input" type="checkbox" id="instagram-state">
                 {% endif %}
                 <span class="form-check-label">
                     Active
@@ -105,12 +105,12 @@
 <script>
     const facebookLink = document.getElementById('facebook-link');
     const twitterLink = document.getElementById('twitter-link');
-    const youtubeLink = document.getElementById('youtube-link');
-    const linkedinLink = document.getElementById('linkedin-link');
+    const instagramLink = document.getElementById('instagram-link');
+    const tiktokLink = document.getElementById('tiktok-link');
     const facebookState = document.getElementById('facebook-state');
     const twitterState = document.getElementById('twitter-state');
-    const youtubeState = document.getElementById('youtube-state');
-    const linkedinState = document.getElementById('linkedin-state');
+    const instagramState = document.getElementById('instagram-state');
+    const tiktokState = document.getElementById('tiktok-state');
     const saveBtnSocial = document.getElementById('save-btn-social');
 
     saveBtnSocial.addEventListener('click', function (event) {
@@ -122,10 +122,10 @@
         formData.append('facebook-state', facebookState.checked);
         formData.append('twitter-link', twitterLink.value);
         formData.append('twitter-state', twitterState.checked);
-        formData.append('youtube-link', youtubeLink.value);
-        formData.append('youtube-state', youtubeState.checked);
-        formData.append('linkedin-link', linkedinLink.value);
-        formData.append('linkedin-state', linkedinState.checked);   
+        formData.append('instagram-link', instagramLink.value);
+        formData.append('instagram-state', instagramState.checked);
+        formData.append('tiktok-link', tiktokLink.value);
+        formData.append('tiktok-state', tiktokState.checked);   
 
         updateSocial(formData);
     });
