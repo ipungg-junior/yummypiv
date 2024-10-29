@@ -224,24 +224,15 @@ class API(View):
                         
                 image = request.FILES.get('testimonial-image')
                 if (image):
-                    sts = False
-                    msg = ''
-                    if (image.name).endswith('.png'):
-                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='png')
-                    if (image.name).endswith('.jpg'):
-                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='jpg')
-                    if (image.name).endswith('.webp'):
-                        sts, msg = firebase_upload('media/testimonial', image, image.name, ct='webp')
-                    else:
-                        exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
-                        logger.info(f'Image not supported, force to default avatar.')
-                        exist_data.save()
-                        logger.info(f'Success uploaded testimonial')
-                        return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah. (default avatar)'}})
+                    sts, msg = firebase_upload('media/testimonial', image)
                         
                     if (sts):
                         exist_data.img_link = msg
                         logger.info(f'Testimonial image save to firebase -> {msg}')
+                    else:
+                        exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                        logger.info(f'Image upload error, save with default avatar.')
+                        
                 else:
                     exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
                     logger.info(f'Image does not exist, force to default avatar.')
@@ -274,21 +265,12 @@ class API(View):
                         
                 image = request.FILES.get('product-image')
                 if (image):
-                    sts = False
-                    msg = ''
-                    if (image.name).endswith('.png'):
-                        sts, msg = firebase_upload('media/product', image, image.name, ct='png')
-                    if (image.name).endswith('.jpg'):
-                        sts, msg = firebase_upload('media/product', image, image.name, ct='jpg')
-                    if (image.name).endswith('.webp'):
-                        sts, msg = firebase_upload('media/product', image, image.name, ct='webp')
+                    sts, msg = firebase_upload('media/product', image)
                         
                     if (sts):
                         new_product.img_link = msg
-                        new_product.save()
-                        logger.info(f'Product image save to firebase -> {msg}')
-                        return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
                     else:
+                        new_product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
                         new_product.save()                      
                         logger.info(f'Success uploaded product with no image!')
                         return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah. (default avatar)'}})

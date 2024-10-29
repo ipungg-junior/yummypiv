@@ -28,23 +28,26 @@ def get_image(path):
     url = bucket.blob(path)
     return url
 
-
-def firebase_upload(path, ref_file, filename, ct):
+  
+def firebase_upload(path, img):
     now = timezone.now()
     try:
-      formatted_name = filename.replace(' ', '-').lower()
-      folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
-      bucket = storage.bucket()
-      blob = bucket.blob(folder_path)
-      blob.upload_from_file(ref_file, content_type=f'image/{ct}')
-      # Buat URL publik
-      blob.make_public()
-      public_url = blob.public_url
-      # save local info
-      return (True, public_url)
+        formatted_name = img.name.replace(' ', '-').lower()
+        ct = img.content_type.split('/')[1]  # Mendapatkan tipe konten dari file
+        folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
+        
+        bucket = storage.bucket()
+        blob = bucket.blob(folder_path)
+        blob.upload_from_file(img, content_type=img.content_type)
+        
+        # Buat URL publik
+        blob.make_public()
+        public_url = blob.public_url
+        
+        return (True, public_url)
     except Exception as err:
-      print(err)
-      return (False, 'Terjadi kesalahan saat upload, silahka ulangi.')
+        print(err)
+        return (False, 'Terjadi kesalahan saat upload, silahkan ulangi.')
     
     
 def firebase_delete(url):

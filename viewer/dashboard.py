@@ -97,19 +97,18 @@ class Dashboard(View):
             try:
                 partner_name = request.POST.get('partner-name')
                 partner_image = request.FILES.get('image')
-                if (partner_image.name).endswith('.png'):
-                    sts, msg = firebase_upload('partner', partner_image, partner_name, ct='png')                    
-                if (partner_image.name).endswith('.jpg'):
-                    sts, msg = firebase_upload('partner', partner_image, partner_name, ct='jpg')                    
-                if (partner_image.name).endswith('.jpeg'):
-                    sts, msg = firebase_upload('partner', partner_image, partner_name, ct='jpeg')                    
-                if (partner_image.name).endswith('.webp'):
-                    sts, msg = firebase_upload('partner', partner_image, partner_name, ct='webp')               
+                sts, msg = firebase_upload('partner', partner_image)
+                
+                if sts:
+                    new_partner = Partner(name=partner_name, img_link=msg)
+                    new_partner.img_link = msg
+                    new_partner.name = partner_name                    
+                    new_partner.save()
+                    logger.info(f'Partner berhasil ditambahkan.')
+                    return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil ditambahkan.'}})     
+                else:
+                    return JsonResponse({'status': False, 'data':{'msg': 'Gagal menambah partner, gambar eror!'}})                         
 
-                new_partner = Partner(name=partner_name, img_link=msg)
-                new_partner.save()
-
-                return JsonResponse({'status': 'true', 'data':{'msg': 'Partner berhasil ditambahkan.'}})     
             except Exception as firebase_error:
                 logger.error(f'{firebase_error} - Gagal upload ke firebase cek services/firebase.py')
                 return JsonResponse({'status': 'false', 'data':{'msg': 'Gagal saat menambahkan partner.'}})    
@@ -136,15 +135,8 @@ class Dashboard(View):
                 title = request.POST.get('title')
                 content = request.POST.get('content')
                 image = request.FILES.get('image')
-                sts = False
-                if (image.name).endswith('.png'):
-                    sts, msg = firebase_upload('news', image, title, ct='png')                    
-                if (image.name).endswith('.jpg'):
-                    sts, msg = firebase_upload('news', image, title, ct='jpg')                    
-                if (image.name).endswith('.jpeg'):
-                    sts, msg = firebase_upload('news', image, title, ct='jpeg')                    
-                if (image.name).endswith('.webp'):
-                    sts, msg = firebase_upload('news', image, title, ct='webp')   
+                
+                sts, msg = firebase_upload('news', image)
 
                 if (sts):
                     new_article = Article()
