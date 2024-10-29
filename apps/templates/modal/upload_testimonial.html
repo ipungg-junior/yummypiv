@@ -64,8 +64,8 @@
                     loadingTestimonial.hidden = false;
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        imagePreviewTestimonial.src = e.target.result;
-                        imagePreviewTestimonial.hidden = false;
+                        previewImageTestimonial.src = e.target.result;
+                        previewImageTestimonial.hidden = false;
                     };
                     reader.readAsDataURL(file);
                     imageInputTestimonial.hidden = true;
@@ -113,11 +113,11 @@
             
             const inputFileTestimonial = document.getElementById('image-input-testimonial').files[0];
             if (inputFileTestimonial) {
-                formData.append('testimonial-image', inputFile);    
+                formData.append('testimonial-image', inputFileTestimonial);    
             }
             const inputFileBanner = document.getElementById('image-input-banner').files[0];
-            if (inputFileTestimonial) {
-                formData.append('testimonial-banner-image', inputFile);    
+            if (inputFileBanner) {
+                formData.append('testimonial-banner-image', inputFileBanner);    
             }
 
             fetchManager.post(mLink.addTestimonial, formData)
