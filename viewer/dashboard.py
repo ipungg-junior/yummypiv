@@ -70,6 +70,7 @@ class Dashboard(View):
         if (self.context == 'partner-dashboard'):
             partner_list = Partner.objects.all()
             ctx = {'partner_list': partner_list}
+            ctx['notifications'] = system_notification()
             return render(request, 'partner_dashboard.html', context=ctx)
         
         if (self.context == 'news-dashboard'):

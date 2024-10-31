@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from services.news import most_viewed_article
 from services.utils import role_required
+from services.notification import system_notification
 from apps.models import OwnerProfile, Testimonials, Product
 from django.utils import timezone
 from datetime import timedelta
@@ -27,6 +28,7 @@ class ContentManagement(View):
             all_product = Product.objects.all()
             ctx['testimonials'] = all_testimonial
             ctx['products'] = all_product
+            ctx['notifications'] = system_notification()
             
             for profile_item in all_profile:
                 ctx[profile_item.info] = profile_item.content    
