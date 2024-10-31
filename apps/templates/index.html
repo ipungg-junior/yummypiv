@@ -27,6 +27,11 @@
 </head>
 
 <body>
+
+  {% if promote_ads %}
+    {% include 'modal/promote_ads.html' %}
+  {% endif %}
+
   <a href="https://wa.me/{{phone_number}}" class="whatsapp-button" target="_blank">
     <i class="fab fa-whatsapp"></i>
   </a>

@@ -1,0 +1,65 @@
+{% load static %}
+<style>
+    .banner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        opacity: 0;
+        /* Mulai dengan transparan */
+        transform: scale(1.05);
+        /* Sedikit membesar untuk efek zoom */
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        /* Transisi halus untuk opacity dan scale */
+    }
+
+    .banner.show {
+        opacity: 1;
+        /* Muncul sepenuhnya */
+        transform: scale(1);
+        /* Kembali ke ukuran normal */
+    }
+
+    .banner img {
+        max-width: 90%;
+        max-height: 50%;
+        object-fit: cover;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .close-btn-banner {
+        height: fit-content;
+        padding: 8px;
+        font-size: 14px;
+        background: wheat;
+        border-radius: 50%;
+        right: -17%;
+        position: relative;
+    }
+
+    @media (max-width: 600px) {
+        .close-btn-banner {
+            padding: 8px;
+            font-size: 14px;
+        }
+    }
+</style>
+<div class="banner show">
+    <button class="close-btn-banner btn" onclick="closeBanner()">X</button>
+    <img src="{% static 'image/product/p3.jpg' %}" alt="Promo Banner">
+</div>
+
+<script>
+    function closeBanner() {
+        document.querySelector('.banner').style.display = 'none';
+    }
+</script>
