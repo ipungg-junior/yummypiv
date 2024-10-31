@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from services.news import most_viewed_article
 from services.utils import role_required
+from services.notification import system_notification
 from apps.models import ClientInbox
 from django.utils import timezone
 from datetime import timedelta
@@ -23,4 +24,5 @@ class ClientSupport(View):
             ctx = {}
             inbox_list = ClientInbox.objects.order_by('-created_at')
             ctx['inbox_list'] = inbox_list
+            ctx['notifications'] = system_notification()
             return render(request, 'support_dashboard.html', context=ctx)
