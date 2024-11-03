@@ -2,7 +2,7 @@
 
 ![Dev](https://img.shields.io/badge/Branch-stable-green) 
 
-![Dev](https://img.shields.io/badge/Version-1.0.0-blue)
+![Dev](https://img.shields.io/badge/Version-3.0.0-blue)
 
 ## Introduction Project
 
@@ -14,13 +14,15 @@ This application aims to enhance productivity, facilitate monitoring, and improv
 
 You can see deployment web on [yummypiv.com](https://yummypiv.com)
 
-## Tools
+## Tech Stack
 
 - Python version 3.12 [download](https://python.org)
     
 - Django version 4.2 [download](https://www.djangoproject.com)
     
 - Pip version 24.0
+
+- Firebase Storage (guide)(https://firebase.com)
 
 
 # Setup project env and Installation
