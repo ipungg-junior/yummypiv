@@ -71,10 +71,8 @@ function reportUserActivity() {
     }
 }
 
-// Start countdown when the page loads
-window.onload = () => {
-    startCountdown();
-};
+
 
 // Detect scroll event
 window.addEventListener('scroll', handleScroll);
+startCountdown();
