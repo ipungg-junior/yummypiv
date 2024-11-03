@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials, Product
 from django.utils import timezone
 from datetime import timedelta
-from services.utils import is_valid_name, is_valid_phone_number
+from services.utils import is_valid_name, is_valid_phone_number, generate_visit_id
 from services.firebase import firebase_delete, firebase_upload
 from django.contrib.auth import get_user_model
 import datetime
@@ -29,17 +29,44 @@ class API(View):
                 try:
                     ip_address = request.META.get('REMOTE_ADDR')                        
                     user_agent = request.META.get('HTTP_USER_AGENT')            
-                    path = request.POST['path']                    
-                    new_report = Visitor(ip_address=ip_address, user_agent=user_agent, path=path)   
-                    new_report.save()
-                    logger.info(f'{path} from {ip_address} saved to visitor')
-                    return JsonResponse({'status': True, 'data': {'msg': 'Successfully report'}})     
+                    path = request.POST['path']         
+                    visit_id = request.POST['visit_id']
+                    if (visit_id == ''):
+                        logger.info(f'Client has no `visit_id`, visit record blocked.')
+                        return JsonResponse({'status': False, 'data': {'msg': '`visit_id` is empty!'}})     
+                    else:
+                        try:
+                            recorded = Visitor.objects.get(visit_id=visit_id)
+                            logger.info(f'Client already recorded, skiiping record visitor - {visit_id}')                        
+                            return JsonResponse({'status': True, 'data': {'msg': 'Client already recorded, skiiping record visitor.'}})     
+                        except Exception as didnt_match:                            
+                            logger.info(f'`visit_id` didnt match on Query! blocked!')                        
+                            return JsonResponse({'status': True, 'data': {'msg': 'Succes without record, cause not match query.'}})                                 
+                            
                 except Exception as error_report_visitor:
                     logger.error(f'report visitor {error_report_visitor}')
                     return JsonResponse({'status': False, 'data': {'msg': 'Fail report'}})     
             else:
                 logger.info(f'Record skipped, because doesnot user public.')
                 return JsonResponse({'status': False, 'data': {'msg': 'Youre not visitor!'}})     
+            
+        if (self.context == 'api-visitor-request'):            
+            if (str(request.user) == 'AnonymousUser'):
+                try:
+                    ip_address = request.META.get('REMOTE_ADDR')                        
+                    user_agent = request.META.get('HTTP_USER_AGENT')            
+                    path = request.POST['path']                    
+                    visit_id = generate_visit_id(ip_address, user_agent, path)
+                    new_report = Visitor(ip_address=ip_address, user_agent=user_agent, path=path, visit_id=visit_id)   
+                    new_report.save()
+                    logger.info(f'Generate for new visitor ({visit_id})')
+                    return JsonResponse({'status': True, 'data': {'msg': 'Successfully generate visit id', 'visit_id': visit_id}})     
+                except Exception as error_generate:
+                    logger.error(f'report visitor {error_generate}')
+                    return JsonResponse({'status': False, 'data': {'msg': f'Failed to generate visit id ({error_generate})'}})     
+            else:
+                logger.info(f'Generate blocked cause request not public!')
+                return JsonResponse({'status': False, 'data': {'msg': 'Youre not visitor!'}})
             
         
         if (self.context == 'api-client-inbox'):

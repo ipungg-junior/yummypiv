@@ -2,8 +2,8 @@ from functools import wraps
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.conf import settings
-import os, json, re, time, threading
 from datetime import datetime
+import os, json, re, time, threading, hashlib
 
 def get_current_date_time_string():
     current_datetime = datetime.now()
@@ -79,3 +79,11 @@ def idr_to_k(value):
     if value >= 1000:
         return f"{value // 1000}k"
     return str(value)
+
+
+def generate_visit_id(ip_addr, path, user_agent):
+    # Concatenate the input values to form a unique string
+    visit_string = f"{ip_addr}_{path}_{user_agent}"    
+    # Use SHA-256 to generate a unique hash for the visit
+    visit_id = hashlib.sha256(visit_string.encode()).hexdigest()    
+    return visit_id
