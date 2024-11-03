@@ -27,7 +27,7 @@
 </head>
 
 <body>
-
+  {% csrf_token %}
   {% if promote_ads %}
     {% include 'modal/promote_ads.html' %}
   {% endif %}
@@ -379,7 +379,9 @@
   <!--
     - custom js link
   -->
-  <script src="{% static 'js/common.js' %}"></script>
+  <script src="{% static 'js/fetch-manager.js' %}"></script>
+  <script src="{% static 'js/client-manager.js' %}"></script>
+  <script src="{% static 'js/reporter.js' %}"></script>
 
   <!--
     - ionicon link
