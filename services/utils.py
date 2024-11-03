@@ -82,8 +82,13 @@ def idr_to_k(value):
 
 
 def generate_visit_id(ip_addr, path, user_agent):
-    # Concatenate the input values to form a unique string
-    visit_string = f"{ip_addr}_{path}_{user_agent}"    
+    # Get the current timestamp to use as a salt
+    timestamp = str(time.time())
+    
+    # Concatenate the input values with the timestamp to form a unique string
+    visit_string = f"{ip_addr}_{path}_{user_agent}_{timestamp}"
+    
     # Use SHA-256 to generate a unique hash for the visit
-    visit_id = hashlib.sha256(visit_string.encode()).hexdigest()    
+    visit_id = hashlib.sha256(visit_string.encode()).hexdigest()
+    
     return visit_id
