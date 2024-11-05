@@ -435,7 +435,7 @@ html {
 
 .food-img {
   position: absolute;
-  width: 68%;
+  width: 83%;
 }
 
 .food-1 {
@@ -451,7 +451,7 @@ html {
 }
 
 .food-3 {
-  bottom: -4%;
+  bottom: -1%;
   right:  -4%;
   animation: scaleUp 4s ease-in-out infinite;
 }
