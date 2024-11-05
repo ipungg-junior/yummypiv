@@ -387,7 +387,11 @@
 
   @media screen and (max-width: 520px) {
     .food-3 {
-      right: 8%;
+      right: 4%;
+    }
+
+    .food-img {
+      width: 93%;
     }
 
     .testimonials-grid {
