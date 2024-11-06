@@ -65,7 +65,7 @@ class Dashboard(View):
             percentage = (float(used_) / total_size_mb) * 100
             ctx['system_percent'] = percentage
             
-            return render(request, 'layout/dashboard.html', context=ctx)
+            return render(request, 'pages/dashboard.html', context=ctx)
         
         if (self.context == 'partner-dashboard'):
             partner_list = Partner.objects.all()
