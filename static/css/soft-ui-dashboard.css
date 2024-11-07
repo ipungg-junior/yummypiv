@@ -69,6 +69,7 @@
     --bs-white-rgb: 255,255,255;
     --bs-black-rgb: 0,0,0;
     --bs-font-sans-serif: "Inter";
+    --bs-font-poppins: 'Poppins', sans-serif;
     --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     --bs-gradient: linear-gradient(180deg,hsla(0,0%,100%,.15),hsla(0,0%,100%,0));
     --bs-body-font-family: var(--bs-font-sans-serif);
@@ -4475,6 +4476,7 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
     --bs-nav-link-color: var(--bs-navbar-color);
     --bs-nav-link-hover-color: var(--bs-navbar-hover-color);
     --bs-nav-link-disabled-color: var(--bs-navbar-disabled-color);
+    font-family: var(--bs-font-poppins);
     display: flex;
     flex-direction: column;
     padding-left: 0;
@@ -23570,7 +23572,8 @@ html {
 
 .g-sidenav-show .sidenav .nav-link-text {
     transition: .3s ease;
-    opacity: 1
+    opacity: 1;
+    letter-spacing: 1.2px;
 }
 
 @media (max-width: 1199.98px) {
@@ -23615,7 +23618,7 @@ html {
 }
 
 .navbar-vertical .navbar-nav>.nav-item .nav-link.active .icon {
-    background-image: linear-gradient(310deg,#f97316,#f97316);
+    background-image: linear-gradient(310deg, var(--bs-indigo), var(--bs-info));
     color: #fff
 }
 
