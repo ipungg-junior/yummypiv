@@ -23510,7 +23510,8 @@ html {
 }
 
 .main-content,.sidenav {
-    transition: all .2s ease-in-out
+    transition: all .2s ease-in-out;
+    font-family: var(--bs-font-poppins);
 }
 
 .sidenav {
