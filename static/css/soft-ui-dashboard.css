@@ -5,7 +5,7 @@
  */
 :root,[data-bs-theme=light] {
     --bs-blue: #0ea5e9;
-    --bs-indigo: #6366f1;
+    --bs-indigo: #2124e0;
     --bs-purple: #a855f7;
     --bs-pink: #ec4899;
     --bs-red: #ef4444;
@@ -10701,6 +10701,10 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 
 .bg-gradient {
     background-image: var(--bs-gradient)!important
+}
+
+.color-red {
+    color: var(--bs-red);
 }
 
 .user-select-all {
@@ -22094,7 +22098,7 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 }
 
 .bg-gradient-info {
-    background-image: linear-gradient(310deg,#0ea5e9,#06b6d4)
+    background-image: linear-gradient(310deg,var(--bs-indigo),var(--bs-info))
 }
 
 .bg-gradient-warning {
@@ -22909,8 +22913,8 @@ html {
 
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
     display: block;
-    overflow: auto;
-    height: calc(100vh - 360px)
+    overflow: scroll !important;
+    height: 25em;
 }
 
 .navbar-vertical.navbar-expand-xs>[class*=container] {

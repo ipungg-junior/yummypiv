@@ -19,13 +19,17 @@
   <link href="{% static 'css/nucleo-icon.css' %}" rel="stylesheet" />
   <link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
   <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js' %}" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- CSS Files -->
   <link id="pagestyle" href="{% static 'css/soft-ui-dashboard.css' %}" rel="stylesheet" />
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
+<body class="g-sidenav-show bg-gray-100" style="width: 99%;">
 
+  <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+  <script src="{% static 'js/plugins/Chart.extension.js' %}"></script>
+  <script src="{% static 'js/fetch-manager.js' %}"></script>
+  
   
   {% block sidenav %}
   {% endblock sidenav %}
@@ -38,8 +42,6 @@
   <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
 
   <!-- Plugin for the charts, full documentation here: https://www.chartjs.org/ -->
-  <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
-  <script src="{% static 'js/plugins/Chart.extension.js' %}"></script>
   <script src="{% static 'js/plugins/scrollbar.js' %}"></script>
 
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
