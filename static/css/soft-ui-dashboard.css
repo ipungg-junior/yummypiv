@@ -3458,10 +3458,10 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 
 .btn-primary {
     --bs-btn-color: #000;
-    --bs-btn-bg: #f97316;
+    --bs-btn-bg: var(--bs-indigo);
     --bs-btn-border-color: #f97316;
     --bs-btn-hover-color: #000;
-    --bs-btn-hover-bg: rgb(249.9,136,56.95);
+    --bs-btn-hover-bg: var(--bs-info);
     --bs-btn-hover-border-color: rgb(249.6,129,45.3);
     --bs-btn-focus-shadow-rgb: 212,98,19;
     --bs-btn-active-color: #000;
