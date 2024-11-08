@@ -4975,6 +4975,10 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
     color: var(--bs-card-subtitle-color)
 }
 
+.card-title-form {
+    padding: var(--bs-card-spacer-y);
+}
+
 .card-subtitle,.card-text:last-child {
     margin-bottom: 0
 }

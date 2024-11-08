@@ -1,0 +1,115 @@
+{% extends 'base/base_dashboard.html' %}
+{% load static %}
+{% block sidenav %}
+  {% include 'base/side_nav.html' %}
+{% endblock sidenav %}
+
+{% block body %}
+      {% csrf_token %}
+        
+        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+          
+          <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+            <div class="container-fluid py-1 px-3">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                  <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+                  <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+              </nav>
+              <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+                <ul class="navbar-nav  justify-content-end">
+                  <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                      <div class="sidenav-toggler-inner">
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                        <i class="sidenav-toggler-line"></i>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+          <div class="container-fluid py-4">
+            <div class="row mt-4">
+              
+                <div class="col-lg-12">
+                    <div class="card z-index-2">
+                      <div class="card-header pb-0">
+                        <h6>Manage Content</h6>
+                        <p class="text-sm">
+                          Last Updated : 21/12/2000
+                        </p>
+                      </div>
+                        <!-- Tab header -->
+                      <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <a href="#tab-main" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->                          
+                              Copywriting</a>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <a href="#tab-product" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/user -->                            
+                              Product</a>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <a href="#tab-testimonial" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab" tabindex="-2"><!-- Download SVG icon from http://tabler-icons.io/i/user -->                            
+                              Testimonial</a>
+                          </li>
+                        </ul>
+                      </div>
+    
+    
+                      <!-- tab body -->
+                      <div class="card-body">
+                        <script src="{% static 'js/fetch-manager.js' %}"></script>
+                        <script>
+                          var mLink = {
+                            menuContentManagement: "{% url 'content-management' %}",
+                            homepageUpper: "{% url 'api-update-homepage-upper' %}",
+                            about: "{% url 'api-update-about' %}",
+                            addTestimonial: "{% url 'api-add-testimonial' %}",
+                            deleteTestimonial: "{% url 'api-delete-testimonial' %}",
+                            addProduct: "{% url 'api-add-product' %}",
+                            deleteProduct: "{% url 'api-delete-product' %}"
+                          }                      
+                          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+                          var fetchManager = new FetchManager(csrfToken, true);
+                        </script>
+                        <div class="tab-content">
+                          <div class="tab-pane active show" id="tab-main" role="tabpanel">
+                            {% include 'tab_partial/tab_content_upper.html' %}                        
+                            {% include 'tab_partial/tab_content_about.html' %}                        
+                          </div>
+                          <div class="tab-pane" id="tab-product" role="tabpanel">
+                            {% include 'tab_partial/tab_content_product.html' %}       
+                          </div>   
+                          <div class="tab-pane" id="tab-testimonial" role="tabpanel">
+                            {% include 'tab_partial/tab_content_testimonial.html' %}       
+                          </div>                      
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+            </div>
+            
+            {% include 'partial/administrator/footer.html' %}
+          </div>
+        </main>
+
+        <script>
+          var win = navigator.platform.indexOf('Win') > -1;
+          if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+              damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+          }
+        </script>
+
+{% endblock body %}
