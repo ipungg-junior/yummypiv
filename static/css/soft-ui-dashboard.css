@@ -4306,6 +4306,10 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out
 }
 
+.nav-link.tab {
+    font-size: 13px;
+}
+
 @media (prefers-reduced-motion:reduce) {
     .nav-link {
         transition: none
