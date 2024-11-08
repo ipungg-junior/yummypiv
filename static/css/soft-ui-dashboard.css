@@ -22913,8 +22913,7 @@ html {
 
 .navbar-vertical.navbar-expand-xs .navbar-collapse {
     display: block;
-    overflow: scroll !important;
-    height: 25em;
+    /* height: 25em; */
 }
 
 .navbar-vertical.navbar-expand-xs>[class*=container] {

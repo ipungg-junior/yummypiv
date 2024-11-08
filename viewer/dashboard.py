@@ -21,9 +21,11 @@ class Dashboard(View):
     def get(self, request, *args, **kwargs):
 
         if (self.context == 'main-dashboard'):
+            page_name = 'dashboard'
             total_ , used_, free_ = analyze_storage()
             
             ctx = {}
+            ctx['page_name'] = page_name
             ctx['weekly_visit'] = Visitor.get_weekly_count()
             ctx['notifications'] = system_notification()
             ctx['total'] = total_
