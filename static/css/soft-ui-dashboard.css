@@ -10715,7 +10715,7 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 }
 
 .color-red {
-    color: var(--bs-red);
+    color: var(--bs-red) !important;
 }
 
 .user-select-all {
