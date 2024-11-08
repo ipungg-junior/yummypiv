@@ -66,7 +66,6 @@
     
                       <!-- tab body -->
                       <div class="card-body">
-                        <script src="{% static 'js/fetch-manager.js' %}"></script>
                         <script>
                           var mLink = {
                             menuContentManagement: "{% url 'content-management' %}",
@@ -78,7 +77,6 @@
                             deleteProduct: "{% url 'api-delete-product' %}"
                           }                      
                           const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-                          var fetchManager = new FetchManager(csrfToken, true);
                         </script>
                         <div class="tab-content">
                           <div class="tab-pane active show" id="tab-main" role="tabpanel">
