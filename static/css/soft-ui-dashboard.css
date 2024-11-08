@@ -6,6 +6,7 @@
 :root,[data-bs-theme=light] {
     --bs-blue: #0ea5e9;
     --bs-indigo: #2124e0;
+    --bs-indigo-secondary: #356cff;
     --bs-purple: #a855f7;
     --bs-pink: #ec4899;
     --bs-red: #ef4444;
@@ -72,6 +73,7 @@
     --bs-font-poppins: 'Poppins', sans-serif;
     --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     --bs-gradient: linear-gradient(180deg,hsla(0,0%,100%,.15),hsla(0,0%,100%,0));
+    --bs-gradient-primary: linear-gradient(310deg, var(--bs-indigo), var(--bs-info));
     --bs-body-font-family: var(--bs-font-sans-serif);
     --bs-body-font-size: 1rem;
     --bs-body-font-weight: 400;
@@ -3458,7 +3460,7 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 
 .btn-primary {
     --bs-btn-color: #000;
-    --bs-btn-bg: var(--bs-indigo);
+    --bs-btn-bg: var(--bs-indigo-secondary);
     --bs-btn-border-color: #f97316;
     --bs-btn-hover-color: #000;
     --bs-btn-hover-bg: var(--bs-info);
@@ -4283,8 +4285,8 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 .nav {
     --bs-nav-link-padding-x: 1rem;
     --bs-nav-link-padding-y: 0.5rem;
-    --bs-nav-link-color: var(--bs-link-color);
-    --bs-nav-link-hover-color: var(--bs-link-hover-color);
+    --bs-nav-link-color: #a6a6a6;
+    --bs-nav-link-hover-color: #5c5c5c;
     --bs-nav-link-disabled-color: #52525b;
     display: flex;
     flex-wrap: wrap;
@@ -4976,7 +4978,8 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 }
 
 .card-title-form {
-    padding: var(--bs-card-spacer-y);
+    padding: 0 var(--bs-card-spacer-y);
+    margin-bottom: 0;
 }
 
 .card-subtitle,.card-text:last-child {
