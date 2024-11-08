@@ -1,38 +1,31 @@
 {% load static %}
-<div class="container-xl" style="margin-bottom: 3em;">
+<div class="container-xl">
     <div class="row row-deck row-cards">
 
-        <div class="col-md-12 col-lg-12">
-            <form class="card">
-                <div class="progress progress-md" id="loading-about" hidden>
-                    <div class="progress-bar progress-bar-indeterminate"></div>
+        <h5 class="card-title-form">Tentang</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label required">Title</label>
+                <div>
+                    <input type="text" class="form-control" placeholder="Masukan Judul" id="about-title"
+                        value="{{ about_title }}">
                 </div>
-                <div class="card-header">
-                    <h3 class="card-title">About</h3>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required">Content</label>
+                <div>
+                    <input type="text" class="form-control" placeholder="Masukan Konten" id="about-content"
+                        value="{{ about_content }}">
                 </div>
-                <div class="card-body">                    
-                    <div class="mb-3">
-                        <label class="form-label required">Title</label>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Masukan Judul" id="about-title" value="{{ about_title }}">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label required">Content</label>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Masukan Konten" id="about-content" value="{{ about_content }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-end">
-                    <button type="submit" class="btn btn-primary" id="btn-save-about">Save</button>
-                </div>
-            </form>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary" id="btn-save-about">Save</button>
         </div>
 
     </div>
 </div>
-            
+
 <script>
     const submitBtnAbout = document.getElementById('btn-save-about');
     const loadingAbout = document.getElementById('loading-about');
@@ -42,7 +35,7 @@
         event.preventDefault();  // Mencegah reload halaman default saat submit
         const aboutTitle = document.getElementById('about-title').value;
         const aboutContent = document.getElementById('about-content').value;
-        
+
         if (!aboutTitle) {
             alert('Judul tidak boleh kosong!');
             loadingAbout.hidden = true;
@@ -65,7 +58,7 @@
     });
 
     function update_about(form) {
-        fetch(mLink.about, {  
+        fetch(mLink.about, {
             method: 'POST',
             body: form,
             headers: {
@@ -89,7 +82,7 @@
             })
             .catch((error) => {
                 alert('Internal server error: ', error.message);  // Menampilkan alert jika ada kesalahan  
-                loadingAbout.hidden = true;              
+                loadingAbout.hidden = true;
             });
     }
 

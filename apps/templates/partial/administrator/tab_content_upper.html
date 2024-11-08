@@ -1,36 +1,31 @@
 {% load static %}
-<div class="container-xl" style="margin-bottom: 3em;">
+<div class="container-xl">
     <div class="row row-deck row-cards">
 
-        <div class="col-md-12 col-lg-12">
-            <form class="card">
-                <div class="progress progress-md" id="loading-upper" hidden>
-                    <div class="progress-bar progress-bar-indeterminate"></div>
+        <h5 class="card-title-form">Homepage Upper</h5>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label required">Landing Description</label>
+                <div>
+                    <input type="text" class="form-control" placeholder="Masukan Deskripsi" id="description"
+                        value="{{description}}">
                 </div>
-                <h5 class="card-title-form">Homepage Upper</h5>
-                <div class="card-body">                    
-                    <div class="mb-3">
-                        <label class="form-label required">Landing Description</label>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Masukan Deskripsi" id="description" value="{{description}}">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label required">Sub Description</label>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Masukan Sub Deskripsi" id="sub-description" value="{{sub_description}}">
-                        </div>
-                    </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label required">Sub Description</label>
+                <div>
+                    <input type="text" class="form-control" placeholder="Masukan Sub Deskripsi" id="sub-description"
+                        value="{{sub_description}}">
                 </div>
-                <div class="card-footer text-end">
-                    <button type="submit" class="btn btn-primary" id="btn-save-upper">Save</button>
-                </div>
-            </form>
+            </div>
+        </div>
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary" id="btn-save-upper">Save</button>
         </div>
 
     </div>
 </div>
-            
+
 <script>
     const submitBtnUpper = document.getElementById('btn-save-upper');
     const loadingUpper = document.getElementById('loading-upper');
@@ -40,7 +35,7 @@
         event.preventDefault();  // Mencegah reload halaman default saat submit
         const description = document.getElementById('description').value;
         const subDescription = document.getElementById('sub-description').value;
-        
+
         if (!description) {
             alert('Deskripsi tidak boleh kosong!');
             loadingUpper.hidden = true;
@@ -63,7 +58,7 @@
     });
 
     function update_upper(form) {
-        fetch(mLink.homepageUpper, {  
+        fetch(mLink.homepageUpper, {
             method: 'POST',
             body: form,
             headers: {
