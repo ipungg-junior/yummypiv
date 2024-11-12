@@ -557,6 +557,10 @@ progress {
     line-height: 1.2
 }
 
+.pointer {
+    cursor: pointer !important;
+}
+
 @media (min-width: 1200px) {
     .display-1 {
         font-size:5rem
@@ -6191,26 +6195,6 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
     outline: 0
 }
 
-.modal-backdrop {
-    --bs-backdrop-zindex: 1050;
-    --bs-backdrop-bg: #000;
-    --bs-backdrop-opacity: 0.5;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: var(--bs-backdrop-zindex);
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--bs-backdrop-bg)
-}
-
-.modal-backdrop.fade {
-    opacity: 0
-}
-
-.modal-backdrop.show {
-    opacity: var(--bs-backdrop-opacity)
-}
 
 .modal-header {
     display: flex;
@@ -6224,7 +6208,10 @@ textarea.form-control,textarea.form-control-lg,textarea.form-control-sm {
 
 .modal-header .btn-close {
     padding: calc(var(--bs-modal-header-padding-y) * .5) calc(var(--bs-modal-header-padding-x) * .5);
-    margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto
+    margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;
+    color: #000;
+    font-weight: bolder;
+    font-size: 1.2em;
 }
 
 .modal-title {
