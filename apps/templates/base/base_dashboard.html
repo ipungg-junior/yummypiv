@@ -25,7 +25,14 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100" style="width: 99%;">
-
+  <style>
+    .btn.btn-primary:hover {
+      background: linear-gradient(310deg, var(--bs-indigo), var(--bs-info));
+    }
+    .btn.btn-primary:active {
+      background: linear-gradient(310deg, var(--bs-indigo), var(--bs-info));
+    }
+  </style>
   <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
   <script src="{% static 'js/plugins/Chart.extension.js' %}"></script>
   <script src="{% static 'js/fetch-manager.js' %}"></script>
