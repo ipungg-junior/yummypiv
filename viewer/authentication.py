@@ -20,7 +20,7 @@ class Authentication(View):
             if (request.user.is_authenticated):
                 return redirect('main-dashboard')
             logger.info(f'Memuat laman login dashboard')
-            resp = render(template_name='login.html', request=request)
+            resp = render(template_name='pages/administrator/login.html', request=request)
             return resp
         if (self.context == 'logout'):
             logger.info(f'LOGOUT SESSION {request.user}')

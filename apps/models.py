@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
-from datetime import datetime
-# import timezone
+from django.utils import timezone
+from datetime import timedelta
 
 class UsersManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -65,6 +65,19 @@ class Visitor(models.Model):
 
     def __str__(self):
         return f"Visit from {self.ip_address} at {self.visited_at}"
+    
+    @classmethod
+    def get_weekly_count(cls):
+        visitor_weekly_graph = []
+        now = timezone.now()
+        for day in range(7):
+            date = now + timedelta(days=day)
+            visitor_count = cls.objects.filter(visited_at__date=date).count()  # Hitung pengunjung per hari
+            visitor_weekly_graph.append({
+                'date': date.strftime('%Y-%m-%d'),
+                'count': visitor_count
+            })  
+        return visitor_weekly_graph
     
 
 class Article(models.Model):

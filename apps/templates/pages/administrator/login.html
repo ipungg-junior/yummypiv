@@ -1,0 +1,90 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block sidenav %}
+{% endblock sidenav %}
+
+{% block body %}
+      {% csrf_token %}
+        
+<main class="main-content  mt-0">
+    <section>
+      <div class="page-header min-vh-75">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+              <div class="card card-plain mt-8">
+                <div class="card-header pb-0 text-left bg-transparent">
+                  <h3 class="font-weight-bolder text-info text-gradient">Silahkan masuk dulu yaaa</h3>
+                  <p class="mb-0">Enter username and password to sign in</p>
+                </div>
+                <div class="card-body">
+                  <form role="form">
+                    <label>Nama Pengguna</label>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" placeholder="Username" aria-describedby="email-addon" id="username">
+                    </div>
+                    <label>Kata Sandi</label>
+                    <div class="mb-3">
+                      <input type="password" class="form-control" placeholder="Password" aria-describedby="password-addon" id="password">
+                    </div>
+                    <a style="color: red;" id="msg" hidden>Error</a>
+                    <div class="text-center">
+                      <button type="button" class="btn bg-gradient-info w-100 mt-4 mb-0" id="login-btn">Sign in</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <script>
+      const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+      const loginBtn = document.getElementById('login-btn');
+      const mmsg = document.getElementById('msg');
+      const username = document.getElementById('username');
+      const passw = document.getElementById('password');
+    
+      username.focus();
+    
+      function loginUser(){
+        const formData = new FormData();
+        formData.append('username', username.value);
+        formData.append('password', passw.value);
+
+        fetchManager = new FetchManager(csrfToken);
+
+        fetchManager.post('{% url "login" %}', formData)
+        .then(response => {
+          if (response.status === true) {
+              window.location.replace("{% url 'main-dashboard' %}");
+            } else {
+              mmsg.textContent = response.data.msg;
+              mmsg.hidden = false;
+              username.value = '';
+              passw.value = '';
+              username.focus();
+            }
+        })
+      
+      }
+    
+      document.getElementById('password').addEventListener('keydown', function(event) {
+        // Jika tombol yang ditekan adalah Enter
+        if (event.key === "Enter") {
+            event.preventDefault();  // Mencegah form submit default
+            loginUser();  // Memanggil fungsi login untuk fetch
+        }
+      });
+      
+      loginBtn.addEventListener('click', function () {
+        event.preventDefault();  // Mencegah form submit default
+        loginUser();  // Memanggil fungsi login untuk fetch    
+      })
+    </script>
+  </main>
+
+{% endblock body %}

@@ -21,8 +21,9 @@ class ContentManagement(View):
     def get(self, request, *args, **kwargs):
 
         if (self.context == 'content-management'):
+            page_name = 'content'
             ctx = {}            
-            
+            ctx['page_name'] = page_name
             all_testimonial = Testimonials.objects.all()                        
             all_profile = OwnerProfile.objects.all()
             all_product = Product.objects.all()
@@ -33,4 +34,4 @@ class ContentManagement(View):
             for profile_item in all_profile:
                 ctx[profile_item.info] = profile_item.content    
                 
-            return render(request, 'content_management.html', context=ctx)
+            return render(request, 'pages/administrator/content_management.html', context=ctx)
