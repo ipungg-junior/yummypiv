@@ -231,6 +231,13 @@ html {
   gap: 25px;
 }
 
+.halal-icon {
+  width: 100px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
 .shopping-cart-btn {
   position: relative;
   background: var(--cultured);
