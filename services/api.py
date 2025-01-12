@@ -272,11 +272,11 @@ class API(View):
                         exist_data.img_banner = msg
                         logger.info(f'Testimonial banner save to firebase -> {msg}')
                     else:
-                        exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                        exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/default-banner.webp"
                         logger.info(f'Image banner upload error, save with default banner.')
                         
                 else:
-                    exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                    exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/default-banner.webp"
                     logger.info(f'Image does not exist, force to default banner.')
                     
                 exist_data.save()
