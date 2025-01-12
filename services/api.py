@@ -249,9 +249,10 @@ class API(View):
                 exist_data.customer_name = request.POST.get('testimonial-customer')
                 exist_data.content = request.POST.get('testimonial-content')
                         
-                image = request.FILES.get('testimonial-image')
-                if (image):
-                    sts, msg = firebase_upload('media/testimonial', image)
+                image_profile = request.FILES.get('testimonial-image')
+                image_banner = request.FILES.get('testimonial-banner-image')
+                if (image_profile):
+                    sts, msg = firebase_upload('media/testimonial', image_profile)
                         
                     if (sts):
                         exist_data.img_link = msg
@@ -263,6 +264,20 @@ class API(View):
                 else:
                     exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
                     logger.info(f'Image does not exist, force to default avatar.')
+                    
+                if (image_banner):
+                    sts, msg = firebase_upload('media/testimonial', image_banner)
+                        
+                    if (sts):
+                        exist_data.img_banner = msg
+                        logger.info(f'Testimonial banner save to firebase -> {msg}')
+                    else:
+                        exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                        logger.info(f'Image banner upload error, save with default banner.')
+                        
+                else:
+                    exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                    logger.info(f'Image does not exist, force to default banner.')
                     
                 exist_data.save()
                 logger.info(f'Success uploaded testimonial')
