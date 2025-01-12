@@ -113,6 +113,7 @@ class Notification(models.Model):
 class Testimonials(models.Model):
     customer_name = models.CharField(max_length=255)
     img_link = models.CharField(max_length=255)
+    img_banner = models.CharField(max_length=255, default='')
     content = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
