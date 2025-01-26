@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from datetime import datetime
 import os, json, re, time, threading, hashlib
+from PIL import Image
+import io
+
 
 def get_current_date_time_string():
     current_datetime = datetime.now()
@@ -92,3 +95,13 @@ def generate_visit_id(ip_addr, path, user_agent):
     visit_id = hashlib.sha256(visit_string.encode()).hexdigest()
     
     return visit_id
+
+def convert_compress_image(input_image_path):
+    # Buka gambar menggunakan PIL
+    with Image.open(input_image_path) as img:
+        # Konversi gambar ke format .webp dan kompres
+        img = img.convert("RGB")  # Pastikan gambar dalam format RGB
+        output_image = io.BytesIO()
+        img.save(output_image, format="WEBP", quality=75)  # Kompres dengan kualitas 75
+        output_image.seek(0)  # Pindahkan pointer ke awal buffer
+        return output_image
