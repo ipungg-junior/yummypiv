@@ -1,7 +1,7 @@
 from firebase_admin import credentials, storage
 from django.utils import timezone
 from django.conf import settings
-from services.utils import INFO_TAG, INSPECTOR, ERROR_TAG
+from services.utils import INFO_TAG, INSPECTOR, ERROR_TAG, convert_compress_image
 import firebase_admin, time
 
 try:
@@ -28,17 +28,25 @@ def get_image(path):
     url = bucket.blob(path)
     return url
 
-  
-def firebase_upload(path, img):
+
+# Version 2 (upload with convert to webp extension args)
+def firebase_upload(path, img, convert_webp=False):
     now = timezone.now()
     try:
-        formatted_name = img.name.replace(' ', '-').lower()
-        ct = img.content_type.split('/')[1]  # Mendapatkan tipe konten dari file
-        folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
         
+        formatted_name = img.name.replace(' ', '-').lower()
         bucket = storage.bucket()
-        blob = bucket.blob(folder_path)
-        blob.upload_from_file(img, content_type=img.content_type)
+        
+        if convert_webp:
+            folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.webp"
+            blob = bucket.blob(folder_path)
+            img = convert_compress_image(img)
+            blob.upload_from_file(img, content_type='.webp')
+        else:
+            ct = img.content_type.split('/')[1]  # Mendapatkan tipe konten dari file
+            folder_path = f"{path}/{now.strftime('%m-%Y')}-{formatted_name}.{ct}"
+            blob = bucket.blob(folder_path)
+            blob.upload_from_file(img, content_type=img.content_type)
         
         # Buat URL publik
         blob.make_public()
