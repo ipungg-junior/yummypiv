@@ -252,7 +252,7 @@ class API(View):
                 image_profile = request.FILES.get('testimonial-image')
                 image_banner = request.FILES.get('testimonial-banner-image')
                 if (image_profile):
-                    sts, msg = firebase_upload('media/testimonial', image_profile)
+                    sts, msg = firebase_upload(path='media/testimonial', img=image_profile, convert_webp=True)
                         
                     if (sts):
                         exist_data.img_link = msg
@@ -266,7 +266,7 @@ class API(View):
                     logger.info(f'Image does not exist, force to default avatar.')
                     
                 if (image_banner):
-                    sts, msg = firebase_upload('media/testimonial', image_banner)
+                    sts, msg = firebase_upload(path='media/testimonial', img=image_banner, convert_webp=True)
                         
                     if (sts):
                         exist_data.img_banner = msg
@@ -307,7 +307,7 @@ class API(View):
                         
                 image = request.FILES.get('product-image')
                 if (image):
-                    sts, msg = firebase_upload('media/product', image)
+                    sts, msg = firebase_upload(path='media/product', img=image, convert_webp=True)
                         
                     if (sts):
                         new_product.img_link = msg
