@@ -48,10 +48,13 @@ function reportUserActivity() {
         // Request and record new visit_id
         fetchManager.post('/api/visitor/request/', formData)
         .then(response => {
-            const message = response.data.msg;
-            if (response.status === true) {
+            if (response && response.status === true && response.data) {
+                const message = response.data.msg;
                 CookieManager.setCookie("visit_id", response.data.visit_id, 6);
             }
+        })
+        .catch(error => {
+            console.error('Error requesting visit ID:', error);
         });
     }
 
@@ -60,13 +63,15 @@ function reportUserActivity() {
         formData.append('visit_id', visitId);
         fetchManager.post('/api/reporter/', formData)
         .then(response => {
-            const message = response.data.msg;
-            if (response.status === true) {
-                console.log('True');
+            if (response && response.status === true) {
+                console.log('Visit reported successfully');
             }
             else {
-                console.log('False');
+                console.log('Visit report failed');
             }
+        })
+        .catch(error => {
+            console.error('Error reporting visit:', error);
         });
     }
 }

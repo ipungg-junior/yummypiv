@@ -19,9 +19,7 @@
   -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Monoton&family=Rubik:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Rubik:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
@@ -29,7 +27,7 @@
 <body>
   {% csrf_token %}
   {% if promote_ads %}
-    {% include 'modal/promote_ads.html' %}
+  {% include 'modal/promote_ads.html' %}
   {% endif %}
 
   <a href="https://wa.me/{{phone_number}}" class="whatsapp-button" target="_blank">
@@ -110,8 +108,7 @@
           </p>
 
           <div class="btn-group">
-            <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/halal-ico.webp" alt="Halal" class="halal-icon" width="200"
-            loading="lazy">
+            <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/halal-ico.webp" alt="Halal" class="halal-icon" width="200" loading="lazy">
 
             <a class="btn btn-primary btn-icon" href="#menu">
               <i class="fas fa-hamburger"></i>
@@ -124,8 +121,7 @@
 
         <div class="home-right">
 
-          <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/main-banner.webp" alt="food image" class="food-img food-3" width="200"
-            loading="lazy">
+          <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/main-banner.webp" alt="food image" class="food-img food-3" width="200" loading="lazy">
           <img src="https://storage.googleapis.com/yummypiv-app.appspot.com/static/image/dialog.svg" alt="dialog" class="dialog dialog-1" width="200" loading="lazy">
 
         </div>
@@ -137,7 +133,7 @@
       -->
 
       <section class="services" id="services">
-        
+
         <div class="service-card">
 
           <p class="card-number">01</p>
@@ -193,41 +189,41 @@
 
           {% for product in products %}
 
-            <a style="cursor: pointer;">
+          <a style="cursor: pointer;">
 
-              <div class="product-card">
+            <div class="product-card">
 
-                <div class="img-box">
-                  <img src="{{ product.img_link }}" alt="product image" class="product-img" width="200" loading="lazy">                  
+              <div class="img-box">
+                <img src="{{ product.img_link }}" alt="product image" class="product-img" width="200" loading="lazy">
+              </div>
+
+              <div class="product-content">
+
+                <div class="wrapper">
+                  <h3 class="product-name">{{ product.product_name }}</h3>
+
+                  <p class="product-price">
+                    <span class="small"></span>{{ product.price }}
+                  </p>
                 </div>
 
-                <div class="product-content">
+                <p class="product-text">
+                  {{ product.description }}
+                </p>
 
-                  <div class="wrapper">
-                    <h3 class="product-name">{{ product.product_name }}</h3>
-
-                    <p class="product-price">
-                      <span class="small"></span>{{ product.price }}
-                    </p>
-                  </div>
-
-                  <p class="product-text">
-                    {{ product.description }}
-                  </p>
-
-                  <div class="product-rating">
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                    <ion-icon name="star"></ion-icon>
-                  </div>
-
+                <div class="product-rating">
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
+                  <ion-icon name="star"></ion-icon>
                 </div>
 
               </div>
 
-            </a>
+            </div>
+
+          </a>
 
           {% endfor %}
 
@@ -268,8 +264,8 @@
           <h2 class="section-title">Cita Rasa Melebihi Ekspektasi</h2>
 
           <p class="section-text">
-            Yummypiv mengedepankan makanan berkualitas dengan rasa autentik dan harga terjangkau. 
-            Menggunakan bahan segar dan pilihan, kami berkomitmen untuk menghadirkan hidangan yang lezat dan memuaskan, 
+            Yummypiv mengedepankan makanan berkualitas dengan rasa autentik dan harga terjangkau.
+            Menggunakan bahan segar dan pilihan, kami berkomitmen untuk menghadirkan hidangan yang lezat dan memuaskan,
             sehingga setiap pelanggan dapat menikmati pengalaman kuliner yang istimewa.
           </p>
 
@@ -293,26 +289,26 @@
         <div class="testimonials-grid">
 
           {% for testimonial in testimonials %}
-            <div class="testimonials-card">
+          <div class="testimonials-card">
 
-              <div class="customer-info">
-                <div class="customer-img-box">
-                  <img src="{{ testimonial.img_link }}" alt="customer image" class="customer-img" width="100" loading="lazy">
-                </div>
-                <h5 class="customer-name">{{ testimonial.customer_name }}</h5>
+            <div class="customer-info">
+              <div class="customer-img-box">
+                <img src="{{ testimonial.img_link }}" alt="customer image" class="customer-img" width="100" loading="lazy">
               </div>
-              
-              <div class="customer-img-wrapper">
-                <div class="img-box-testimonial">
-                  <img src="{{ testimonial.img_banner }}" alt="product image" class="product-img" width="200" loading="lazy">
-                </div>
-              </div>
-
-              <p class="testimonials-text">
-                "{{ testimonial.content }}"
-              </p>
-
+              <h5 class="customer-name">{{ testimonial.customer_name }}</h5>
             </div>
+
+            <div class="customer-img-wrapper">
+              <div class="img-box-testimonial">
+                <img src="{{ testimonial.img_banner }}" alt="testimonial banner" class="product-img" width="200" loading="lazy">
+              </div>
+            </div>
+
+            <p class="testimonials-text">
+              "{{ testimonial.content }}"
+            </p>
+
+          </div>
           {% endfor %}
 
         </div>
@@ -356,13 +352,13 @@
             <ion-icon name="logo-instagram"></ion-icon>
           </a>
           {% endif %}
-            
+
           {% if tiktok_state == 'true' %}
           <a href="{{ tiktok_link }}">
             <ion-icon name="logo-tiktok"></ion-icon>
           </a>
           {% endif %}
-          
+
 
         </div>
 

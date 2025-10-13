@@ -49,37 +49,26 @@
                                 <!-- inner form content card -->
                                 <div class="mb-3">
                                     <label class="form-label required">Gambar Artikel</label>
-                                    <a
-                                        style="display: inline-flex; justify-content: center; width: 100%; margin-bottom: 2em;">
-                                        <img src="{{ article.img_link }}" class="object-cover card-img-end"
-                                            id="preview-image">
+                                    <a style="display: inline-flex; justify-content: center; width: 100%; margin-bottom: 2em;">
+                                        <img src="{{ article.img_link }}" class="object-cover card-img-end" id="preview-image">
                                     </a>
-                                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg"
-                                        class="form-control" name="image-input" id="image-input"
+                                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input" id="image-input"
                                         placeholder="Input your partner name">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label required">Judul Artikel</label>
                                     <div>
-                                        <input type="text" class="form-control" aria-describedby="emailHelp"
-                                            placeholder="Masukan Judul Artikel" id="title" value="{{article.title}}">
+                                        <input type="text" class="form-control" placeholder="Masukan Judul Artikel" id="title" value="{{article.title}}">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label required">Naskah Konten</label>
                                     <div>
-                                        <link
-                                            href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
-                                            rel="stylesheet">
-                                        <link
-                                            href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-                                            rel="stylesheet">
-                                        <script
-                                            src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-                                        <script
-                                            src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-                                        <textarea class="summernote" id="summernote"
-                                            name="editordata">{{article.content|safe}}</textarea>
+                                        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+                                        <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+                                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+                                        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+                                        <textarea class="summernote" id="summernote" name="editordata">{{article.content|safe}}</textarea>
                                         <script>
                                             $('#summernote').summernote({
                                                 tabsize: 2,
@@ -99,8 +88,7 @@
                                             });
                                         </script>
                                     </div>
-                                    <link rel="stylesheet"
-                                        href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+                                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
                                     <link rel="stylesheet" href="{% static 'css/demo.css' %}">
                                 </div>
                             </div>
@@ -146,7 +134,7 @@
         const title = document.getElementById('title').value;
         const content = $('#summernote').val();
         const inputFile = document.getElementById('image-input').files[0];
-        
+
         if (!title) {
             alert('Title tidak boleh kosong!');
             loading.hidden = true;

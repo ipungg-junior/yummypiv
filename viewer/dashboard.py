@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from services.news import most_viewed_article
 from services.utils import role_required
 from services.firebase import firebase_upload, firebase_delete
+from services.media_service import upload_media, delete_media
 from services.addons import analyze_storage
 from services.notification import system_notification
 from apps.models import Partner, Article, Visitor
@@ -95,102 +96,79 @@ class Dashboard(View):
     def post(self, request, *args, **kwargs):
         
         if (self.context == 'new-partner'):
-            try:
-                partner_name = request.POST.get('partner-name')
-                partner_image = request.FILES.get('image')
-                sts, msg = firebase_upload('partner', partner_image)
-                
-                if sts:
-                    new_partner = Partner(name=partner_name, img_link=msg)
-                    new_partner.img_link = msg
-                    new_partner.name = partner_name                    
-                    new_partner.save()
-                    logger.info(f'Partner berhasil ditambahkan.')
-                    return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil ditambahkan.'}})     
-                else:
-                    return JsonResponse({'status': False, 'data':{'msg': 'Gagal menambah partner, gambar eror!'}})                         
+             try:
+                 partner = Partner(name=request.POST.get('partner-name'))
+                 partner_image = request.FILES.get('image')
+                 if partner_image:
+                     success, msg = upload_media('partner', partner_image, partner, 'img_link')
+                     if success:
+                         partner.save()
+                         logger.info(f'Partner berhasil ditambahkan.')
+                         return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil ditambahkan.'}})
+                     else:
+                         return JsonResponse({'status': False, 'data':{'msg': 'Gagal menambah partner, gambar eror!'}})
+                 else:
+                     partner.save()
+                     logger.info(f'Partner berhasil ditambahkan tanpa gambar.')
+                     return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil ditambahkan.'}})
 
-            except Exception as firebase_error:
-                logger.error(f'{firebase_error} - Gagal upload ke firebase cek services/firebase.py')
-                return JsonResponse({'status': 'false', 'data':{'msg': 'Gagal saat menambahkan partner.'}})    
+             except Exception as firebase_error:
+                 logger.error(f'{firebase_error} - Gagal upload ke firebase cek services/firebase.py')
+                 return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat menambahkan partner.'}})
         
         if (self.context == 'delete-partner'):
-            try:
-                partner_id = request.POST.get('partner-id')            
+             try:
+                 partner = Partner.objects.get(id=request.POST.get('partner-id'))
+                 if delete_media(partner.img_link):
+                     partner.delete()
+                     return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil dihapus.'}})
+                 else:
+                     return JsonResponse({'status': False, 'data':{'msg': 'Gagal menghapus dari firebase..'}})
 
-                new_partner = Partner.objects.get(id=partner_id)
-                sts = firebase_delete(new_partner.img_link)
-                
-                if (sts):
-                    new_partner.delete()
-                    return JsonResponse({'status': True, 'data':{'msg': 'Partner berhasil dihapus.'}})     
-                else:
-                    return JsonResponse({'status': False, 'data':{'msg': 'Gagal menghapus dari firebase..'}})                                             
-    
-            except Exception as firebase_error:
-                logger.error(f'{firebase_error} - Gagal menghapus data firebase cek services/firebase.py')
-                return JsonResponse({'status': 'false', 'data':{'msg': 'Gagal saat menghapus partner.'}})    
+             except Exception as firebase_error:
+                 logger.error(f'{firebase_error} - Gagal menghapus data firebase cek services/firebase.py')
+                 return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat menghapus partner.'}})
 
         if (self.context == 'create-news-dashboard'):
-            try:
-                title = request.POST.get('title')
-                content = request.POST.get('content')
-                image = request.FILES.get('image')
-                
-                sts, msg = firebase_upload('news', image)
+             try:
+                 article = Article()
+                 article.title = request.POST.get('title')
+                 article.content = request.POST.get('content')
+                 image = request.FILES.get('image')
 
-                if (sts):
-                    new_article = Article()
-                    new_article.title = title
-                    new_article.content = content
-                    new_article.img_link = msg
-                    new_article.save()
-                    return JsonResponse({'status': 'true', 'data':{'msg': 'Artikel telah diterbitkan.'}})     
-                else:
-                    return JsonResponse({'status': 'false', 'data':{'msg': 'Gagal saat menambahkan artikel.'}})         
-                             
-            except Exception as firebase_error:
-                logger.error(f'{firebase_error} - Gagal upload ke firebase cek services/firebase.py')
-                return JsonResponse({'status': 'false', 'data':{'msg': 'Gagal saat menambahkan artikel.'}})     
+                 if image:
+                     success, msg = upload_media('news', image, article, 'img_link')
+                     if success:
+                         article.save()
+                         return JsonResponse({'status': True, 'data':{'msg': 'Artikel telah diterbitkan.'}})
+                     else:
+                         return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat menambahkan artikel.'}})
+                 else:
+                     article.save()
+                     return JsonResponse({'status': True, 'data':{'msg': 'Artikel telah diterbitkan tanpa gambar.'}})
+
+             except Exception as firebase_error:
+                 logger.error(f'{firebase_error} - Gagal upload ke firebase cek services/firebase.py')
+                 return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat menambahkan artikel.'}})
 
 
         if (self.context == 'edit-news-dashboard'):
-            try:
-                title = request.POST.get('title')
-                content = request.POST.get('content')
-                new_article = Article.objects.get(id=self.kwargs.get('article_id'))
-                new_article.title = title
-                new_article.content = content
+             try:
+                 article = Article.objects.get(id=self.kwargs.get('article_id'))
+                 article.title = request.POST.get('title')
+                 article.content = request.POST.get('content')
 
-                try:
-                    image = request.FILES.get('image')
-                
-                    if (image):
-                        sts = False
-                        ext_to_ct = {
-                            '.png': 'png',
-                            '.jpg': 'jpg',
-                            '.jpeg': 'jpeg',
-                            '.webp': 'webp'
-                        }
-                        for ext, ct in ext_to_ct.items():
-                            if image.name.endswith(ext):
-                                sts, msg = firebase_upload('news', image, title, ct=ct)
-                                break                    
+                 image = request.FILES.get('image')
+                 if image:
+                     success, msg = upload_media('news', image, article, 'img_link')
+                     if success:
+                         return JsonResponse({'status': True, 'data':{'msg': 'Artikel berhasil di edit.'}})
+                     else:
+                         return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat mengedit artikel.'}})
+                 else:
+                     article.save()
+                     return JsonResponse({'status': True, 'data':{'msg': 'Artikel berhasil di edit.'}})
 
-                    if (sts):
-                        new_article.img_link = msg
-                        new_article.save()
-                        return JsonResponse({'status': True, 'data':{'msg': 'Artikel berhasil di edit.'}})     
-                    else:
-                        logger.error(f'{title} - Gagal simpan artikel, ada masalah pada gambar upload firebase.')
-                        return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat mengedit artikel.'}})         
-                
-                except:
-                    new_article.save()
-                    return JsonResponse({'status': True, 'data':{'msg': 'Artikel berhasil di edit.'}})     
-                
-                             
-            except Exception as err:
-                logger.error(f'{err} - Gagal simpan artikel.')                
-                return JsonResponse({'status': True, 'data':{'msg': 'Gagal saat mengedit artikel.'}})  
+             except Exception as err:
+                 logger.error(f'{err} - Gagal simpan artikel.')
+                 return JsonResponse({'status': False, 'data':{'msg': 'Gagal saat mengedit artikel.'}})

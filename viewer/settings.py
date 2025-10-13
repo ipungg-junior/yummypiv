@@ -4,6 +4,7 @@ from django.views import View
 from apps.models import Users, OwnerProfile
 from django.utils.decorators import method_decorator
 from services.firebase import firebase_upload
+from services.owner_profile_service import update_owner_profile
 from services.utils import role_required
 from django.http import JsonResponse
 from apps.models import Users
@@ -82,18 +83,10 @@ class OwnerConfigurations(View):
     def post(self, request, *args, **kwargs):
     
         if (self.context == 'main-profile'):
-            
-            for key, value in request.POST.items():
-                key_correction = str(key).replace('-', '_')
-                try: 
-                    exist_data = OwnerProfile.objects.get(info=key_correction)
-                    exist_data.content = value
-                    exist_data.save()
-                except Exception as no_data:
-                    new_data = OwnerProfile(info=key_correction, content=value)
-                    new_data.save()
 
-            if (request.FILES.get('background-image')):
+             update_owner_profile(request.POST)
+
+             if (request.FILES.get('background-image')):
 
                 img = request.FILES.get('background-image')
 
@@ -115,6 +108,6 @@ class OwnerConfigurations(View):
                         new_data = OwnerProfile(info='background_image', content=msg)
                         new_data.save()
                 else:
-                    return JsonResponse({'status': True, 'data':{'msg': 'Update success, but background-image corrupt!'}})              
-                
-            return JsonResponse({'status': True, 'data':{'msg': 'Update success'}})
+                    return JsonResponse({'status': True, 'data':{'msg': 'Update success, but background-image corrupt!'}})
+
+                return JsonResponse({'status': True, 'data':{'msg': 'Update success'}})

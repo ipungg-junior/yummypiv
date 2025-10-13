@@ -22,11 +22,9 @@
                     </div>
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                                data-bs-target="#modal-report">
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="icon">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M12 5l0 14"></path>
@@ -66,13 +64,11 @@
                                             <td>
                                                 {{ partner.name }}
                                             </td>
-                                            <td class="text-secondary"><span class="avatar"
-                                                    style="background-image: url({{ partner.img_link }})"></span>
+                                            <td class="text-secondary"><span class="avatar" style="background-image: url({{ partner.img_link }})"></span>
                                             </td>
                                             <td class="text-center">
                                                 <span class="dropdown">
-                                                    <a class="btn btn-primary bg-danger remove-btn"
-                                                        data-id="{{ partner.id }}">Remove</a>
+                                                    <a class="btn btn-primary bg-danger remove-btn" data-id="{{ partner.id }}">Remove</a>
                                                 </span>
                                             </td>
                                         </tr>
@@ -124,19 +120,19 @@
                             throw new Error('Terjadi kesalahan: ' + response.status);  // Jika bukan 200, lempar error
                         }
                     })
-                    .then(data => {
-                        const message = data.data.msg;  // Ambil message dari response                        
-                        if (data.status === true) {
-                            loading.hidden = true;
-                            alert(message);  // Menampilkan pesan ke user  
-                            window.location.href = '{% url "partner-dashboard" %}';              
-                        } else {
-                            alert(message);
-                        }
-                    })
-                    .catch((error) => {
-                        alert('Internal server error: ', error);  // Menampilkan alert jika ada kesalahan                
-                    });
+                        .then(data => {
+                            const message = data.data.msg;  // Ambil message dari response                        
+                            if (data.status === true) {
+                                loading.hidden = true;
+                                alert(message);  // Menampilkan pesan ke user  
+                                window.location.href = '{% url "partner-dashboard" %}';
+                            } else {
+                                alert(message);
+                            }
+                        })
+                        .catch((error) => {
+                            alert('Internal server error: ', error);  // Menampilkan alert jika ada kesalahan                
+                        });
                 }
             }
         });

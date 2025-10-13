@@ -6,15 +6,20 @@ from django.utils import timezone
 from datetime import timedelta
 from services.utils import is_valid_name, is_valid_phone_number, generate_visit_id
 from services.firebase import firebase_delete, firebase_upload
+from services.owner_profile_service import update_owner_profile
+from services.media_service import upload_media, delete_media
 from django.contrib.auth import get_user_model
+from services.utils import role_required
+from django.utils.decorators import method_decorator
 import datetime
 
 # Logger information object
 import logging
 logger = logging.getLogger('yummypiv')
 
+@method_decorator(role_required(['root', 'admin', 'staff']), name='dispatch')
 class API(View):
-    
+
     context = ''
 
     def get(self, request, *args, **kwargs):
@@ -100,32 +105,29 @@ class API(View):
             
                 
         if (self.context == 'api-news-delete'):
-            article_id = request.POST['data-id']
-            try:
-                ip_address = request.META.get('REMOTE_ADDR')                        
-                user_agent = request.META.get('HTTP_USER_AGENT')    
-                            
-                obj = Article.objects.get(id=int(article_id))
-                firebase_delete(obj.img_link)
-                obj.delete()
-                logger.info(f'Berhasil menghapus artikel ID {article_id}')
-                return JsonResponse({'status': True, 'data': {'msg': 'Article berhasil dihapus.'}})
-            except Exception as err:
-                logger.error(f'Gagal delete artikel ID {article_id}')
-                return JsonResponse({'status': False, 'data': {'msg': 'Gagal hapus article, coba lagi beberapa saat.'}})
+             article_id = request.POST['data-id']
+             try:
+                 obj = Article.objects.get(id=int(article_id))
+                 delete_media(obj.img_link)
+                 obj.delete()
+                 logger.info(f'Berhasil menghapus artikel ID {article_id}')
+                 return JsonResponse({'status': True, 'data': {'msg': 'Article berhasil dihapus.'}})
+             except Exception as err:
+                 logger.error(f'Gagal delete artikel ID {article_id}')
+                 return JsonResponse({'status': False, 'data': {'msg': 'Gagal hapus article, coba lagi beberapa saat.'}})
             
         
         if (self.context == 'api-social-link'):
-            
-            for sosmed in request.POST.items():                
+
+            for sosmed in request.POST.items():
                 key = str(sosmed[0]).replace('-', '_')
                 obj, created = OwnerProfile.objects.get_or_create(info=key, defaults={'content': sosmed[1]})
                 obj.save()
-                
+
                 if (created is False):
                     obj.content = sosmed[1]
-                    obj.save()                                
-            
+                    obj.save()
+
             try:
                 logger.info(f'Berhasil update tautan sosial media')
                 return JsonResponse({'status': True, 'data': {'msg': 'Tautan berhasil di update.'}})
@@ -166,125 +168,89 @@ class API(View):
                 
         
         if (self.context == 'api-edit-user'):
-            
+
             try:
                 username = request.POST.get('username-lock')
                 try:
                     logger.info(f'Try to change user credential {username}')
                     user_model = get_user_model()
-                    if (len(username) > 7):        
+                    if (len(username) > 7):
                         try:
-                            selected_user = user_model.objects.get(username=username)                            
-                            
+                            selected_user = user_model.objects.get(username=username)
+
                             for field, value in request.POST.items():
                                 if (value):
                                     if hasattr(selected_user, field):
                                         if field == 'password':
-                                            if len(value) > 7:  
+                                            if len(value) > 7:
                                                 selected_user.set_password(value)
                                             else:
                                                 logger.info(f'Rejected: Password must be more than 7 characters, continue change next field.')
                                                 continue
                                         else:
-                                            setattr(selected_user, field, value)       
-                            selected_user.save()                                                             
+                                            setattr(selected_user, field, value)
+                            selected_user.save()
                             logger.info(f'Akun user berhasil diubah {username}')
                             return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
-                        
+
                         except Exception as failed_create_user:
                             logger.error(f'Gagal mengubah data user {failed_create_user}')
                             return JsonResponse({'status': False, 'data':{'msg': 'Server maintenance (500 Internal Server)'}})
                     else:
                         logger.error(f'Karakter kurang atau invalid {username}')
                         return JsonResponse({'status': False, 'data':{'msg': 'Username/password terlalu pendek'}})
-                    
+
                 except Exception as error:
-                    logger.error(f'Form data yang di input tiak valid! - {error_field}')
-                    return JsonResponse({'status': False, 'data':{'msg': f'{error_field}'}})                    
-                
-            except Exception as error_field:
-                logger.error(f'Form data yang di input tiak valid! - {error_field}')
-                return JsonResponse({'status': False, 'data':{'msg': f'{error_field}'}})
+                    logger.error(f'Form data yang di input tiak valid! - {error}')
+                    return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+
+            except Exception as error:
+                logger.error(f'Form data yang di input tiak valid! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
                 
                     
         if (self.context == 'api-update-homepage-upper'):
-            try:
-                for key, value in request.POST.items():
-                    key_correction = str(key).replace('-', '_')
-                    try: 
-                        exist_data = OwnerProfile.objects.get(info=key_correction)
-                        exist_data.content = value
-                        exist_data.save()
-                    except Exception as no_data:
-                        new_data = OwnerProfile(info=key_correction, content=value)
-                        new_data.save()
-            
-                logger.info(f'Data upper homepage has been updated.')
-                return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
-            except Exception as error:
-                logger.error(f'Error when update data homepage upper! - {error}')
-                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})   
+             try:
+                 update_owner_profile(request.POST)
+                 logger.info(f'Data upper homepage has been updated.')
+                 return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
+             except Exception as error:
+                 logger.error(f'Error when update data homepage upper! - {error}')
+                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
         
         if (self.context == 'api-update-about'):
-            try:
-                for key, value in request.POST.items():
-                    key_correction = str(key).replace('-', '_')
-                    try: 
-                        exist_data = OwnerProfile.objects.get(info=key_correction)
-                        exist_data.content = value
-                        exist_data.save()
-                    except Exception as no_data:
-                        new_data = OwnerProfile(info=key_correction, content=value)
-                        new_data.save()
-            
-                logger.info(f'Data about has been updated.')
-                return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
-            except Exception as error:
-                logger.error(f'Error when update data about! - {error}')
-                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+             try:
+                 update_owner_profile(request.POST)
+                 logger.info(f'Data about has been updated.')
+                 return JsonResponse({'status': True, 'data':{'msg': 'Perubahan data berhasil'}})
+             except Exception as error:
+                 logger.error(f'Error when update data about! - {error}')
+                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
             
         if (self.context == 'api-add-testimonial'):
-            try:                    
-                exist_data = Testimonials()
-                exist_data.customer_name = request.POST.get('testimonial-customer')
-                exist_data.content = request.POST.get('testimonial-content')
-                        
-                image_profile = request.FILES.get('testimonial-image')
-                image_banner = request.FILES.get('testimonial-banner-image')
-                if (image_profile):
-                    sts, msg = firebase_upload(path='media/testimonial', img=image_profile, convert_webp=True)
-                        
-                    if (sts):
-                        exist_data.img_link = msg
-                        logger.info(f'Testimonial image save to firebase -> {msg}')
-                    else:
-                        exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
-                        logger.info(f'Image upload error, save with default avatar.')
-                        
-                else:
-                    exist_data.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
-                    logger.info(f'Image does not exist, force to default avatar.')
-                    
-                if (image_banner):
-                    sts, msg = firebase_upload(path='media/testimonial', img=image_banner, convert_webp=True)
-                        
-                    if (sts):
-                        exist_data.img_banner = msg
-                        logger.info(f'Testimonial banner save to firebase -> {msg}')
-                    else:
-                        exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/default-banner.webp"
-                        logger.info(f'Image banner upload error, save with default banner.')
-                        
-                else:
-                    exist_data.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/default-banner.webp"
-                    logger.info(f'Image does not exist, force to default banner.')
-                    
-                exist_data.save()
-                logger.info(f'Success uploaded testimonial')
-                return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah.'}})
-            except Exception as error:
-                logger.error(f'Error when data testimonial! - {error}')
-                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})                
+             try:
+                 testimonial = Testimonials()
+                 testimonial.customer_name = request.POST.get('testimonial-customer')
+                 testimonial.content = request.POST.get('testimonial-content')
+
+                 image_profile = request.FILES.get('testimonial-image')
+                 if image_profile:
+                     upload_media('media/testimonial', image_profile, testimonial, 'img_link', convert_webp=True)
+                 else:
+                     testimonial.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+
+                 image_banner = request.FILES.get('testimonial-banner-image')
+                 if image_banner:
+                     upload_media('media/testimonial', image_banner, testimonial, 'img_banner', convert_webp=True)
+                 else:
+                     testimonial.img_banner = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/default-banner.webp"
+
+                 testimonial.save()
+                 logger.info(f'Success uploaded testimonial')
+                 return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah.'}})
+             except Exception as error:
+                 logger.error(f'Error when data testimonial! - {error}')
+                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
                 
         if (self.context == 'api-delete-testimonial'):
             try:                                
@@ -298,35 +264,29 @@ class API(View):
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
 
         if (self.context == 'api-add-product'):
-            try:                    
-                
-                new_product = Product()
-                new_product.product_name = request.POST.get('product-name')
-                new_product.price = request.POST.get('product-price')
-                new_product.description = request.POST.get('product-description')
-                        
-                image = request.FILES.get('product-image')
-                if (image):
-                    sts, msg = firebase_upload(path='media/product', img=image, convert_webp=True)
-                        
-                    if (sts):
-                        new_product.img_link = msg
-                    else:
-                        new_product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
-                        new_product.save()                      
-                        logger.info(f'Success uploaded product with no image!')
-                        return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah. (default avatar)'}})
-                        
-                else:
-                    new_product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
-                    logger.info(f'Image does not exist, force to default avatar.')
-                    
-                new_product.save()
-                logger.info(f'Success uploaded Product')
-                return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
-            except Exception as error:
-                logger.error(f'Error when data Product! - {error}')
-                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})   
+             try:
+                 product = Product()
+                 product.product_name = request.POST.get('product-name')
+                 product.price = request.POST.get('product-price')
+                 product.description = request.POST.get('product-description')
+
+                 image = request.FILES.get('product-image')
+                 if image:
+                     success, msg = upload_media('media/product', image, product, 'img_link', convert_webp=True)
+                     if not success:
+                         product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                         product.save()
+                         logger.info(f'Success uploaded product with default image!')
+                         return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah. (default avatar)'}})
+                 else:
+                     product.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+
+                 product.save()
+                 logger.info(f'Success uploaded Product')
+                 return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
+             except Exception as error:
+                 logger.error(f'Error when data Product! - {error}')
+                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
             
         if (self.context == 'api-delete-product'):
             try:                
