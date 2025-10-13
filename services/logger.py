@@ -1,9 +1,16 @@
 from django.conf import settings
-import logging, os
+import logging, os, platform,tempfile
 import logging.config
 
-# Path ke file log
-LOG_DIR = f'/var/log/yummypiv'
+APP_NAME = getattr(settings, 'APP_NAME', 'yummypiv')
+
+if platform.system() == 'Windows':
+    # contoh: gunakan folder aplikasi lokal atau temp
+    base_dir = os.getenv('LOCALAPPDATA') or tempfile.gettempdir()
+    LOG_DIR = os.path.join(base_dir, APP_NAME)
+else:
+    LOG_DIR = '/var/log/yummypiv'
+
 LOG_FILE = os.path.join(LOG_DIR, f'yummypiv.log')
 
 # Konfigurasi logging
