@@ -247,7 +247,16 @@ class API(View):
 
                  testimonial.save()
                  logger.info(f'Success uploaded testimonial')
-                 return JsonResponse({'status': True, 'data':{'msg': 'Testimoni berhasil ditambah.'}})
+                 return JsonResponse({
+                     'success': True,
+                     'message': 'Testimoni berhasil ditambah.',
+                     'data': {
+                         'testimonial_id': testimonial.id,
+                         'customer_name': testimonial.customer_name,
+                         'img_link': testimonial.img_link,
+                         'img_banner': testimonial.img_banner
+                     }
+                 })
              except Exception as error:
                  logger.error(f'Error when data testimonial! - {error}')
                  return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
@@ -283,7 +292,16 @@ class API(View):
 
                  product.save()
                  logger.info(f'Success uploaded Product')
-                 return JsonResponse({'status': True, 'data':{'msg': 'Product berhasil ditambah.'}})
+                 return JsonResponse({
+                     'success': True,
+                     'message': 'Product berhasil ditambah.',
+                     'data': {
+                         'product_id': product.id,
+                         'product_name': product.product_name,
+                         'img_link': product.img_link,
+                         'price': product.price
+                     }
+                 })
              except Exception as error:
                  logger.error(f'Error when data Product! - {error}')
                  return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
