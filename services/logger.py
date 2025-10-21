@@ -8,6 +8,7 @@ if platform.system() == 'Windows':
     # contoh: gunakan folder aplikasi lokal atau temp
     base_dir = os.getenv('LOCALAPPDATA') or tempfile.gettempdir()
     LOG_DIR = os.path.join(base_dir, APP_NAME)
+    print(f'Logging directory set to: {LOG_DIR}')
 else:
     LOG_DIR = '/var/log/yummypiv'
 
