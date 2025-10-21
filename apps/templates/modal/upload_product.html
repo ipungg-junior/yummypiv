@@ -1,110 +1,117 @@
+{% load static %}
 <div class="modal modal-blur fade" id="modal-product" aria-hidden="true">
+    {% csrf_token %}
     <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">New Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form id="product-form" data-endpoint="{% url 'api-add-product' %}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="product_form_name">Product Name</label>
+                        <input type="text" class="form-control" name="product-name" id="product_form_name" placeholder="Enter product name" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="product_form_image">Product Image</label>
+                        <img src="" class="w-100 h-100 object-cover card-img-end mb-2" id="product_form_preview" hidden>
+                        <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="product-image" id="product_form_image" required>
+                        <div class="form-text">Maximum file size: 8MB</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="product_form_price">Price</label>
+                        <input type="number" class="form-control" name="product-price" id="product_form_price" placeholder="Enter price" min="0" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="product_form_description">Description</label>
+                        <textarea class="form-control" name="product-description" id="product_form_description" placeholder="Enter product description" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal" id="product_form_close">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary ms-auto" id="product_form_submit">
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        Save
+                    </button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Product Name</label>
-                    <input type="text" class="form-control" name="product-name" id="product-name"
-                        placeholder="Input your product name" value="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Image</label>
-                    <img src="" class="w-100 h-100 object-cover card-img-end" id="product-preview-image" hidden>
-                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="product-image-input" id="product-image-input" placeholder="Upload Foto Profil">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Price</label>
-                    <input type="text" class="form-control" name="product-price" id="product-price"
-                        placeholder="Harga" value="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <input type="text" class="form-control" name="product-description" id="product-description"
-                        placeholder="Isi komentar" value="">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-link link-secondary" data-bs-dismiss="modal" id="close-btn-product">
-                    Cancel
-                </a>
-                <a class="btn btn-primary ms-auto" id="product-submit-btn">
-                    Save
-                </a>
-            </div>
-        </div>
-        <div class="progress progress-md" id="loading-product" hidden>
+        </form>
+        <div class="progress progress-md d-none" id="product_form_loading">
             <div class="progress-bar progress-bar-indeterminate"></div>
         </div>
     </div>
 
+    <script src="{% static 'js/async-form-handler.js' %}"></script>
     <script>
-        const imageInputProduct = document.getElementById('product-image-input');
-        const closeBtnProduct = document.getElementById('close-btn-product');
-        const imagePreviewProduct = document.getElementById('product-preview-image');
-        const submitBtnProduct = document.getElementById('product-submit-btn');
-        const loadingProduct = document.getElementById('loading-product');
-        
-        imageInputProduct.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            const maxSize = 8 * 1024 * 1024; // 8MB.
-            
-            if (file) {
-                if (file.size > maxSize) {
-                    alert('Ukuran file tidak boleh lebih dari 8MB.');
-                    file.value = '';
-                    imageInputProduct.value = '';
-                    loadingProduct.hidden = true;
-                } else {
-                    loadingProduct.hidden = false;
+        // Initialize AsyncFormHandler for product form
+        document.addEventListener('DOMContentLoaded', function () {
+            const productForm = new AsyncFormHandler({
+                form: '#product-form',
+                endpoint: document.getElementById('product-form').dataset.endpoint,
+                submitButton: '#product_form_submit',
+                loadingClass: 'loading',
+                onSuccess: function (result, response) {
+                    // Close modal and reload page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-product'));
+                    modal.hide();
+
+                    // Show success message
+                    if (result.message) {
+                        alert(result.message);
+                    }
+
+                    // Reload the page to show new product
+                    window.location.reload();
+                },
+                onError: function (result, response) {
+                    // Error handling is done automatically by AsyncFormHandler
+                    console.error('Product form error:', result);
+                }
+            });
+
+            // Image preview functionality
+            const imageInput = document.getElementById('product_form_image');
+            const previewImage = document.getElementById('product_form_preview');
+
+            imageInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                const maxSize = 8 * 1024 * 1024; // 8MB
+
+                if (file) {
+                    if (file.size > maxSize) {
+                        alert('Ukuran gambar tidak boleh lebih dari 8MB.');
+                        this.value = '';
+                        previewImage.src = '';
+                        previewImage.hidden = true;
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        imagePreviewProduct.src = e.target.result;
-                        imagePreviewProduct.hidden = false;
+                        previewImage.src = e.target.result;
+                        previewImage.hidden = false;
                     };
                     reader.readAsDataURL(file);
-                    imageInputProduct.hidden = true;
-                    loadingProduct.hidden = true;
                 }
-            }
-        });
-        
-        closeBtnProduct.addEventListener('click', function (event) {
-            imagePreviewProduct.src = '';
-            imagePreviewProduct.hidden = true;
-            imageInputProduct.value = '';
-            imageInputProduct.hidden = false;
-            loadingProduct.hidden = true;
-        });
-        
-        submitBtnProduct.addEventListener('click', function (event) {
-            event.preventDefault();  
-            loadingProduct.hidden = false;
-            const formData = new FormData();
-            formData.append('product-name', document.getElementById('product-name').value);
-            formData.append('product-price', document.getElementById('product-price').value);
-            formData.append('product-description', document.getElementById('product-description').value);
-                        
-            const inputFile = document.getElementById('product-image-input').files[0];
-            if (inputFile) {                
-                formData.append('product-image', inputFile);    
-            }
-            fetchManager.post(mLink.addProduct, formData)
-                .then(response => {
-                    const message = response.data.msg;
-                    if (response.status === true) {
-                        alert(message);
-                        window.location.href = mLink.menuContentManagement;
-                    } else {
-                        alert(message);
-                    }
-                    loading.hidden = true;
-                });
-        });
+            });
 
+            // Reset form when modal is closed
+            document.getElementById('product_form_close').addEventListener('click', function () {
+                imageInput.value = '';
+                previewImage.src = '';
+                previewImage.hidden = true;
+            });
+
+            // Also reset when modal is hidden
+            document.getElementById('modal-product').addEventListener('hidden.bs.modal', function () {
+                imageInput.value = '';
+                previewImage.src = '';
+                previewImage.hidden = true;
+            });
+        });
     </script>
 
 </div>

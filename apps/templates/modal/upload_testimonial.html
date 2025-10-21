@@ -1,139 +1,142 @@
+{% load static %}
 <div class="modal modal-blur fade" id="modal-testimonial" aria-hidden="true">
+    {% csrf_token %}
     <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">New Testimonial</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form id="testimonial-form" data-endpoint="{% url 'api-add-testimonial' %}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Testimonial</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="testimonial_form_customer">Customer Name</label>
+                        <input type="text" class="form-control" name="testimonial-customer" id="testimonial_form_customer" placeholder="Enter customer name" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="testimonial_form_profile">Profile Image</label>
+                        <img src="" class="w-100 h-100 object-cover card-img-end mb-2" id="testimonial_form_profile_preview" hidden>
+                        <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="testimonial-image" id="testimonial_form_profile">
+                        <div class="form-text">Maximum file size: 8MB</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="testimonial_form_banner">Banner Image</label>
+                        <img src="" class="w-100 h-100 object-cover card-img-end mb-2" id="testimonial_form_banner_preview" hidden>
+                        <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="testimonial-banner-image" id="testimonial_form_banner">
+                        <div class="form-text">Optional banner image</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="testimonial_form_content">Testimonial Content</label>
+                        <textarea class="form-control" name="testimonial-content" id="testimonial_form_content" placeholder="Enter testimonial content" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal" id="testimonial_form_close">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary ms-auto" id="testimonial_form_submit">
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        Save
+                    </button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Customer</label>
-                    <input type="text" class="form-control" name="testimonial-customer" id="testimonial-customer"
-                        placeholder="Input your partner name" value="">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Profile</label>
-                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image-testimonial" hidden>
-                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input-testimonial" id="image-input-testimonial" placeholder="Upload Foto Profil">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Image Banner</label>
-                    <img src="" class="w-100 h-100 object-cover card-img-end" id="preview-image-banner" hidden>
-                    <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="image-input-banner" id="image-input-banner" placeholder="Upload Foto banner">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Content</label>
-                    <input type="text" class="form-control" name="testimonial-content" id="testimonial-content"
-                        placeholder="Isi komentar" value="">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-link link-secondary" data-bs-dismiss="modal-testimonial" id="close-btn-testimonial">
-                    Cancel
-                </a>
-                <a class="btn btn-primary ms-auto" id="submit-testimonial-btn">
-                    Save
-                </a>
-            </div>
-        </div>
-        <div class="progress progress-md" id="loading-testimonial" hidden>
+        </form>
+        <div class="progress progress-md d-none" id="testimonial_form_loading">
             <div class="progress-bar progress-bar-indeterminate"></div>
         </div>
     </div>
 
+    <script src="{% static 'js/async-form-handler.js' %}"></script>
     <script>
-        const closeBtnTestimonial = document.getElementById('close-btn-testimonial');
-        const imageInputTestimonial = document.getElementById('image-input-testimonial');
-        const previewImageTestimonial = document.getElementById('preview-image-testimonial');
-        const imageInputBanner = document.getElementById('image-input-banner');
-        const previewImageBanner = document.getElementById('preview-image-banner');
-        const submitBtnTestimonial = document.getElementById('submit-testimonial-btn');
-        const loadingTestimonial = document.getElementById('loading-testimonial');
-        
-        imageInputTestimonial.addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            const maxSize = 8 * 1024 * 1024; // 8MB.
-            
-            if (file) {
-                if (file.size > maxSize) {
-                    alert('Ukuran gambar tidak boleh lebih dari 8MB.');
-                    file.value = '';
-                    imageInputTestimonial.value = '';
-                    loadingTestimonial.hidden = true;
-                } else {
-                    loadingTestimonial.hidden = false;
+        // Initialize AsyncFormHandler for testimonial form
+        document.addEventListener('DOMContentLoaded', function () {
+            const testimonialForm = new AsyncFormHandler({
+                form: '#testimonial-form',
+                endpoint: document.getElementById('testimonial-form').dataset.endpoint,
+                submitButton: '#testimonial_form_submit',
+                loadingClass: 'loading',
+                onSuccess: function (result, response) {
+                    // Close modal and reload page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-testimonial'));
+                    modal.hide();
+
+                    // Show success message
+                    if (result.message) {
+                        alert(result.message);
+                    }
+
+                    // Reload the page to show new testimonial
+                    window.location.reload();
+                },
+                onError: function (result, response) {
+                    // Error handling is done automatically by AsyncFormHandler
+                    console.error('Testimonial form error:', result);
+                }
+            });
+
+            // Image preview functionality for profile image
+            const profileInput = document.getElementById('testimonial_form_profile');
+            const profilePreview = document.getElementById('testimonial_form_profile_preview');
+
+            profileInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                const maxSize = 8 * 1024 * 1024; // 8MB
+
+                if (file) {
+                    if (file.size > maxSize) {
+                        alert('Ukuran gambar tidak boleh lebih dari 8MB.');
+                        this.value = '';
+                        profilePreview.src = '';
+                        profilePreview.hidden = true;
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        previewImageTestimonial.src = e.target.result;
-                        previewImageTestimonial.hidden = false;
+                        profilePreview.src = e.target.result;
+                        profilePreview.hidden = false;
                     };
                     reader.readAsDataURL(file);
-                    imageInputTestimonial.hidden = true;
-                    loadingTestimonial.hidden = true;
                 }
-            }
-        });
+            });
 
-        imageInputBanner.addEventListener('change', function (event) {
-            loadingTestimonial.hidden = false;
-            const reader = new FileReader();
-            const file = event.target.files[0];
-            
-            reader.onload = function (e) {
-                previewImageBanner.src = e.target.result;
-                previewImageBanner.hidden = false;
-            };
-            
-            if (file) {
-                reader.readAsDataURL(file);
-                imageInputBanner.hidden = true;
-                loadingTestimonial.hidden = true;
-            }
-        });
-        
-        closeBtnTestimonial.addEventListener('click', function (event) {
-            document.getElementById('testimonial-customer').value = '';
-            document.getElementById('testimonial-content').value = '';
-            previewImageTestimonial.src = '';
-            previewImageTestimonial.hidden = true;
-            imageInputTestimonial.value = '';
-            imageInputTestimonial.hidden = false;
-            loadingTestimonial.hidden = true;
-        });
-        
-        submitBtnTestimonial.addEventListener('click', function (event) {
-            loadingTestimonial.hidden = false;
-            event.preventDefault();  
-            
-            const formData = new FormData();
-            const testimonialCustomer = document.getElementById('testimonial-customer').value;
-            const testimonialContent = document.getElementById('testimonial-content').value;
-            formData.append('testimonial-customer', testimonialCustomer);
-            formData.append('testimonial-content', testimonialContent);
-            
-            const inputFileTestimonial = document.getElementById('image-input-testimonial').files[0];
-            if (inputFileTestimonial) {
-                formData.append('testimonial-image', inputFileTestimonial);    
-            }
-            const inputFileBanner = document.getElementById('image-input-banner').files[0];
-            if (inputFileBanner) {
-                formData.append('testimonial-banner-image', inputFileBanner);    
-            }
+            // Image preview functionality for banner image
+            const bannerInput = document.getElementById('testimonial_form_banner');
+            const bannerPreview = document.getElementById('testimonial_form_banner_preview');
 
-            fetchManager.post(mLink.addTestimonial, formData)
-                .then(response => {
-                    const message = response.data.msg;
-                    if (response.status === true) {                     
-                        loadingTestimonial.hidden = true;
-                        alert(message);
-                        window.location.href = mLink.menuContentManagement;
-                    } else {
-                        alert(message);
-                    }
-                    loading.hidden = true;
-                });
-        });
+            bannerInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
 
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        bannerPreview.src = e.target.result;
+                        bannerPreview.hidden = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Reset form when modal is closed
+            document.getElementById('testimonial_form_close').addEventListener('click', function () {
+                profileInput.value = '';
+                profilePreview.src = '';
+                profilePreview.hidden = true;
+                bannerInput.value = '';
+                bannerPreview.src = '';
+                bannerPreview.hidden = true;
+            });
+
+            // Also reset when modal is hidden
+            document.getElementById('modal-testimonial').addEventListener('hidden.bs.modal', function () {
+                profileInput.value = '';
+                profilePreview.src = '';
+                profilePreview.hidden = true;
+                bannerInput.value = '';
+                bannerPreview.src = '';
+                bannerPreview.hidden = true;
+            });
+        });
     </script>
 
 </div>
