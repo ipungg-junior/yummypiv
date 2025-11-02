@@ -35,6 +35,14 @@ def landing(request):
     logger.info(f'{request.META.get('REMOTE_ADDR')} - {request.META.get('HTTP_USER_AGENT')} - Landing page')
     return resp
 
+def landing_catering(request):
+    resp = render(template_name='yummypivgo/index.html', request=request)
+    resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
+    resp.headers['Pragma'] = "no-cache"
+    resp.headers['Expires'] = "0"
+    logger.info(f'{request.META.get('REMOTE_ADDR')} - {request.META.get('HTTP_USER_AGENT')} - Landing Catering page')
+    return resp
+
 def services(request, name):
     news_list = Article.objects.order_by('-created_at')[:7]
     all_profile = OwnerProfile.objects.all()
