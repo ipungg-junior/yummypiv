@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import landing, about, services
+from .views import landing, about, services, landing_catering
 from viewer.news import News
 from viewer.dashboard import Dashboard
 from viewer.settings import UserConfigurations, OwnerConfigurations
@@ -9,6 +9,7 @@ from services.api import API
 
 urlpatterns = [
     path('', landing, name='landing'),
+    path('catering', landing_catering, name='landing-catering'),
     path('services/<str:name>/', services, name='services'),
     path('about/', about, name='about'),
     path('dashboard/', Dashboard.as_view(context='main-dashboard'), name='main-dashboard'),

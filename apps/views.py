@@ -32,7 +32,15 @@ def landing(request):
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
     resp.headers['Pragma'] = "no-cache"
     resp.headers['Expires'] = "0"
-    logger.info(f'{request.META.get('REMOTE_ADDR')} - {request.META.get('HTTP_USER_AGENT')} - Landing page')
+    logger.info(f'{request.META.get("REMOTE_ADDR")} - {request.META.get("HTTP_USER_AGENT")} - Landing page')
+    return resp
+
+def landing_catering(request):
+    resp = render(template_name='yummypivgo/index.html', request=request)
+    resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
+    resp.headers['Pragma'] = "no-cache"
+    resp.headers['Expires'] = "0"
+    logger.info(f'{request.META.get("REMOTE_ADDR")} - {request.META.get("HTTP_USER_AGENT")} - Landing Catering page')
     return resp
 
 def services(request, name):
@@ -50,7 +58,7 @@ def services(request, name):
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
     resp.headers['Pragma'] = "no-cache"
     resp.headers['Expires'] = "0"
-    logger.info(f'{request.META.get('REMOTE_ADDR')} - {request.META.get('HTTP_USER_AGENT')} - Service {my_template} page landing')
+    logger.info(f'{request.META.get("REMOTE_ADDR")} - {request.META.get("HTTP_USER_AGENT")} - Service {my_template} page landing')
     return resp
 
 def about(request):
@@ -68,5 +76,5 @@ def about(request):
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
     resp.headers['Pragma'] = "no-cache"
     resp.headers['Expires'] = "0"
-    logger.info(f'{request.META.get('REMOTE_ADDR')} - {request.META.get('HTTP_USER_AGENT')} - About page')
+    logger.info(f'{request.META.get("REMOTE_ADDR")} - {request.META.get("HTTP_USER_AGENT")} - About page')
     return resp
