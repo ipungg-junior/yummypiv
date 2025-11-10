@@ -18,57 +18,79 @@
               .typing-effect {
                 display: inline-block;
                 font-weight: bold;
-                border-right: 2px solid black; /* Garis kursor */
-                padding-right: 5px; /* Memberikan jarak agar kursor tidak terlalu dekat dengan teks */
-                white-space: nowrap; /* Mencegah teks terputus */
-                overflow: hidden; /* Sembunyikan teks yang belum muncul */
-                width: 0; /* Mulai dengan lebar 0 untuk efek ketik */
-                background: linear-gradient(45deg, #ff7f50, #ff6347, #32cd32, #1e90ff, #9370db, #ff1493); /* Gradasi warna */
-                background-size: 400% 400%; /* Membuat gradasi lebih besar agar lebih halus */
-                -webkit-background-clip: text; /* Menempelkan gradasi pada teks */
-                color: transparent; /* Membuat warna teks transparan untuk menampilkan gradasi */
-                animation: typing 4s steps(30) 1s forwards, blink 0.75s step-end 4s infinite, disappear 4s forwards, changeColors 5s ease infinite;; /* Animasi ketik dan kursor */
+                border-right: 2px solid black;
+                /* Garis kursor */
+                padding-right: 5px;
+                /* Memberikan jarak agar kursor tidak terlalu dekat dengan teks */
+                white-space: nowrap;
+                /* Mencegah teks terputus */
+                overflow: hidden;
+                /* Sembunyikan teks yang belum muncul */
+                width: 0;
+                /* Mulai dengan lebar 0 untuk efek ketik */
+                background: linear-gradient(45deg, #ff7f50, #ff6347, #32cd32, #1e90ff, #9370db, #ff1493);
+                /* Gradasi warna */
+                background-size: 400% 400%;
+                /* Membuat gradasi lebih besar agar lebih halus */
+                -webkit-background-clip: text;
+                /* Menempelkan gradasi pada teks */
+                color: transparent;
+                /* Membuat warna teks transparan untuk menampilkan gradasi */
+                animation: typing 4s steps(30) 1s forwards, blink 0.75s step-end 4s infinite, disappear 4s forwards, changeColors 5s ease infinite;
+                ;
+                /* Animasi ketik dan kursor */
               }
-              
+
               /* Animasi ketik */
               @keyframes typing {
                 to {
-                  width: 100%; /* Teks akan muncul secara penuh */
+                  width: 100%;
+                  /* Teks akan muncul secara penuh */
                 }
               }
-              
+
               /* Animasi kursor berkedip */
               @keyframes blink {
-                0%, 100% {
-                  border-color: transparent; /* Kursor terlihat */
+
+                0%,
+                100% {
+                  border-color: transparent;
+                  /* Kursor terlihat */
                   border-right: 0px solid black;
                 }
+
                 50% {
-                  border-color: transparent; /* Kursor menghilang */
+                  border-color: transparent;
+                  /* Kursor menghilang */
                 }
               }
 
               @keyframes disappear {
                 100% {
-                  border-color: transparent; /* Kursor akan hilang setelah animasi ketik selesai */
+                  border-color: transparent;
+                  /* Kursor akan hilang setelah animasi ketik selesai */
                 }
               }
 
               @keyframes changeColors {
                 0% {
-                  background-position: 0% 50%; /* Posisi awal gradasi */
+                  background-position: 0% 50%;
+                  /* Posisi awal gradasi */
                 }
+
                 50% {
-                  background-position: 100% 50%; /* Posisi tengah gradasi */
+                  background-position: 100% 50%;
+                  /* Posisi tengah gradasi */
                 }
+
                 100% {
-                  background-position: 0% 50%; /* Posisi akhir gradasi */
+                  background-position: 0% 50%;
+                  /* Posisi akhir gradasi */
                 }
               }
-                            
             </style>
-            <h2 class="page-title typing-effect">
-              Selamat Tahun Baru 2025!
+            <h2 class="page-title">
+              Content Management
             </h2>
           </div>
         </div>
