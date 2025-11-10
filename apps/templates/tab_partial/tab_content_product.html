@@ -7,20 +7,18 @@
         <div class="col-md-12 col-lg-12">
             <div class="card">
                 <div class="card-header justify-content-between">
-                    <h3 class="card-title">Etalase Toko</h3>
+                    <h3 class="card-title">Menu</h3>
 
                     <div class="btn-list">
-                        <a href="" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="#modal-product">
+                        <a href="" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-product">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="icon">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M12 5l0 14"></path>
                                 <path d="M5 12l14 0"></path>
                             </svg>
-                            Product
+                            Menu
                         </a>
                     </div>
 
@@ -38,11 +36,10 @@
                         </thead>
 
                         <tbody id="product-collection">
-                            
+
                             {% for product in products %}
                             <tr>
-                                <td class="text-secondary"><span class="avatar"
-                                        style="background-image: url({{ product.img_link }})"></span>
+                                <td class="text-secondary"><span class="avatar" style="background-image: url({{ product.img_link }})"></span>
                                 </td>
                                 <td data-name="{{ product.product_name }}">
                                     {{ product.product_name }}
@@ -76,13 +73,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        
+
         document.getElementById('product-collection').addEventListener('click', function (event) {
-            
+
             if (event.target.classList.contains('remove-btn')) {
-                
+
                 const productId = event.target.getAttribute('data-id');
-                const productName = event.target.closest('tr').querySelector('td[data-name]').getAttribute('data-name');                
+                const productName = event.target.closest('tr').querySelector('td[data-name]').getAttribute('data-name');
 
                 if (confirm('Yakin ingin menghapus product ' + productName + '?')) {
                     const formData = new FormData();
