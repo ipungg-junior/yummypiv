@@ -8,7 +8,7 @@ from services.firebase import firebase_upload, firebase_delete
 from services.media_service import upload_media, delete_media
 from services.addons import analyze_storage
 from services.notification import system_notification
-from apps.models import Partner, Article, Visitor
+from apps.models import Partner, Article, Visitor, Product, CateringMenu
 from django.utils import timezone
 from datetime import timedelta
 
@@ -92,6 +92,17 @@ class Dashboard(View):
                 logger.error(f'{no_data} - Artikel objek tidak ada')
                 return redirect('create-news-dashboard')
 
+        if (self.context == 'yummypiv-content'):
+            ctx = {}            
+            all_product = Product.objects.all()
+            ctx['products'] = all_product
+            return render(request, 'tab_partial/content_yummypiv.html', context=ctx)
+        
+        if (self.context == 'yummypivgo-content'):
+            ctx = {}            
+            all_menu = CateringMenu.objects.all()
+            ctx['menus'] = all_menu
+            return render(request, 'tab_partial/content_yummypivgo.html', context=ctx)
 
     def post(self, request, *args, **kwargs):
         
