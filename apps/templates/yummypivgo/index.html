@@ -308,6 +308,52 @@
             </section>
 
 
+            <!-- 
+        - #BLOG
+      -->
+
+            <section class="section blog" aria-labelledby="blog-label" id="menu">
+                <div class="container">
+
+                    <div class="title-wrapper" data-reveal>
+
+                        <div>
+                            <p class="section-subtitle has-before" id="blog-label">OUR MENU</p>
+
+                            <h2 class="h2 section-title">Tentukan menu favorit Anda!</h2>
+                        </div>
+
+                    </div>
+
+                    <ul class="blog-list" data-reveal>
+
+                        {% for menu in all_menu %}
+                        <li>
+                            <div class="blog-card">
+
+                                <figure class="card-banner img-holder" style="--width: 770; --height: 550;">
+                                    <img src="{{ menu.img_link }}" width="770" height="550" loading="lazy" alt="{{ menu.description }}" class="img-cover">
+                                </figure>
+
+                                <div class="card-content">
+
+                                    <h3 class="h5">
+                                        <a href="#" class="card-title">
+                                            {{ menu.name }}
+                                        </a>
+                                    </h3>
+
+                                </div>
+
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+            </section>
+
 
 
 
@@ -456,103 +502,6 @@
 
                 </div>
             </section>
-
-
-
-
-
-            <!-- 
-        - #BLOG
-      -->
-
-            <section class="section blog" aria-labelledby="blog-label" id="menu">
-                <div class="container">
-
-                    <div class="title-wrapper" data-reveal>
-
-                        <div>
-                            <p class="section-subtitle has-before" id="blog-label">OUR MENU</p>
-
-                            <h2 class="h2 section-title">Tentukan menu favorit Anda!</h2>
-                        </div>
-
-                    </div>
-
-                    <ul class="blog-list" data-reveal>
-
-                        <li>
-                            <div class="blog-card">
-
-                                <figure class="card-banner img-holder" style="--width: 770; --height: 550;">
-                                    <img src="{% static 'image/catering/4.webp' %}" width="770" height="550" loading="lazy" alt="Essential Catering Tips for Perfect Events" class="img-cover">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <!-- <time class="publish-date" datetime="2022-06-03">03 Jun 2022</time> -->
-
-                                    <h3 class="h5">
-                                        <a href="#" class="card-title">
-                                            Gergolous
-                                        </a>
-                                    </h3>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="blog-card">
-
-                                <figure class="card-banner img-holder" style="--width: 770; --height: 550;">
-                                    <img src="{% static 'image/catering/5.webp' %}" width="770" height="550" loading="lazy" alt="Seasonal Menu Planning for Events" class="img-cover">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <!-- <time class="publish-date" datetime="2022-06-03">03 Jun 2022</time> -->
-
-                                    <h3 class="h5">
-                                        <a href="#" class="card-title">
-                                            Imperial
-                                        </a>
-                                    </h3>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="blog-card">
-
-                                <figure class="card-banner img-holder" style="--width: 770; --height: 550;">
-                                    <img src="{% static 'image/catering/3.webp' %}" width="770" height="550" loading="lazy" alt="Dietary Accommodations in Professional Catering" class="img-cover">
-                                </figure>
-
-                                <div class="card-content">
-
-                                    <!-- <time class="publish-date" datetime="2022-06-03">03 Jun 2022</time> -->
-
-                                    <h3 class="h5">
-                                        <a href="#" class="card-title">
-                                            Dietary
-                                        </a>
-                                    </h3>
-
-                                </div>
-
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </div>
-            </section>
-
-
-
 
 
             <!-- 

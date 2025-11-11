@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from apps.models import Partner, Article, OwnerProfile, Testimonials, Product
+from apps.models import Partner, Article, OwnerProfile, Testimonials, Product, CateringMenu
 from services import utils
 
 # Logger information object
@@ -36,7 +36,8 @@ def landing(request):
     return resp
 
 def landing_catering(request):
-    resp = render(template_name='yummypivgo/index.html', request=request)
+    all_menu = CateringMenu.objects.all()
+    resp = render(template_name='yummypivgo/index.html', request=request, context={'all_menu': all_menu})
     resp.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
     resp.headers['Pragma'] = "no-cache"
     resp.headers['Expires'] = "0"
