@@ -1,8 +1,8 @@
 {% load static %}
 <div class="modal modal-blur fade" id="modal-menu-catering" aria-hidden="true">
-    {% csrf_token %}
     <div class="modal-dialog modal-md" role="document">
-        <form id="menu-form" data-endpoint="{% url 'api-add-product' %}">
+        <form id="menu-form" data-endpoint="{% url 'api-add-catering-menu' %}">
+            {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">New Menu</h5>

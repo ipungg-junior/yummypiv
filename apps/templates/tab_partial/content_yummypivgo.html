@@ -63,8 +63,8 @@
                                         <tr>
                                             <td class="text-secondary"><span class="avatar" style="background-image: url({{ menu.img_link }})"></span>
                                             </td>
-                                            <td data-name="{{ menu.product_name }}">
-                                                {{ menu.product_name }}
+                                            <td data-name="{{ menu.name }}">
+                                                {{ menu.name }}
                                             </td>
                                             <td>
                                                 {{ menu.price }}
@@ -110,14 +110,14 @@
 
                 if (confirm('Yakin ingin menghapus product ' + productName + '?')) {
                     const formData = new FormData();
-                    formData.append('product-id', productId);
+                    formData.append('menu-id', productId);
 
-                    fetchManager.post(mLink.deleteProduct, formData)
+                    fetchManager.post(mLink.deleteCateringMenu, formData)
                         .then(response => {
                             const message = response.data.msg;
                             if (response.status === true) {
                                 alert(message);
-                                window.location.href = mLink.menuContentManagement;
+                                window.location.reload();
                             } else {
                                 alert(message);
                             }
