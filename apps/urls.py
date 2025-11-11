@@ -4,7 +4,6 @@ from viewer.news import News
 from viewer.dashboard import Dashboard
 from viewer.settings import UserConfigurations, OwnerConfigurations
 from viewer.authentication import Authentication
-from viewer.content_dashboard import ContentManagement
 from services.api import API
 
 urlpatterns = [
@@ -16,7 +15,6 @@ urlpatterns = [
     path('dashboard/partner/', Dashboard.as_view(context='partner-dashboard'), name='partner-dashboard'),
     path('dashboard/content/yummypiv/', Dashboard.as_view(context='yummypiv-content'), name='yummypiv-content'),
     path('dashboard/content/yummypivgo/', Dashboard.as_view(context='yummypivgo-content'), name='yummypivgo-content'),
-    path('dashboard/content-management/', ContentManagement.as_view(context='content-management'), name='content-management'),
     path('dashboard/partner/create-new/', Dashboard.as_view(context='new-partner'), name='new-partner'),
     path('dashboard/partner/delete/', Dashboard.as_view(context='delete-partner'), name='delete-partner'),
     path('owner-configuration/', OwnerConfigurations.as_view(context='owner-configuration'), name='owner-configuration'),
