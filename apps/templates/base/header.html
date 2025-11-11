@@ -1,3 +1,4 @@
+{% load static %}
 <!-- Navbar -->
 <header class="navbar navbar-expand-md d-print-none" id="navbar-top">
     <div class="container-xl">
@@ -31,21 +32,7 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{% url 'content-management' %}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round" class="icon">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-                                            <path d="M4 13h3l3 3h4l3 -3h3"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        Manage Content
-                                    </span>
-                                </a>
-                            </li>
+                            <!-- partner -->
                             <li class="nav-item active">
                                 <a class="nav-link" href="{% url 'partner-dashboard' %}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -63,6 +50,43 @@
                                         Manage Partner
                                     </span>
                                 </a>
+                            </li>
+                            <!-- settings -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="icon">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M13 20.693c-.905 .628 -2.36 .292 -2.675 -1.01a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.492 .362 1.716 2.219 .674 3.03">
+                                            </path>
+                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                            <path d="M17 22l5 -3l-5 -3z"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Content
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <!-- Menu sub item -->
+                                        <a class="dropdown-item" href="{% url 'yummypiv-content' %}">
+                                            Yummypiv
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu-columns">
+                                        <a class="dropdown-item" href="{% url 'yummypivgo-content' %}">
+                                            YummypivGo Catering
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu-columns">
+                                        <a class="dropdown-item" href="{% url 'user-list' %}">
+                                            Testimonial
+                                        </a>
+                                    </div>
+                                </div>
                             </li>
                             <!-- settings -->
                             <li class="nav-item dropdown">
@@ -119,4 +143,16 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'js/fetch-manager.js' %}"></script>
+    <script>
+        var mLink = {
+            menuContentManagement: "{% url 'content-management' %}",
+            homepageUpper: "{% url 'api-update-homepage-upper' %}",
+            about: "{% url 'api-update-about' %}",
+            addTestimonial: "{% url 'api-add-testimonial' %}",
+            deleteTestimonial: "{% url 'api-delete-testimonial' %}",
+            addProduct: "{% url 'api-add-product' %}",
+            deleteProduct: "{% url 'api-delete-product' %}"
+        }
+    </script>
 </header>
