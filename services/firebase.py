@@ -14,7 +14,7 @@ except Exception as firebase_error:
     time.sleep(10)
 
 def init_firebase():
-    dir_firebase = ['static', 'media', 'media/product', 'media/testimonial', 'media/partner']
+    dir_firebase = ['static', 'media', 'media/product', 'media/testimonial', 'media/partner', 'catering-menu']
     INFO_TAG(f'Firebase initialized.')
     for dir in dir_firebase:
       blob_list = bucket.list_blobs(prefix=f'{dir}')
