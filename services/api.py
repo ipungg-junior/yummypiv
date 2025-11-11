@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.views import View
 from django.http import JsonResponse
-from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials, Product
+from apps.models import Visitor, ClientInbox, Article, OwnerProfile, Testimonials, Product, CateringMenu
 from django.utils import timezone
 from datetime import timedelta
 from services.utils import is_valid_name, is_valid_phone_number, generate_visit_id
@@ -315,4 +315,50 @@ class API(View):
                 return JsonResponse({'status': True, 'data':{'msg': 'Product deleted!'}})
             except Exception as error:
                 logger.error(f'Error when delete data product! - {error}')
+                return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+            
+            
+        if (self.context == 'api-add-catering-menu'):
+             try:
+                 menu = CateringMenu()
+                 menu.name = request.POST.get('menu-name')
+                 menu.price = request.POST.get('menu-price')
+                 menu.description = request.POST.get('menu-description')
+
+                 image = request.FILES.get('menu-image')
+                 if image:
+                     success, msg = upload_media('media/catering-menu', image, menu, 'img_link', convert_webp=True)
+                     if not success:
+                         menu.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+                         menu.save()
+                         logger.info(f'Success uploaded menu with default image!')
+                         return JsonResponse({'status': True, 'data':{'msg': 'menu berhasil ditambah. (default avatar)'}})
+                 else:
+                     menu.img_link = "https://storage.googleapis.com/yummypiv-app.appspot.com/media/testimonial/avatar.png"
+
+                 menu.save()
+                 logger.info(f'Success uploaded menu')
+                 return JsonResponse({
+                     'success': True,
+                     'message': 'menu berhasil ditambah.',
+                     'data': {
+                         'menu_id': menu.id,
+                         'menu_name': menu.name,
+                         'img_link': menu.img_link,
+                         'price': menu.price
+                     }
+                 })
+             except Exception as error:
+                 logger.error(f'Error when data menu! - {error}')
+                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})
+            
+        if (self.context == 'api-delete-catering-menu'):
+            try:                
+                logger.info(f'Start deleting menu')
+                selected_menu_id = request.POST.get('menu-id')
+                selected_menu = CateringMenu.objects.get(id=selected_menu_id)
+                selected_menu.delete()
+                return JsonResponse({'status': True, 'data':{'msg': 'menu deleted!'}})
+            except Exception as error:
+                logger.error(f'Error when delete data menu! - {error}')
                 return JsonResponse({'status': False, 'data':{'msg': f'{error}'}})

@@ -38,4 +38,6 @@ urlpatterns = [
     path('api/content-management/delete-testimonial/', API.as_view(context='api-delete-testimonial'), name='api-delete-testimonial'),
     path('api/content-management/add-product/', API.as_view(context='api-add-product'), name='api-add-product'),
     path('api/content-management/delete-product/', API.as_view(context='api-delete-product'), name='api-delete-product'),
+    path('api/content-management/add-catering-menu/', API.as_view(context='api-add-catering-menu'), name='api-add-catering-menu'),
+    path('api/content-management/delete-catering-menu/', API.as_view(context='api-delete-catering-menu'), name='api-delete-catering-menu'),
 ]
