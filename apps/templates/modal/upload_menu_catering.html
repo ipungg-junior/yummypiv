@@ -1,0 +1,117 @@
+{% load static %}
+<div class="modal modal-blur fade" id="modal-menu-catering" aria-hidden="true">
+    {% csrf_token %}
+    <div class="modal-dialog modal-md" role="document">
+        <form id="menu-form" data-endpoint="{% url 'api-add-product' %}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="menu_form_name">Name</label>
+                        <input type="text" class="form-control" name="menu-name" id="menu_form_name" placeholder="Enter product name" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menu_form_image">Image</label>
+                        <img src="" class="w-100 h-100 object-cover card-img-end mb-2" id="menu_form_preview" hidden>
+                        <input type="file" accept="image/png, image/jpeg, image/webp, image/jpg" class="form-control" name="menu-image" id="menu_form_image" required>
+                        <div class="form-text">Maximum file size: 8MB</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menu_form_price">Price</label>
+                        <input type="number" class="form-control" name="menu-price" id="menu_form_price" placeholder="Enter price" min="0" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menu_form_description">Description</label>
+                        <textarea class="form-control" name="menu-description" id="menu_form_description" placeholder="Enter product description" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal" id="menu_form_close">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary ms-auto" id="menu_form_submit">
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="progress progress-md d-none" id="menu_form_loading">
+            <div class="progress-bar progress-bar-indeterminate"></div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/async-form-handler.js' %}"></script>
+    <script>
+        // Initialize AsyncFormHandler for product form
+        document.addEventListener('DOMContentLoaded', function () {
+            const productForm = new AsyncFormHandler({
+                form: '#menu-form',
+                endpoint: document.getElementById('menu-form').dataset.endpoint,
+                submitButton: '#menu_form_submit',
+                loadingClass: 'loading',
+                onSuccess: function (result, response) {
+                    // Close modal and reload page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modal-menu-catering'));
+                    modal.hide();
+
+                    // Show success message
+                    if (result.message) {
+                        alert(result.message);
+                    }
+
+                    // Reload the page to show new product
+                    window.location.reload();
+                },
+                onError: function (result, response) {
+                    // Error handling is done automatically by AsyncFormHandler
+                    console.error('Product form error:', result);
+                }
+            });
+
+            // Image preview functionality
+            const imageInput = document.getElementById('menu_form_image');
+            const previewImage = document.getElementById('menu_form_preview');
+
+            imageInput.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                const maxSize = 8 * 1024 * 1024; // 8MB
+
+                if (file) {
+                    if (file.size > maxSize) {
+                        alert('Ukuran gambar tidak boleh lebih dari 8MB.');
+                        this.value = '';
+                        previewImage.src = '';
+                        previewImage.hidden = true;
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.hidden = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Reset form when modal is closed
+            document.getElementById('menu_form_close').addEventListener('click', function () {
+                imageInput.value = '';
+                previewImage.src = '';
+                previewImage.hidden = true;
+            });
+
+            // Also reset when modal is hidden
+            document.getElementById('modal-menu-catering').addEventListener('hidden.bs.modal', function () {
+                imageInput.value = '';
+                previewImage.src = '';
+                previewImage.hidden = true;
+            });
+        });
+    </script>
+
+</div>
